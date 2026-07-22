@@ -1,4 +1,4 @@
-# CSE325
+# D&D Character Chronicles
 
 ## Group Members
 
@@ -6,3 +6,4 @@
 - Nathaniel Stokes
 - Samuel Apusiyine Avike
 - Vinicius Eduardo Rocca
+=======
