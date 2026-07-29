@@ -1,4 +1,4 @@
-# CSE325
+# D&D Character Chronicles
 
 ## Group Members
 
