@@ -1,0 +1,27 @@
+@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <NavMenu />
+
+    <main class="app-content">
+        @Body
+    </main>
+</div>
+
+<div id="blazor-error-ui"
+     data-nosnippet>
+    <span>
+        An unhandled error has occurred.
+    </span>
+
+    <a href="."
+       class="reload">
+        Reload
+    </a>
+
+    <button type="button"
+            class="dismiss"
+            aria-label="Dismiss error message">
+        ×
+    </button>
+</div>
