@@ -1,4 +1,4 @@
-.site-layout {
+.app-shell {
     width: 100%;
     min-width: 0;
     min-height: 100vh;
@@ -6,13 +6,10 @@
     display: flex;
     flex-direction: column;
 
-    margin: 0;
-    padding: 0;
-
     background: #fff8ec;
 }
 
-.site-content {
+.app-content {
     width: 100%;
     min-width: 0;
     flex: 1 1 auto;
@@ -22,35 +19,40 @@
 }
 
 /*
- * Prevent inherited template styles from creating
- * a sidebar or limiting the content width.
+ * Prevent old Bootstrap/template layout rules from
+ * limiting the page width or adding sidebar spacing.
  */
-.site-content ::deep > * {
-    width: 100%;
+.app-content ::deep > * {
     max-width: none;
-    margin-right: 0;
-    margin-left: 0;
 }
 
-/* Blazor error message */
-
+/*
+ * Blazor's runtime error notification.
+ */
 #blazor-error-ui {
     position: fixed;
-    z-index: 5000;
+    z-index: 3000;
     right: 1rem;
     bottom: 1rem;
     left: 1rem;
 
     display: none;
+    align-items: center;
+    gap: 0.75rem;
 
     min-height: 52px;
-    padding: 0.85rem 3.2rem 0.85rem 1rem;
+    padding: 0.8rem 3.25rem 0.8rem 1rem;
 
     color: #fff8ec;
-    background: #700003;
+    background:
+        linear-gradient(
+            110deg,
+            #650003,
+            #960000
+        );
 
-    border: 1px solid #d8321d;
-    border-radius: 6px;
+    border: 1px solid #dd3f24;
+    border-radius: 7px;
 
     box-shadow:
         0 16px 38px
@@ -59,14 +61,21 @@
     font-family:
         "Cormorant Garamond",
         Georgia,
+        "Times New Roman",
         serif;
+
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 #blazor-error-ui .reload {
-    margin-left: 0.5rem;
-
     color: #ffc13d;
     font-weight: 700;
+    text-decoration: underline;
+}
+
+#blazor-error-ui .reload:hover {
+    color: #ffe09a;
 }
 
 #blazor-error-ui .dismiss {
@@ -87,6 +96,8 @@
     border-radius: 5px;
 
     font-size: 1.5rem;
+    line-height: 1;
+
     cursor: pointer;
 
     transform: translateY(-50%);
@@ -94,4 +105,16 @@
 
 #blazor-error-ui .dismiss:hover {
     background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 600px) {
+    #blazor-error-ui {
+        right: 0.6rem;
+        bottom: 0.6rem;
+        left: 0.6rem;
+
+        padding-left: 0.8rem;
+
+        font-size: 0.9rem;
+    }
 }
