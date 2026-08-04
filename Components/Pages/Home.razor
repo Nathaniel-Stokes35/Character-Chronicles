@@ -1,7 +1,474 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Character Chronicles | RPG Character Manager</PageTitle>
 
-<h1>Hello, world!</h1>
+<section class="landing-hero">
+    <div class="hero-background-symbol"
+         aria-hidden="true">
+        <span>20</span>
+    </div>
 
-Welcome to your new app.
+    <div class="hero-container">
+        <div class="hero-copy">
+            <p class="hero-eyebrow">
+                RPG Character Manager
+            </p>
+
+            <h1>
+                Keep Every Hero
+                <span>Ready for Adventure</span>
+            </h1>
+
+            <p class="hero-description">
+                Create, organise, and manage multiple tabletop
+                role-playing characters across all of your campaigns.
+                Keep important character details together and return
+                to any adventure whenever your group is ready.
+            </p>
+
+            <div class="hero-actions">
+                <a class="primary-button"
+                   href="/register">
+                    Create a Character
+                </a>
+
+                <a class="secondary-button"
+                   href="/login">
+                    Log In
+                </a>
+            </div>
+
+            <div class="hero-benefits">
+                <span>
+                    <i class="fa-solid fa-check"
+                       aria-hidden="true"></i>
+
+                    Multiple characters
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-check"
+                       aria-hidden="true"></i>
+
+                    Multiple campaigns
+                </span>
+
+                <span>
+                    <i class="fa-solid fa-check"
+                       aria-hidden="true"></i>
+
+                    Secure account storage
+                </span>
+            </div>
+        </div>
+
+        <div class="hero-preview">
+            <div class="preview-window">
+                <div class="preview-toolbar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                    <strong>
+                        Character Chronicles
+                    </strong>
+                </div>
+
+                <div class="preview-content">
+                    <aside class="preview-sidebar">
+                        <div class="preview-logo">
+                            CC
+                        </div>
+
+                        <span class="preview-nav-item active">
+                            Characters
+                        </span>
+
+                        <span class="preview-nav-item">
+                            Campaigns
+                        </span>
+
+                        <span class="preview-nav-item">
+                            Notes
+                        </span>
+                    </aside>
+
+                    <div class="preview-main">
+                        <div class="preview-heading">
+                            <div>
+                                <small>Your Characters</small>
+                                <strong>Choose Your Hero</strong>
+                            </div>
+
+                            <span class="preview-add">
+                                +
+                            </span>
+                        </div>
+
+                        <div class="preview-character-grid">
+                            <article class="preview-character-card">
+                                <div class="character-portrait warrior">
+                                    <i class="fa-solid fa-shield-halved"
+                                       aria-hidden="true"></i>
+                                </div>
+
+                                <strong>Kael Thornwood</strong>
+                                <span>Level 8 Ranger</span>
+
+                                <small>
+                                    Shadows of Eldoria
+                                </small>
+                            </article>
+
+                            <article class="preview-character-card">
+                                <div class="character-portrait mage">
+                                    <i class="fa-solid fa-hat-wizard"
+                                       aria-hidden="true"></i>
+                                </div>
+
+                                <strong>Lyra Ashborne</strong>
+                                <span>Level 5 Wizard</span>
+
+                                <small>
+                                    The Broken Crown
+                                </small>
+                            </article>
+
+                            <article class="preview-character-card faded">
+                                <div class="character-portrait add-character">
+                                    <i class="fa-solid fa-plus"
+                                       aria-hidden="true"></i>
+                                </div>
+
+                                <strong>New Character</strong>
+                                <span>Begin a new story</span>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-decoration preview-decoration-one"
+                 aria-hidden="true">
+            </div>
+
+            <div class="preview-decoration preview-decoration-two"
+                 aria-hidden="true">
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-link"
+       href="#paths">
+        Discover More
+
+        <i class="fa-solid fa-chevron-down"
+           aria-hidden="true"></i>
+    </a>
+</section>
+
+<section id="paths"
+         class="paths-section">
+
+    <div class="section-heading">
+        <p>Choose Your Path</p>
+
+        <h2>
+            Built for Players and Campaigns
+        </h2>
+
+        <span>
+            Manage individual heroes or keep an entire campaign
+            organised in one simple application.
+        </span>
+    </div>
+
+    <div class="path-grid">
+        <article class="path-card character-path">
+            <div class="path-artwork">
+                <div class="artwork-circle"></div>
+
+                <i class="fa-solid fa-user-shield"
+                   aria-hidden="true"></i>
+            </div>
+
+            <div class="path-content">
+                <p class="path-label">
+                    For Players
+                </p>
+
+                <h3>
+                    Create Your Characters
+                </h3>
+
+                <p>
+                    Build characters, record their important details,
+                    and keep multiple heroes ready for different
+                    campaigns.
+                </p>
+
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-circle-check"
+                           aria-hidden="true"></i>
+
+                        Create new characters
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-circle-check"
+                           aria-hidden="true"></i>
+
+                        View character lists and details
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-circle-check"
+                           aria-hidden="true"></i>
+
+                        Edit or delete existing characters
+                    </li>
+                </ul>
+
+                <a href="/characters"
+                   class="path-button">
+                    Manage Characters
+
+                    <i class="fa-solid fa-arrow-right"
+                       aria-hidden="true"></i>
+                </a>
+            </div>
+        </article>
+
+        <article class="path-card campaign-path">
+            <div class="path-artwork">
+                <div class="artwork-circle"></div>
+
+                <i class="fa-solid fa-book-open"
+                   aria-hidden="true"></i>
+            </div>
+
+            <div class="path-content">
+                <p class="path-label">
+                    For Adventuring Groups
+                </p>
+
+                <h3>
+                    Organise Your Campaigns
+                </h3>
+
+                <p>
+                    Assign characters to campaigns and keep each
+                    adventure organised, even when your group takes
+                    a long break.
+                </p>
+
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-circle-check"
+                           aria-hidden="true"></i>
+
+                        Manage multiple campaigns
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-circle-check"
+                           aria-hidden="true"></i>
+
+                        Connect characters to campaigns
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-circle-check"
+                           aria-hidden="true"></i>
+
+                        Return to previous adventures
+                    </li>
+                </ul>
+
+                <a href="/campaigns"
+                   class="path-button">
+                    View Campaigns
+
+                    <i class="fa-solid fa-arrow-right"
+                       aria-hidden="true"></i>
+                </a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="section-heading light-heading">
+        <p>Core Features</p>
+
+        <h2>
+            Everything Needed to Manage Your Story
+        </h2>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature-card">
+            <div class="feature-number">
+                01
+            </div>
+
+            <i class="fa-solid fa-user-plus"
+               aria-hidden="true"></i>
+
+            <h3>Create</h3>
+
+            <p>
+                Create new characters and record the information
+                needed for your tabletop sessions.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-number">
+                02
+            </div>
+
+            <i class="fa-solid fa-list"
+               aria-hidden="true"></i>
+
+            <h3>View</h3>
+
+            <p>
+                Browse all of your saved characters and quickly
+                open their complete details.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-number">
+                03
+            </div>
+
+            <i class="fa-solid fa-pen-to-square"
+               aria-hidden="true"></i>
+
+            <h3>Edit</h3>
+
+            <p>
+                Update character information as they level up,
+                gain equipment, or move between campaigns.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-number">
+                04
+            </div>
+
+            <i class="fa-solid fa-trash-can"
+               aria-hidden="true"></i>
+
+            <h3>Delete</h3>
+
+            <p>
+                Remove old drafts or characters that are no
+                longer required.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section class="future-section">
+    <div class="future-container">
+        <div class="future-heading">
+            <p>Designed to Grow</p>
+
+            <h2>
+                More Features for Future Adventures
+            </h2>
+
+            <span>
+                Character Chronicles is designed as a modular
+                application. New RPG systems and additional tools
+                can be introduced as the project develops.
+            </span>
+        </div>
+
+        <div class="future-list">
+            <article>
+                <i class="fa-solid fa-scroll"
+                   aria-hidden="true"></i>
+
+                <div>
+                    <strong>Character Logs</strong>
+                    <span>
+                        Record what happened during each session.
+                    </span>
+                </div>
+            </article>
+
+            <article>
+                <i class="fa-solid fa-book"
+                   aria-hidden="true"></i>
+
+                <div>
+                    <strong>Campaign Logs</strong>
+                    <span>
+                        Keep important events connected to the campaign.
+                    </span>
+                </div>
+            </article>
+
+            <article>
+                <i class="fa-solid fa-file-lines"
+                   aria-hidden="true"></i>
+
+                <div>
+                    <strong>Character Summaries</strong>
+                    <span>
+                        Quickly review important statistics and history.
+                    </span>
+                </div>
+            </article>
+
+            <article>
+                <i class="fa-solid fa-wand-magic-sparkles"
+                   aria-hidden="true"></i>
+
+                <div>
+                    <strong>Character Presets</strong>
+                    <span>
+                        Begin with reusable character templates.
+                    </span>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-content">
+        <div class="cta-symbol"
+             aria-hidden="true">
+            <span>20</span>
+        </div>
+
+        <div>
+            <p>Begin Your Next Adventure</p>
+
+            <h2>
+                Every Great Story Starts
+                With a Character
+            </h2>
+
+            <span>
+                Create an account and begin organising your
+                characters and campaigns today.
+            </span>
+        </div>
+
+        <a href="/register"
+           class="cta-button">
+            Create an Account
+
+            <i class="fa-solid fa-arrow-right"
+               aria-hidden="true"></i>
+        </a>
+    </div>
+</section>
