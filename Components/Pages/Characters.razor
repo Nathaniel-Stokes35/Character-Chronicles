@@ -1,0 +1,510 @@
+@page "/characters"
+@rendermode InteractiveServer
+
+<PageTitle>My Characters | Character Chronicles</PageTitle>
+
+<main class="characters-page">
+    <section class="characters-hero">
+        <div class="hero-inner">
+            <div>
+                <p class="eyebrow">The adventurer's archive</p>
+                <h1>Your Characters</h1>
+                <p class="hero-copy">
+                    Gather every hero, rival, and wandering soul in one place.
+                    Pick up their story whenever adventure calls.
+                </p>
+            </div>
+
+            <button class="create-button" type="button" @onclick="OpenCreatePanel">
+                <span aria-hidden="true">+</span>
+                Create Character
+            </button>
+        </div>
+    </section>
+
+    <section class="characters-workspace" aria-label="Character library">
+        <div class="summary-row">
+            <article class="summary-card">
+                <span class="summary-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3 4.5 6.5v6.2c0 4.4 2.7 7.4 7.5 8.8 4.8-1.4 7.5-4.4 7.5-8.8V6.5L12 3Z" />
+                    </svg>
+                </span>
+                <div>
+                    <strong>@Roster.Count</strong>
+                    <span>Total heroes</span>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span class="summary-icon flame" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13.8 2.8c.6 3-1.6 4.4-1.6 6.5 0 1.4 1 2.3 2.1 2.3 1.9 0 2.8-1.7 2.3-3.7 2.2 1.8 3.4 4.1 3.2 6.5-.3 4-3.6 6.8-7.8 6.8s-7.6-2.9-7.8-7c-.2-3.3 1.8-6.2 5-8.4-.2 2.8.8 4.4 2.3 4.4 1.2 0 1.7-1 1.5-2.1-.4-2.1-.1-3.8.8-5.3Z" />
+                    </svg>
+                </span>
+                <div>
+                    <strong>@Roster.Count(character => character.Status == "Active")</strong>
+                    <span>Active adventures</span>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span class="summary-icon crown" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="m4 8 4.2 3L12 5l3.8 6L20 8l-1.4 9H5.4L4 8Zm1.7 12h12.6" />
+                    </svg>
+                </span>
+                <div>
+                    <strong>@Roster.Max(character => character.Level)</strong>
+                    <span>Highest level</span>
+                </div>
+            </article>
+        </div>
+
+        <div class="library-heading">
+            <div>
+                <p class="section-kicker">Character library</p>
+                <h2>Choose your next adventure</h2>
+            </div>
+
+            <span class="result-count">
+                @FilteredCharacters.Count @(FilteredCharacters.Count == 1 ? "character" : "characters")
+            </span>
+        </div>
+
+        <div class="toolbar">
+            <label class="search-box">
+                <span class="visually-hidden">Search characters</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.8" />
+                    <path d="m16 16 4.2 4.2" />
+                </svg>
+                <input type="search"
+                       placeholder="Search by hero, class, or campaign..."
+                       @bind="SearchText"
+                       @bind:event="oninput" />
+            </label>
+
+            <label class="select-control">
+                <span class="visually-hidden">Filter by status</span>
+                <select @bind="StatusFilter">
+                    <option value="All">All statuses</option>
+                    <option value="Active">Active</option>
+                    <option value="Resting">Resting</option>
+                    <option value="Archived">Archived</option>
+                </select>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m8 10 4 4 4-4" />
+                </svg>
+            </label>
+
+            <label class="select-control">
+                <span class="visually-hidden">Sort characters</span>
+                <select @bind="SortOrder">
+                    <option value="RecentlyUpdated">Recently updated</option>
+                    <option value="Name">Name A–Z</option>
+                    <option value="LevelHigh">Highest level</option>
+                    <option value="LevelLow">Lowest level</option>
+                </select>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m8 10 4 4 4-4" />
+                </svg>
+            </label>
+
+            <div class="view-toggle" aria-label="Character view">
+                <button type="button"
+                        class="@(!IsListView ? "active" : null)"
+                        aria-label="Grid view"
+                        aria-pressed="@(!IsListView)"
+                        @onclick="() => IsListView = false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="4" y="4" width="6" height="6" rx="1" />
+                        <rect x="14" y="4" width="6" height="6" rx="1" />
+                        <rect x="4" y="14" width="6" height="6" rx="1" />
+                        <rect x="14" y="14" width="6" height="6" rx="1" />
+                    </svg>
+                </button>
+                <button type="button"
+                        class="@(IsListView ? "active" : null)"
+                        aria-label="List view"
+                        aria-pressed="@IsListView"
+                        @onclick="() => IsListView = true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 6h11M9 12h11M9 18h11" />
+                        <circle cx="5" cy="6" r="1" />
+                        <circle cx="5" cy="12" r="1" />
+                        <circle cx="5" cy="18" r="1" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        @if (FilteredCharacters.Count > 0)
+        {
+            <div class="character-grid @(IsListView ? "list-view" : null)">
+                @foreach (var character in FilteredCharacters)
+                {
+                    <article class="character-card">
+                        <div class="portrait @character.Theme">
+                            <span class="level-badge">LVL @character.Level</span>
+                            <span class="portrait-rune" aria-hidden="true">@character.Initials</span>
+                            <span class="status-pill @character.Status.ToLowerInvariant()">
+                                <i aria-hidden="true"></i>
+                                @character.Status
+                            </span>
+                        </div>
+
+                        <div class="character-details">
+                            <div class="character-title">
+                                <div>
+                                    <p>@character.Ancestry · @character.ClassName</p>
+                                    <h3>@character.Name</h3>
+                                </div>
+                                <button class="more-button"
+                                        type="button"
+                                        aria-label="More options for @character.Name"
+                                        @onclick="() => ViewCharacter(character)">
+                                    <span></span><span></span><span></span>
+                                </button>
+                            </div>
+
+                            <div class="campaign-line">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4Zm2 12h11M9 7h5" />
+                                </svg>
+                                <span>
+                                    <small>Campaign</small>
+                                    <strong>@character.Campaign</strong>
+                                </span>
+                            </div>
+
+                            <div class="card-footer">
+                                <span>Updated @character.Updated</span>
+                                <button type="button" @onclick="() => ViewCharacter(character)">
+                                    View sheet
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="m9 5 7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                }
+
+                <button class="new-character-card" type="button" @onclick="OpenCreatePanel">
+                    <span aria-hidden="true">+</span>
+                    <strong>Create a new character</strong>
+                    <small>A blank page. A new legend.</small>
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3 4.5 6.5v6.2c0 4.4 2.7 7.4 7.5 8.8 4.8-1.4 7.5-4.4 7.5-8.8V6.5L12 3Z" />
+                        <path d="m9 9 6 6m0-6-6 6" />
+                    </svg>
+                </span>
+                <h3>No heroes found</h3>
+                <p>Try another search or clear the status filter.</p>
+                <button type="button" @onclick="ClearFilters">Clear filters</button>
+            </div>
+        }
+    </section>
+</main>
+
+@if (IsCreateOpen)
+{
+    <div class="panel-backdrop" role="presentation" @onclick="CloseCreatePanel">
+        <section class="create-panel"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="create-character-title"
+                 @onclick:stopPropagation>
+            <div class="panel-header">
+                <div>
+                    <p class="section-kicker">Begin a new story</p>
+                    <h2 id="create-character-title">Create Character</h2>
+                </div>
+                <button type="button" aria-label="Close character creator" @onclick="CloseCreatePanel">×</button>
+            </div>
+
+            <div class="panel-intro">
+                <span aria-hidden="true">@NewInitials</span>
+                <p>
+                    Add the essentials now. You can complete the full character
+                    sheet once your hero joins the roster.
+                </p>
+            </div>
+
+            <div class="form-grid">
+                <label class="wide">
+                    <span>Character name</span>
+                    <input placeholder="e.g. Rowan Blackwood" @bind="NewName" @bind:event="oninput" />
+                </label>
+
+                <label>
+                    <span>Ancestry</span>
+                    <input placeholder="e.g. Human" @bind="NewAncestry" />
+                </label>
+
+                <label>
+                    <span>Class</span>
+                    <select @bind="NewClass">
+                        <option>Fighter</option>
+                        <option>Ranger</option>
+                        <option>Wizard</option>
+                        <option>Cleric</option>
+                        <option>Rogue</option>
+                        <option>Paladin</option>
+                        <option>Bard</option>
+                        <option>Warlock</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Level</span>
+                    <input type="number" min="1" max="20" @bind="NewLevel" />
+                </label>
+
+                <label>
+                    <span>Status</span>
+                    <select @bind="NewStatus">
+                        <option>Active</option>
+                        <option>Resting</option>
+                        <option>Archived</option>
+                    </select>
+                </label>
+
+                <label class="wide">
+                    <span>Campaign</span>
+                    <input placeholder="e.g. The Sunken Crown" @bind="NewCampaign" />
+                </label>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(CreateError))
+            {
+                <p class="form-error" role="alert">@CreateError</p>
+            }
+
+            <div class="panel-actions">
+                <button class="cancel-button" type="button" @onclick="CloseCreatePanel">Cancel</button>
+                <button class="save-button" type="button" @onclick="CreateCharacter">
+                    Add to roster
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m9 5 7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <p class="storage-note">
+                Characters created here are temporary until database storage is connected.
+            </p>
+        </section>
+    </div>
+}
+
+@if (SelectedCharacter is not null)
+{
+    <div class="panel-backdrop" role="presentation" @onclick="CloseCharacter">
+        <section class="create-panel profile-panel"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="character-sheet-title"
+                 @onclick:stopPropagation>
+            <div class="panel-header">
+                <div>
+                    <p class="section-kicker">Character overview</p>
+                    <h2 id="character-sheet-title">@SelectedCharacter.Name</h2>
+                </div>
+                <button type="button" aria-label="Close character sheet" @onclick="CloseCharacter">×</button>
+            </div>
+
+            <div class="profile-banner @SelectedCharacter.Theme">
+                <span>@SelectedCharacter.Initials</span>
+                <div>
+                    <small>Level @SelectedCharacter.Level</small>
+                    <strong>@SelectedCharacter.Ancestry @SelectedCharacter.ClassName</strong>
+                </div>
+            </div>
+
+            <div class="sheet-section">
+                <p class="section-kicker">Current adventure</p>
+                <div class="sheet-row">
+                    <span>Campaign</span>
+                    <strong>@SelectedCharacter.Campaign</strong>
+                </div>
+                <div class="sheet-row">
+                    <span>Status</span>
+                    <strong class="sheet-status @SelectedCharacter.Status.ToLowerInvariant()">
+                        <i></i>@SelectedCharacter.Status
+                    </strong>
+                </div>
+                <div class="sheet-row">
+                    <span>Last updated</span>
+                    <strong>@SelectedCharacter.Updated</strong>
+                </div>
+            </div>
+
+            <div class="sheet-placeholder">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4Zm2 12h11M9 7h5" />
+                </svg>
+                <div>
+                    <strong>Full character sheet coming next</strong>
+                    <p>
+                        Attributes, inventory, abilities, and notes can be added
+                        here once the character data model is connected.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel-actions">
+                <button class="cancel-button" type="button" @onclick="CloseCharacter">Close</button>
+            </div>
+        </section>
+    </div>
+}
+
+@code {
+    private readonly List<CharacterCard> Roster =
+    [
+        new("Kael Thornwood", "KT", "Half-Elf", "Ranger", 8, "Shadows of Eldoria", "Active", "2 hours ago", "forest"),
+        new("Lyra Ashborne", "LA", "High Elf", "Wizard", 5, "The Broken Crown", "Active", "Yesterday", "arcane"),
+        new("Brom Ironheart", "BI", "Mountain Dwarf", "Paladin", 11, "Forge of the First King", "Resting", "3 days ago", "ember"),
+        new("Nyx Whisper", "NW", "Tiefling", "Rogue", 6, "City of Veils", "Active", "5 days ago", "shadow"),
+        new("Seraphine Vale", "SV", "Aasimar", "Cleric", 9, "The Last Dawn", "Resting", "1 week ago", "celestial")
+    ];
+
+    private string SearchText { get; set; } = string.Empty;
+    private string StatusFilter { get; set; } = "All";
+    private string SortOrder { get; set; } = "RecentlyUpdated";
+    private bool IsListView { get; set; }
+    private bool IsCreateOpen { get; set; }
+    private CharacterCard? SelectedCharacter { get; set; }
+
+    private string NewName { get; set; } = string.Empty;
+    private string NewAncestry { get; set; } = string.Empty;
+    private string NewClass { get; set; } = "Fighter";
+    private int NewLevel { get; set; } = 1;
+    private string NewStatus { get; set; } = "Active";
+    private string NewCampaign { get; set; } = string.Empty;
+    private string CreateError { get; set; } = string.Empty;
+
+    private string NewInitials
+    {
+        get
+        {
+            var parts = NewName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            return parts.Length switch
+            {
+                0 => "?",
+                1 => parts[0][..1].ToUpperInvariant(),
+                _ => $"{parts[0][0]}{parts[^1][0]}".ToUpperInvariant()
+            };
+        }
+    }
+
+    private List<CharacterCard> FilteredCharacters
+    {
+        get
+        {
+            IEnumerable<CharacterCard> results = Roster;
+
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                results = results.Where(character =>
+                    character.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    character.ClassName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    character.Ancestry.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    character.Campaign.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (StatusFilter != "All")
+            {
+                results = results.Where(character => character.Status == StatusFilter);
+            }
+
+            results = SortOrder switch
+            {
+                "Name" => results.OrderBy(character => character.Name),
+                "LevelHigh" => results.OrderByDescending(character => character.Level),
+                "LevelLow" => results.OrderBy(character => character.Level),
+                _ => results
+            };
+
+            return results.ToList();
+        }
+    }
+
+    private void OpenCreatePanel()
+    {
+        CreateError = string.Empty;
+        IsCreateOpen = true;
+    }
+
+    private void CloseCreatePanel()
+    {
+        IsCreateOpen = false;
+        CreateError = string.Empty;
+    }
+
+    private void ClearFilters()
+    {
+        SearchText = string.Empty;
+        StatusFilter = "All";
+    }
+
+    private void ViewCharacter(CharacterCard character)
+    {
+        SelectedCharacter = character;
+    }
+
+    private void CloseCharacter()
+    {
+        SelectedCharacter = null;
+    }
+
+    private void CreateCharacter()
+    {
+        if (string.IsNullOrWhiteSpace(NewName))
+        {
+            CreateError = "Give your hero a name before adding them to the roster.";
+            return;
+        }
+
+        Roster.Insert(0, new CharacterCard(
+            NewName.Trim(),
+            NewInitials,
+            string.IsNullOrWhiteSpace(NewAncestry) ? "Unknown" : NewAncestry.Trim(),
+            NewClass,
+            Math.Clamp(NewLevel, 1, 20),
+            string.IsNullOrWhiteSpace(NewCampaign) ? "Unassigned adventure" : NewCampaign.Trim(),
+            NewStatus,
+            "Just now",
+            "forest"));
+
+        NewName = string.Empty;
+        NewAncestry = string.Empty;
+        NewClass = "Fighter";
+        NewLevel = 1;
+        NewStatus = "Active";
+        NewCampaign = string.Empty;
+        SearchText = string.Empty;
+        StatusFilter = "All";
+        IsCreateOpen = false;
+    }
+
+    private sealed record CharacterCard(
+        string Name,
+        string Initials,
+        string Ancestry,
+        string ClassName,
+        int Level,
+        string Campaign,
+        string Status,
+        string Updated,
+        string Theme);
+}
