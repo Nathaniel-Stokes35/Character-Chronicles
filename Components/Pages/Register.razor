@@ -1,0 +1,117 @@
+@page "/register"
+
+<PageTitle>Create Account | Character Chronicles</PageTitle>
+
+<section class="auth-page register-page">
+    <div class="auth-decoration"
+         aria-hidden="true">
+        20
+    </div>
+
+    <div class="auth-card">
+        <div class="auth-artwork">
+            <div class="auth-rings"
+                 aria-hidden="true">
+            </div>
+
+            <i class="fa-solid fa-feather-pointed"
+               aria-hidden="true"></i>
+
+            <p>
+                Begin a new chronicle
+            </p>
+
+            <h1>
+                Create Your
+                <br />
+                Account
+            </h1>
+        </div>
+
+        <div class="auth-content">
+            <p class="auth-eyebrow">
+                Join the Adventure
+            </p>
+
+            <h2>Sign Up</h2>
+
+            <p class="auth-intro">
+                Create a place for every hero, campaign, and
+                chapter still to come.
+            </p>
+
+            <form class="auth-form">
+                <label for="register-name">
+                    Display name
+                </label>
+
+                <div class="auth-field">
+                    <i class="fa-solid fa-user"
+                       aria-hidden="true"></i>
+
+                    <input id="register-name"
+                           name="displayName"
+                           type="text"
+                           autocomplete="name"
+                           placeholder="Your adventurer name" />
+                </div>
+
+                <label for="register-email">
+                    Email address
+                </label>
+
+                <div class="auth-field">
+                    <i class="fa-solid fa-envelope"
+                       aria-hidden="true"></i>
+
+                    <input id="register-email"
+                           name="email"
+                           type="email"
+                           autocomplete="email"
+                           placeholder="adventurer@example.com" />
+                </div>
+
+                <label for="register-password">
+                    Password
+                </label>
+
+                <div class="auth-field">
+                    <i class="fa-solid fa-lock"
+                       aria-hidden="true"></i>
+
+                    <input id="register-password"
+                           name="password"
+                           type="password"
+                           autocomplete="new-password"
+                           placeholder="Create a password" />
+                </div>
+
+                <label class="auth-check">
+                    <input type="checkbox"
+                           name="terms" />
+
+                    <span>
+                        I agree to the terms of the archive
+                    </span>
+                </label>
+
+                <button type="submit">
+                    Create My Account
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+
+                <a href="/login">
+                    Log in
+                </a>
+            </p>
+
+            <p class="auth-note">
+                This is currently a visual placeholder.
+                Account creation can be connected later.
+            </p>
+        </div>
+    </div>
+</section>

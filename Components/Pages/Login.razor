@@ -1,0 +1,108 @@
+@page "/login"
+
+<PageTitle>Log In | Character Chronicles</PageTitle>
+
+<section class="auth-page">
+    <div class="auth-decoration"
+         aria-hidden="true">
+        20
+    </div>
+
+    <div class="auth-card">
+        <div class="auth-artwork">
+            <div class="auth-rings"
+                 aria-hidden="true">
+            </div>
+
+            <i class="fa-solid fa-key"
+               aria-hidden="true"></i>
+
+            <p>
+                Return to the archive
+            </p>
+
+            <h1>
+                Continue Your
+                <br />
+                Adventure
+            </h1>
+        </div>
+
+        <div class="auth-content">
+            <p class="auth-eyebrow">
+                Welcome Back
+            </p>
+
+            <h2>Log In</h2>
+
+            <p class="auth-intro">
+                Open your saved characters and continue where
+                your story left off.
+            </p>
+
+            <form class="auth-form">
+                <label for="login-email">
+                    Email address
+                </label>
+
+                <div class="auth-field">
+                    <i class="fa-solid fa-envelope"
+                       aria-hidden="true"></i>
+
+                    <input id="login-email"
+                           name="email"
+                           type="email"
+                           autocomplete="email"
+                           placeholder="adventurer@example.com" />
+                </div>
+
+                <div class="auth-label-row">
+                    <label for="login-password">
+                        Password
+                    </label>
+
+                    <a href="#">
+                        Forgot password?
+                    </a>
+                </div>
+
+                <div class="auth-field">
+                    <i class="fa-solid fa-lock"
+                       aria-hidden="true"></i>
+
+                    <input id="login-password"
+                           name="password"
+                           type="password"
+                           autocomplete="current-password"
+                           placeholder="Enter your password" />
+                </div>
+
+                <label class="auth-check">
+                    <input type="checkbox"
+                           name="remember" />
+
+                    <span>
+                        Keep me logged in
+                    </span>
+                </label>
+
+                <button type="submit">
+                    Enter the Archive
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                New to Character Chronicles?
+
+                <a href="/register">
+                    Create an account
+                </a>
+            </p>
+
+            <p class="auth-note">
+                This is currently a visual placeholder.
+                Authentication can be connected later.
+            </p>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,419 @@
+.auth-page {
+    position: relative;
+
+    min-height: calc(100vh - 76px);
+    padding: 4rem 1.5rem;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 139, 0, 0.14),
+            transparent 28%
+        ),
+        linear-gradient(
+            rgba(104, 48, 28, 0.05) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(104, 48, 28, 0.05) 1px,
+            transparent 1px
+        ),
+        #fff8ed;
+
+    background-size:
+        auto,
+        48px 48px,
+        48px 48px,
+        auto;
+}
+
+.auth-decoration {
+    position: absolute;
+    right: -2rem;
+    bottom: -7rem;
+
+    color: rgba(125, 0, 0, 0.045);
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size: 27rem;
+
+    transform: rotate(-12deg);
+}
+
+.auth-card {
+    position: relative;
+    z-index: 1;
+
+    width: min(1000px, 100%);
+
+    display: grid;
+    grid-template-columns:
+        0.9fr
+        1.1fr;
+
+    overflow: hidden;
+
+    background: #fffdf8;
+    border: 1px solid #dfb98f;
+    border-radius: 12px;
+
+    box-shadow:
+        0 30px 75px
+        rgba(73, 15, 5, 0.2);
+}
+
+.auth-artwork {
+    position: relative;
+
+    min-height: 620px;
+    padding: 2.5rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    color: #fff7e9;
+    text-align: center;
+
+    background:
+        linear-gradient(
+            150deg,
+            #4e0002,
+            #980000 55%,
+            #e95c00
+        );
+}
+
+.auth-artwork > i {
+    position: relative;
+    z-index: 1;
+
+    color: #ffae00;
+
+    font-size: 4rem;
+}
+
+.auth-artwork p {
+    position: relative;
+    z-index: 1;
+
+    margin: 1.4rem 0 0.45rem;
+
+    color: #ffc45b;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.auth-artwork h1 {
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size: clamp(3rem, 5vw, 4.8rem);
+    line-height: 0.95;
+}
+
+.auth-rings {
+    position: absolute;
+
+    width: 360px;
+    height: 360px;
+
+    border: 2px solid rgba(255, 190, 90, 0.18);
+    border-radius: 50%;
+}
+
+.auth-rings::before,
+.auth-rings::after {
+    position: absolute;
+
+    content: "";
+
+    border: 1px solid rgba(255, 190, 90, 0.18);
+    border-radius: 50%;
+}
+
+.auth-rings::before {
+    inset: 45px;
+}
+
+.auth-rings::after {
+    inset: 105px;
+}
+
+.auth-content {
+    padding: clamp(2rem, 5vw, 4rem);
+}
+
+.auth-eyebrow {
+    margin: 0 0 0.35rem;
+
+    color: #d3401e;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.auth-content h2 {
+    margin: 0;
+
+    color: #5c0d08;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size: 3.5rem;
+}
+
+.auth-intro {
+    margin: 0.65rem 0 1.6rem;
+
+    color: #7a5b51;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.auth-form {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.auth-form > label,
+.auth-label-row label {
+    color: #5f3c34;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+.auth-label-row {
+    margin-top: 0.3rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.auth-label-row a {
+    color: #b30000;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.auth-field {
+    min-height: 51px;
+
+    display: flex;
+    align-items: center;
+
+    background: #fffaf2;
+    border: 1px solid #dcbf9f;
+    border-radius: 5px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.auth-field:focus-within {
+    border-color: #c00000;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(192, 0, 0, 0.09);
+}
+
+.auth-field i {
+    width: 48px;
+
+    color: #b54626;
+
+    text-align: center;
+}
+
+.auth-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 0 1rem 0 0;
+
+    color: #4f3029;
+    background: transparent;
+    border: 0;
+    outline: 0;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1rem;
+}
+
+.auth-field input::placeholder {
+    color: #a98e83;
+}
+
+.auth-check {
+    margin: 0.45rem 0;
+
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    color: #5f3c34;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.9rem;
+}
+
+.auth-check input {
+    accent-color: #b60000;
+}
+
+.auth-form button {
+    min-height: 52px;
+    margin-top: 0.35rem;
+
+    color: #ffffff;
+    background: #b60000;
+    border: 0;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.auth-form button:hover {
+    background: #d30000;
+
+    transform: translateY(-2px);
+}
+
+.auth-switch {
+    margin: 1.5rem 0 0;
+
+    color: #76584f;
+
+    text-align: center;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.auth-switch a {
+    color: #b30000;
+
+    font-weight: 700;
+}
+
+.auth-note {
+    margin: 0.7rem 0 0;
+
+    color: #a08378;
+
+    text-align: center;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.78rem;
+}
+
+@media (max-width: 780px) {
+    .auth-page {
+        padding: 2rem 1rem;
+    }
+
+    .auth-card {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-artwork {
+        min-height: 260px;
+    }
+
+    .auth-rings {
+        width: 260px;
+        height: 260px;
+    }
+}
+
+@media (max-width: 460px) {
+    .auth-content {
+        padding: 1.6rem 1.2rem;
+    }
+
+    .auth-content h2 {
+        font-size: 3rem;
+    }
+}
