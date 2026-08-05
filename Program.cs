@@ -1,7 +1,16 @@
 using CSE325.Components;
+using Microsoft.EntityFrameworkCore;
+using CharacterCronicles.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL")
+    ?? throw new InvalidOperationException(
+        "DATABASE_URL environment variable is not configured.");
+
+builder.Services.AddDbContextFactory<CharacterCroniclesDbContext>(options =>
+    options.UseNpgsql(databaseUrl));
+    
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
