@@ -1,4 +1,4 @@
-using CSE325.Components;
+using CharacterChronicles.Components;
 using Microsoft.EntityFrameworkCore;
 using CharacterCronicles.Data;
 
