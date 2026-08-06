@@ -247,13 +247,6 @@ public partial class DevCharacters
         character.ClassName = updated.ClassName;
         character.Level = updated.Level;
 
-        character.Strength = updated.Strength;
-        character.Dexterity = updated.Dexterity;
-        character.Constitution = updated.Constitution;
-        character.Intelligence = updated.Intelligence;
-        character.Wisdom = updated.Wisdom;
-        character.Charisma = updated.Charisma;
-
         character.PersonalityTraits =
             updated.PersonalityTraits;
 
@@ -279,6 +272,30 @@ public partial class DevCharacters
 
         character.UpdatedAt =
             DateTime.UtcNow;
+
+        await context.SaveChangesAsync();
+
+        SelectedCharacter = null;
+
+        await LoadCharactersAsync();
+    }
+    private async Task DeleteCharacterAsync(
+        Character character)
+    {
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+        var existing =
+            await context.Characters
+                .FirstOrDefaultAsync(
+                    x => x.Id == character.Id);
+
+        if (existing is null)
+        {
+            return;
+        }
+
+        context.Characters.Remove(existing);
 
         await context.SaveChangesAsync();
 

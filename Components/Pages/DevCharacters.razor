@@ -5,13 +5,13 @@
 
 <title>Development Characters | Character Chronicles</title>
 
-@if (!_isDevelopment)
+@*@if (!_isDevelopment)
 {
     <div class="characters-loading">
         Development character tools are unavailable.
     </div>
 }
-else if (_isLoading)
+else*@ @if (_isLoading)
 {
     <div class="characters-loading">
         Loading characters...
@@ -144,6 +144,7 @@ else
     <CharacterSheetModal
         Character="@SelectedCharacter"
         OnSave="SaveCharacterAsync"
+        OnDelete="DeleteCharacterAsync"
         OnClose="CloseCharacterSheet" />
 }
 

@@ -81,33 +81,27 @@
 
                 <AbilityScoreBox
                     Label="STR"
-                    Score="@EditableCharacter.Strength"
-                    ScoreChanged="value => EditableCharacter.Strength = value" />
+                    Score="@EditableCharacter.Strength" />
 
                 <AbilityScoreBox
                     Label="DEX"
-                    Score="@EditableCharacter.Dexterity"
-                    ScoreChanged="value => EditableCharacter.Dexterity = value" />
+                    Score="@EditableCharacter.Dexterity" />
 
                 <AbilityScoreBox
                     Label="CON"
-                    Score="@EditableCharacter.Constitution"
-                    ScoreChanged="value => EditableCharacter.Constitution = value" />
+                    Score="@EditableCharacter.Constitution" />
 
                 <AbilityScoreBox
                     Label="INT"
-                    Score="@EditableCharacter.Intelligence"
-                    ScoreChanged="value => EditableCharacter.Intelligence = value" />
+                    Score="@EditableCharacter.Intelligence" />
 
                 <AbilityScoreBox
                     Label="WIS"
-                    Score="@EditableCharacter.Wisdom"
-                    ScoreChanged="value => EditableCharacter.Wisdom = value" />
+                    Score="@EditableCharacter.Wisdom" />
 
                 <AbilityScoreBox
                     Label="CHA"
-                    Score="@EditableCharacter.Charisma"
-                    ScoreChanged="value => EditableCharacter.Charisma = value" />
+                    Score="@EditableCharacter.Charisma" />
 
             </section>
 
@@ -146,6 +140,15 @@
             </section>
 
             <footer class="sheet-actions">
+
+                <button type="button"
+                        class="delete-sheet"
+                        @onclick="DeleteAsync">
+                    Delete Character
+                </button>
+
+                <div class="sheet-action-spacer"></div>
+
                 <button type="button"
                         @onclick="CloseAsync">
                     Cancel
@@ -156,6 +159,7 @@
                         @onclick="SaveAsync">
                     Save Character
                 </button>
+
             </footer>
 
         </section>
@@ -171,6 +175,9 @@
 
     [Parameter]
     public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<Character> OnDelete { get; set; }
 
     private Character EditableCharacter { get; set; } = new();
 
@@ -223,6 +230,11 @@
         };
     }
 
+    private Task DeleteAsync()
+    {
+        return OnDelete.InvokeAsync(
+            EditableCharacter);
+    }
     private async Task SaveAsync()
     {
         EditableCharacter.UpdatedAt =
