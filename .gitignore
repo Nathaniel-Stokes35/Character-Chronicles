@@ -1,4 +1,4 @@
 # .NET build outputs
 bin/
 obj/
-.env/
+.env
