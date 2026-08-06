@@ -159,12 +159,6 @@ public partial class DevCharacters
         _isDevelopment =
             Environment.IsDevelopment();
 
-        if (!_isDevelopment)
-        {
-            _isLoading = false;
-            return;
-        }
-
         await LoadCampaignsAsync();
         await LoadCharactersAsync();
 
