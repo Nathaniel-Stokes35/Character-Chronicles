@@ -1,211 +1,19 @@
-.holder-page {
-    position: relative;
+.about-details {
+    margin-top: 5rem;
 
-    min-height: calc(100vh - 76px);
-    padding: clamp(4rem, 8vw, 7rem) 1.5rem;
-
-    overflow: hidden;
-
-    color: #5b3028;
-
-    background:
-        linear-gradient(
-            rgba(104, 48, 28, 0.055) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(104, 48, 28, 0.055) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            180deg,
-            #fffaf2,
-            #f4e5d3
-        );
-
-    background-size:
-        48px 48px,
-        48px 48px,
-        auto;
-}
-
-.holder-page::before {
-    position: absolute;
-    inset: 0 0 auto;
-
-    height: 10px;
-
-    content: "";
-
-    background:
-        linear-gradient(
-            90deg,
-            #660000,
-            #b90000,
-            #ff7b00,
-            #ffa600
-        );
-}
-
-.holder-symbol {
-    position: absolute;
-    right: -4rem;
-    bottom: -8rem;
-
-    color: rgba(142, 0, 0, 0.045);
-
-    font-family:
-        "UnifrakturCook",
-        Georgia,
-        serif;
-
-    font-size: 28rem;
-    line-height: 1;
-
-    transform: rotate(-10deg);
-}
-
-.holder-shell {
-    position: relative;
-    z-index: 1;
-
-    width: min(1120px, 100%);
-    margin: 0 auto;
-}
-
-.holder-eyebrow {
-    margin: 0 0 0.8rem;
-
-    color: #d24a20;
-
-    font-family:
-        "Cormorant Garamond",
-        Georgia,
-        serif;
-
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-}
-
-.holder-shell h1 {
-    margin: 0;
-
-    color: #5a0b08;
-
-    font-family:
-        "UnifrakturCook",
-        Georgia,
-        serif;
-
-    font-size: clamp(3.6rem, 7vw, 6.5rem);
-    line-height: 0.9;
-}
-
-.holder-shell h1 span {
-    color: #b90000;
-}
-
-.holder-intro {
-    max-width: 760px;
-    margin: 1.6rem auto 0;
-
-    color: #77594f;
-
-    font-family:
-        "Cormorant Garamond",
-        Georgia,
-        serif;
-
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.65;
-}
-
-.holder-primary {
-    min-height: 49px;
-    padding: 0 1.5rem;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #ffffff;
-    background: #b60000;
-    border: 1px solid #b60000;
-    border-radius: 5px;
-
-    font-family:
-        "Cormorant Garamond",
-        Georgia,
-        serif;
-
-    font-weight: 700;
-    text-decoration: none;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.holder-primary:hover {
-    color: #ffffff;
-    background: #d40000;
-
-    transform: translateY(-2px);
-}
-
-.about-shell {
     display: grid;
-    grid-template-columns:
-        minmax(0, 1.12fr)
-        minmax(360px, 0.88fr);
-
-    align-items: center;
     gap: 4rem;
-
-    text-align: left;
 }
 
-.about-copy .holder-intro {
-    margin-left: 0;
+.about-detail-section {
+    padding-top: 2.5rem;
+
+    border-top:
+        1px solid rgba(121, 58, 35, 0.18);
 }
 
-.about-values {
-    margin: 2rem 0;
-
-    display: grid;
-    gap: 1rem;
-}
-
-.about-values article {
-    padding: 1rem;
-
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-
-    background: rgba(255, 255, 255, 0.65);
-    border-left: 3px solid #d53b18;
-}
-
-.about-values article > i {
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-
-    display: grid;
-    place-items: center;
-
-    color: #ffffff;
-    background: #a90000;
-    border-radius: 50%;
-}
-
-.about-values h2 {
-    margin: 0 0 0.25rem;
+.about-detail-section > h2 {
+    margin: 0 0 1.8rem;
 
     color: #650d08;
 
@@ -214,10 +22,70 @@
         Georgia,
         serif;
 
-    font-size: 1.6rem;
+    font-size: clamp(2rem, 4vw, 3rem);
 }
 
-.about-values p {
+.feature-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.feature-card {
+    min-height: 220px;
+    padding: 1.4rem;
+
+    background:
+        rgba(255, 255, 255, 0.64);
+
+    border: 1px solid #e5cdb5;
+    border-top: 3px solid #b90000;
+    border-radius: 7px;
+
+    box-shadow:
+        0 8px 22px
+        rgba(82, 22, 8, 0.07);
+}
+
+.feature-card > i {
+    width: 46px;
+    height: 46px;
+
+    margin-bottom: 1rem;
+
+    display: grid;
+    place-items: center;
+
+    color: #ffffff;
+    background:
+        linear-gradient(
+            145deg,
+            #8a0000,
+            #cf2f00
+        );
+
+    border-radius: 50%;
+
+    font-size: 1.1rem;
+}
+
+.feature-card h3 {
+    margin: 0 0 0.5rem;
+
+    color: #650d08;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size: 1.5rem;
+}
+
+.feature-card p {
     margin: 0;
 
     color: #795d53;
@@ -227,138 +95,113 @@
         Georgia,
         serif;
 
-    font-size: 1rem;
     line-height: 1.55;
 }
 
-.about-panel {
-    position: relative;
+.team-grid {
+    display: grid;
 
-    min-height: 510px;
-    padding: 2rem;
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.team-member {
+    min-height: 140px;
+
+    padding: 1rem;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    overflow: hidden;
+    gap: 0.8rem;
 
-    color: #fff4e5;
     text-align: center;
 
     background:
-        linear-gradient(
-            145deg,
-            #5d0000,
-            #b50000 58%,
-            #f47a00
-        );
+        rgba(255, 255, 255, 0.62);
 
-    border: 2px solid #e7b57f;
-    border-radius: 10px;
-
-    box-shadow:
-        0 28px 65px
-        rgba(67, 0, 0, 0.25);
+    border: 1px solid #e2c8ae;
+    border-radius: 7px;
 }
 
-.about-panel > i {
-    position: relative;
-    z-index: 1;
+.team-member span {
+    width: 52px;
+    height: 52px;
 
-    color: #ffa600;
+    display: grid;
+    place-items: center;
 
-    font-size: 5rem;
-}
+    color: #ffffff;
+    background: #980000;
 
-.about-panel strong {
-    position: relative;
-    z-index: 1;
-
-    margin-top: 1.5rem;
-
-    font-family:
-        "UnifrakturCook",
-        Georgia,
-        serif;
-
-    font-size: 2.5rem;
-}
-
-.about-panel span {
-    position: relative;
-    z-index: 1;
-
-    color: #f0c7af;
+    border: 2px solid #e29a49;
+    border-radius: 50%;
 
     font-family:
         "Cormorant Garamond",
         Georgia,
         serif;
 
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-weight: 700;
 }
 
-.about-rings {
-    position: absolute;
+.team-member strong {
+    color: #5f2c24;
 
-    width: 330px;
-    height: 330px;
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
 
-    border: 2px solid rgba(255, 190, 90, 0.2);
-    border-radius: 50%;
+    font-size: 1rem;
 }
 
-.about-rings::before,
-.about-rings::after {
-    position: absolute;
-
-    content: "";
-
-    border: 1px solid rgba(255, 190, 90, 0.2);
-    border-radius: 50%;
+.roadmap-section {
+    text-align: center;
 }
 
-.about-rings::before {
-    inset: 45px;
+.roadmap-section .holder-eyebrow {
+    text-align: center;
 }
 
-.about-rings::after {
-    inset: 100px;
+.roadmap-section p:last-child {
+    max-width: 780px;
+
+    margin: 0 auto;
+
+    color: #77594f;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.1rem;
+    line-height: 1.7;
 }
 
-@media (max-width: 850px) {
-    .about-shell {
+@media (max-width: 950px) {
+    .feature-grid {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
     }
 
-    .about-copy {
-        text-align: center;
-    }
-
-    .about-copy .holder-intro {
-        margin-left: auto;
-    }
-
-    .about-values {
-        text-align: left;
-    }
-
-    .about-panel {
-        min-height: 380px;
+    .team-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 620px) {
-    .holder-page {
-        padding-right: 1rem;
-        padding-left: 1rem;
+    .about-details {
+        margin-top: 3rem;
+        gap: 3rem;
     }
 
-    .holder-primary {
-        width: 100%;
+    .team-grid {
+        grid-template-columns: 1fr;
     }
 }
