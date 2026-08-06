@@ -1,0 +1,59 @@
+.ability-box {
+    min-width: 0;
+
+    padding: 0.65rem;
+
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+
+    background: #fffdf8;
+
+    border: 2px solid #6d3c2c;
+    border-radius: 8px;
+
+    box-shadow:
+        inset 0 0 0 2px #efe1cc;
+}
+
+.ability-box strong {
+    color: #6c271d;
+
+    font-size: 0.75rem;
+    letter-spacing: 0.09em;
+}
+
+.ability-box input {
+    width: 58px;
+
+    padding: 0.2rem;
+
+    color: #321811;
+    background: transparent;
+
+    border: 0;
+    border-bottom: 1px solid #c9af8e;
+
+    outline: none;
+
+    font-size: 1.65rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.ability-box span {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    color: #4d271e;
+    background: #f4e4ce;
+
+    border: 1px solid #cdb494;
+    border-radius: 50%;
+
+    font-size: 0.95rem;
+    font-weight: 700;
+}

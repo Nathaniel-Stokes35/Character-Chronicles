@@ -1,0 +1,303 @@
+@using CharacterChronicles.Data
+@using CharacterChronicles.Models
+@using CharacterChronicles.Components.Characters
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+
+@namespace CharacterChronicles.Components.Pages
+
+@inject IDbContextFactory<CharacterChroniclesDbContext> DbFactory
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<main class="characters-page">
+    <section class="characters-hero">
+        <div class="hero-inner">
+            <div>
+                <p class="eyebrow">The adventurer's archive</p>
+                <h1>Your Characters</h1>
+                <p class="hero-copy">
+                    Gather every hero, rival, and wandering soul in one place.
+                    Pick up their story whenever adventure calls.
+                </p>
+            </div>
+
+            <button class="create-button" type="button" @onclick="OpenCreatePanel">
+                <span aria-hidden="true">+</span>
+                Create Character
+            </button>
+        </div>
+    </section>
+
+    <section class="characters-workspace" aria-label="Character library">
+        <div class="summary-row">
+            <article class="summary-card">
+                <span class="summary-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3 4.5 6.5v6.2c0 4.4 2.7 7.4 7.5 8.8 4.8-1.4 7.5-4.4 7.5-8.8V6.5L12 3Z" />
+                    </svg>
+                </span>
+                <div>
+                    <strong>@Roster.Count</strong>
+                    <span>Total heroes</span>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span class="summary-icon flame" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13.8 2.8c.6 3-1.6 4.4-1.6 6.5 0 1.4 1 2.3 2.1 2.3 1.9 0 2.8-1.7 2.3-3.7 2.2 1.8 3.4 4.1 3.2 6.5-.3 4-3.6 6.8-7.8 6.8s-7.6-2.9-7.8-7c-.2-3.3 1.8-6.2 5-8.4-.2 2.8.8 4.4 2.3 4.4 1.2 0 1.7-1 1.5-2.1-.4-2.1-.1-3.8.8-5.3Z" />
+                    </svg>
+                </span>
+                <div>
+                    <strong>@Roster.Count(character => character.Status == "Active")</strong>
+                    <span>Active adventures</span>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <span class="summary-icon crown" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="m4 8 4.2 3L12 5l3.8 6L20 8l-1.4 9H5.4L4 8Zm1.7 12h12.6" />
+                    </svg>
+                </span>
+                <div>
+                    <strong>@Roster.Max(character => character.Level)</strong>
+                    <span>Highest level</span>
+                </div>
+            </article>
+        </div>
+
+        <div class="library-heading">
+            <div>
+                <p class="section-kicker">Character library</p>
+                <h2>Choose your next adventure</h2>
+            </div>
+
+            <span class="result-count">
+                @FilteredCharacters.Count @(FilteredCharacters.Count == 1 ? "character" : "characters")
+            </span>
+        </div>
+
+        <div class="toolbar">
+            <label class="search-box">
+                <span class="visually-hidden">Search characters</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.8" />
+                    <path d="m16 16 4.2 4.2" />
+                </svg>
+                <input type="search"
+                       placeholder="Search by hero, class, or campaign..."
+                       @bind="SearchText"
+                       @bind:event="oninput" />
+            </label>
+
+            <label class="select-control">
+                <span class="visually-hidden">Filter by status</span>
+                <select @bind="StatusFilter">
+                    <option value="All">All statuses</option>
+                    <option value="Active">Active</option>
+                    <option value="Resting">Resting</option>
+                    <option value="Archived">Archived</option>
+                </select>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m8 10 4 4 4-4" />
+                </svg>
+            </label>
+
+            <label class="select-control">
+                <span class="visually-hidden">Sort characters</span>
+                <select @bind="SortOrder">
+                    <option value="RecentlyUpdated">Recently updated</option>
+                    <option value="Name">Name A–Z</option>
+                    <option value="LevelHigh">Highest level</option>
+                    <option value="LevelLow">Lowest level</option>
+                </select>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m8 10 4 4 4-4" />
+                </svg>
+            </label>
+
+            <div class="view-toggle" aria-label="Character view">
+                <button type="button"
+                        class="@(!IsListView ? "active" : null)"
+                        aria-label="Grid view"
+                        aria-pressed="@(!IsListView)"
+                        @onclick="() => IsListView = false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="4" y="4" width="6" height="6" rx="1" />
+                        <rect x="14" y="4" width="6" height="6" rx="1" />
+                        <rect x="4" y="14" width="6" height="6" rx="1" />
+                        <rect x="14" y="14" width="6" height="6" rx="1" />
+                    </svg>
+                </button>
+                <button type="button"
+                        class="@(IsListView ? "active" : null)"
+                        aria-label="List view"
+                        aria-pressed="@IsListView"
+                        @onclick="() => IsListView = true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 6h11M9 12h11M9 18h11" />
+                        <circle cx="5" cy="6" r="1" />
+                        <circle cx="5" cy="12" r="1" />
+                        <circle cx="5" cy="18" r="1" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        @if (FilteredCharacters.Count > 0)
+        {
+            <div class="character-grid @(IsListView ? "list-view" : null)">
+                @foreach (var character in FilteredCharacters)
+                {
+                    <CharacterCard
+                        Character="@character"
+                        OnView="ViewCharacter" />
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3 4.5 6.5v6.2c0 4.4 2.7 7.4 7.5 8.8 4.8-1.4 7.5-4.4 7.5-8.8V6.5L12 3Z" />
+                        <path d="m9 9 6 6m0-6-6 6" />
+                    </svg>
+                </span>
+                <h3>No heroes found</h3>
+                <p>Try another search or clear the status filter.</p>
+                <button type="button" @onclick="ClearFilters">Clear filters</button>
+            </div>
+        }
+    </section>
+</main>
+
+@code {
+    private List<Character> Roster = [];
+    private Character? SelectedCharacter { get; set; }
+    private string SearchText { get; set; } = string.Empty;
+    private string StatusFilter { get; set; } = "All";
+
+    private string SortOrder { get; set; } = "RecentlyUpdated";
+
+    private bool IsListView { get; set; }
+
+    private bool IsCreateOpen { get; set; }
+
+    private void OpenCreatePanel()
+    {
+        IsCreateOpen = true;
+    }
+
+    private void CloseCreatePanel()
+    {
+        IsCreateOpen = false;
+    }
+
+    private void ClearFilters()
+    {
+        SearchText = string.Empty;
+        StatusFilter = "All";
+        SortOrder = "RecentlyUpdated";
+    }
+    private void ViewCharacter(
+        Character character)
+    {
+        SelectedCharacter = character;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+        var userId =
+            authenticationState.User.FindFirstValue(
+                ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return;
+        }
+
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+        Roster =
+            await context.Characters
+                .AsNoTracking()
+                .Where(character =>
+                    character.UserId == userId &&
+                    character.CharacterType ==
+                        CharacterType.PlayerCharacter)
+                .Include(character =>
+                    character.Campaign)
+                .OrderByDescending(character =>
+                    character.UpdatedAt)
+                .ToListAsync();
+    }
+    private List<Character> FilteredCharacters
+    {
+        get
+        {
+            IEnumerable<Character> results =
+                Roster;
+
+            if (!string.IsNullOrWhiteSpace(
+                SearchText))
+            {
+                results =
+                    results.Where(character =>
+                        character.Name.Contains(
+                            SearchText,
+                            StringComparison.OrdinalIgnoreCase) ||
+
+                        character.ClassName.Contains(
+                            SearchText,
+                            StringComparison.OrdinalIgnoreCase) ||
+
+                        character.Ancestry.Contains(
+                            SearchText,
+                            StringComparison.OrdinalIgnoreCase) ||
+
+                        (character.Campaign?.Name.Contains(
+                            SearchText,
+                            StringComparison.OrdinalIgnoreCase)
+                            ?? false));
+            }
+
+            if (StatusFilter != "All")
+            {
+                results =
+                    results.Where(character =>
+                        character.Status ==
+                        StatusFilter);
+            }
+
+            results =
+                SortOrder switch
+                {
+                    "Name" =>
+                        results.OrderBy(character =>
+                            character.Name),
+
+                    "LevelHigh" =>
+                        results.OrderByDescending(character =>
+                            character.Level),
+
+                    "LevelLow" =>
+                        results.OrderBy(character =>
+                            character.Level),
+
+                    _ =>
+                        results.OrderByDescending(character =>
+                            character.UpdatedAt)
+                };
+
+            return results.ToList();
+        }
+    }
+
+}

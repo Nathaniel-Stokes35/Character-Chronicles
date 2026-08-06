@@ -1,0 +1,104 @@
+@using CharacterChronicles.Models
+
+<article class="character-card">
+
+    <div class="portrait @Character.Theme">
+
+        <span class="level-badge">
+            LVL @Character.Level
+        </span>
+
+        <span class="portrait-rune"
+              aria-hidden="true">
+            @Character.Initials
+        </span>
+
+        <span class="status-pill @Character.Status.ToLowerInvariant()">
+            <i aria-hidden="true"></i>
+            @Character.Status
+        </span>
+
+    </div>
+
+    <div class="character-details">
+
+        <div class="character-title">
+
+            <div>
+                <p>
+                    @Character.Ancestry · @Character.ClassName
+                </p>
+
+                <h3>
+                    @Character.Name
+                </h3>
+            </div>
+
+            <button class="more-button"
+                    type="button"
+                    aria-label="More options for @Character.Name"
+                    @onclick="HandleView">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+        <div class="campaign-line">
+
+            <svg viewBox="0 0 24 24"
+                 aria-hidden="true">
+                <path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4Zm2 12h11M9 7h5" />
+            </svg>
+
+            <span>
+                <small>Campaign</small>
+
+                <strong>
+                    @(Character.Campaign?.Name
+                        ?? "Unassigned adventure")
+                </strong>
+            </span>
+
+        </div>
+
+        <div class="card-footer">
+
+            <span>
+                Updated @Character.Updated
+            </span>
+
+            <button type="button"
+                    @onclick="HandleView">
+                View sheet
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+                    <path d="m9 5 7 7-7 7" />
+                </svg>
+            </button>
+
+        </div>
+
+    </div>
+
+</article>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Character Character { get; set; } = default!;
+    [Parameter]
+    public bool IsListView { get; set; }
+
+    [Parameter]
+    public EventCallback<Character> OnView { get; set; }
+
+    private Task HandleView()
+    {
+        return OnView.InvokeAsync(Character);
+    }
+}

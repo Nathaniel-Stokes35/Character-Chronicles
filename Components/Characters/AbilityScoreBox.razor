@@ -1,0 +1,50 @@
+<div class="ability-box">
+    <strong>@Label</strong>
+
+    <input type="number"
+           min="1"
+           max="30"
+           value="@Score"
+           @onchange="HandleChange" />
+
+    <span>
+        @ModifierText
+    </span>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "";
+
+    [Parameter]
+    public int Score { get; set; }
+
+    [Parameter]
+    public EventCallback<int> ScoreChanged { get; set; }
+
+    private string ModifierText
+    {
+        get
+        {
+            var modifier =
+                (int)Math.Floor(
+                    (Score - 10) / 2.0);
+
+            return modifier >= 0
+                ? $"+{modifier}"
+                : modifier.ToString();
+        }
+    }
+
+    private async Task HandleChange(
+        ChangeEventArgs args)
+    {
+        if (int.TryParse(
+                args.Value?.ToString(),
+                out var score))
+        {
+            await ScoreChanged.InvokeAsync(
+                Math.Clamp(score, 1, 30));
+        }
+    }
+}
