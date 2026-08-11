@@ -3,6 +3,7 @@ using CharacterChronicles.Data;
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 
 Env.Load();
 
