@@ -562,7 +562,7 @@
 }
 
 .campaign-line small {
-    color: #9b8a7d;
+    color: #766357;
     font-size: 0.66rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -585,7 +585,7 @@
 }
 
 .card-footer > span {
-    color: #a08e81;
+    color: #766357;
     font-size: 0.74rem;
 }
 
@@ -1720,6 +1720,17 @@
 @media (prefers-reduced-motion: reduce) {
     .character-card,
     .create-button {
+        transition: none;
+    }
+}
+
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .create-panel,
+    .character-card,
+    .create-button {
+        animation: none;
         transition: none;
     }
 }

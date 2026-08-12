@@ -174,7 +174,7 @@
 .auth-eyebrow {
     margin: 0 0 0.35rem;
 
-    color: #d3401e;
+    color: #8f2b14;
 
     font-family:
         "Cormorant Garamond",
@@ -203,7 +203,7 @@
 .auth-intro {
     margin: 0.65rem 0 1.6rem;
 
-    color: #7a5b51;
+    color: #58423a;
 
     font-family:
         "Cormorant Garamond",
@@ -240,7 +240,7 @@
 }
 
 .auth-label-row a {
-    color: #b30000;
+    color: #810000;
 
     font-family:
         "Cormorant Garamond",
@@ -267,7 +267,7 @@
 }
 
 .auth-field:focus-within {
-    border-color: #c00000;
+    border-color: #8a0000;
 
     box-shadow:
         0 0 0 3px
@@ -277,7 +277,7 @@
 .auth-field i {
     width: 48px;
 
-    color: #b54626;
+    color: #82321b;
 
     text-align: center;
 }
@@ -301,7 +301,7 @@
 }
 
 .auth-field input::placeholder {
-    color: #a98e83;
+    color: #665047;
 }
 
 .auth-check {
@@ -322,7 +322,7 @@
 }
 
 .auth-check input {
-    accent-color: #b60000;
+    accent-color: #830000;
 }
 
 .auth-form button {
@@ -358,7 +358,7 @@
 .auth-switch {
     margin: 1.5rem 0 0;
 
-    color: #76584f;
+    color: #553f39;
 
     text-align: center;
 
@@ -369,7 +369,7 @@
 }
 
 .auth-switch a {
-    color: #b30000;
+    color: #810000;
 
     font-weight: 700;
 }
@@ -377,7 +377,7 @@
 .auth-note {
     margin: 0.7rem 0 0;
 
-    color: #a08378;
+    color: #665048;
 
     text-align: center;
 

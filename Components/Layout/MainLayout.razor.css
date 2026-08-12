@@ -95,3 +95,23 @@
 #blazor-error-ui .dismiss:hover {
     background: rgba(255, 255, 255, 0.1);
 }
+
+/* Accessibility: keyboard skip link */
+.skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 10000;
+    padding: 0.7rem 1rem;
+    color: #2d1712;
+    background: #fff8ec;
+    border: 2px solid #8b0d09;
+    border-radius: 5px;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-160%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}

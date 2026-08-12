@@ -77,8 +77,6 @@
     border: 0;
     border-bottom: 1px solid transparent;
 
-    outline: 0;
-
     font-family:
         "UnifrakturCook",
         Georgia,
@@ -162,7 +160,6 @@
     border: 1px solid #d9c8b1;
     border-radius: 4px;
 
-    outline: none;
 }
 
 .identity-grid input:focus {
@@ -224,8 +221,6 @@
 
     border: 1px solid #d9c8b1;
     border-radius: 5px;
-
-    outline: none;
 
     line-height: 1.45;
 }
@@ -326,5 +321,27 @@
     .ability-grid {
         grid-template-columns:
             repeat(2, minmax(80px, 1fr));
+    }
+}
+
+/* ==========================================================
+   Accessibility: focus visibility and reduced motion
+   ========================================================== */
+
+.character-name:focus-visible,
+.identity-grid input:focus-visible,
+.roleplay-grid textarea:focus-visible,
+.sheet-header > button:focus-visible,
+.sheet-actions button:focus-visible {
+    outline: 3px solid #8b0d09;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .character-sheet,
+    .sheet-header > button,
+    .sheet-actions button {
+        scroll-behavior: auto;
+        transition: none;
     }
 }
