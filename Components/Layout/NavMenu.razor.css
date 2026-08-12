@@ -778,3 +778,36 @@
         font-size: 0.49rem;
     }
 }
+
+/* =========================================================
+   Accessibility: keyboard focus and readable small text
+   ========================================================= */
+
+.site-brand:focus-visible,
+.navigation-links ::deep a:focus-visible,
+.account-links ::deep a:focus-visible,
+.logout-button:focus-visible {
+    outline: 3px solid #ffa600;
+    outline-offset: 3px;
+}
+
+.mobile-navigation-toggle:focus-visible + .mobile-navigation-button {
+    outline: 3px solid #ffa600;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.brand-text small {
+    font-size: 0.75rem;
+    color: #e5b979;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navigation-links ::deep a::after,
+    .account-links ::deep .login-link,
+    .account-links ::deep .register-link,
+    .logout-button,
+    .mobile-navigation-button span {
+        transition: none;
+    }
+}

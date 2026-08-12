@@ -27,7 +27,7 @@
 }
 
 .account-loading i {
-    color: #b62610;
+    color: #831b0c;
     font-size: 2.4rem;
 }
 
@@ -54,7 +54,7 @@
 .account-eyebrow {
     margin: 0 0 0.4rem;
 
-    color: #a64416;
+    color: #783110;
 
     font-family:
         "Cormorant Garamond",
@@ -94,7 +94,7 @@
 
     margin: 0.8rem 0 0;
 
-    color: #755d53;
+    color: #54433c;
 
     font-family:
         "Cormorant Garamond",
@@ -360,7 +360,7 @@
         0
         0;
 
-    color: #7c6257;
+    color: #59473f;
 
     font-family:
         "Cormorant Garamond",
@@ -433,7 +433,7 @@
 
 .account-form input:focus,
 .friend-input-row input:focus {
-    border-color: #b94318;
+    border-color: #853011;
 
     box-shadow:
         0 0 0 3px
@@ -446,7 +446,7 @@
         0
         0.65rem;
 
-    color: #967b70;
+    color: #645149;
 
     font-family:
         "Cormorant Garamond",
@@ -833,7 +833,7 @@
 }
 
 .friend-info span {
-    color: #92786c;
+    color: #64524a;
 
     font-family:
         "Cormorant Garamond",
@@ -884,7 +884,7 @@
 
     text-align: center;
 
-    color: #80675c;
+    color: #5c4a42;
 
     border:
         1px dashed
@@ -896,7 +896,7 @@
 .empty-friends > i {
     margin-bottom: 0.3rem;
 
-    color: #a63b1e;
+    color: #782a16;
 
     font-size: 2rem;
 }

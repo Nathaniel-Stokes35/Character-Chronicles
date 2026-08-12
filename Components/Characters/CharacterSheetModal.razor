@@ -15,12 +15,15 @@
                     <small>Dungeons & Dragons 5th Edition</small>
 
                     <input class="character-name"
+                           aria-label="Character name"
+                           autofocus
                            @bind="EditableCharacter.Name" />
                 </div>
 
                 <button type="button"
+                        aria-label="Close character sheet"
                         @onclick="CloseAsync">
-                    ×
+                    <span aria-hidden="true">×</span>
                 </button>
             </header>
 

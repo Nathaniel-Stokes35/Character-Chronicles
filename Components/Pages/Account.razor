@@ -79,7 +79,7 @@ else if (_user is not null)
         @if (!string.IsNullOrWhiteSpace(
                 Success))
         {
-            <div class="account-message success-message">
+            <div class="account-message success-message" role="status" aria-live="polite">
 
                 <i class="fa-solid fa-circle-check"></i>
 
@@ -92,7 +92,7 @@ else if (_user is not null)
         @if (!string.IsNullOrWhiteSpace(
                 Error))
         {
-            <div class="account-message error-message">
+            <div class="account-message error-message" role="alert">
 
                 <i class="fa-solid fa-circle-exclamation"></i>
 
@@ -251,7 +251,7 @@ else if (_user is not null)
                 @if (!string.IsNullOrWhiteSpace(
                         FriendSuccess))
                 {
-                    <div class="inline-message success-message">
+                    <div class="inline-message success-message" role="status" aria-live="polite">
                         @FriendSuccess
                     </div>
                 }
@@ -260,7 +260,7 @@ else if (_user is not null)
                 @if (!string.IsNullOrWhiteSpace(
                         FriendError))
                 {
-                    <div class="inline-message error-message">
+                    <div class="inline-message error-message" role="alert">
                         @FriendError
                     </div>
                 }

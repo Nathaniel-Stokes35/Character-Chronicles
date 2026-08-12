@@ -44,7 +44,7 @@
 }
 
 .campaign-loading i {
-    color: #b92b12;
+    color: #851f0d;
     font-size: 2.6rem;
 }
 
@@ -280,7 +280,7 @@
 
     gap: 0.55rem;
 
-    color: #80645a;
+    color: #5c4841;
 
     background: transparent;
 
@@ -579,7 +579,7 @@
         0
         1.2rem;
 
-    color: #765e54;
+    color: #55443c;
 
     font-family:
         "Cormorant Garamond",
@@ -603,7 +603,7 @@
 
     gap: 0.4rem;
 
-    color: #80685e;
+    color: #5c4b44;
 
     font-family:
         "Cormorant Garamond",
@@ -623,7 +623,7 @@
 .campaign-meta i {
     width: 16px;
 
-    color: #a43417;
+    color: #762511;
 
     text-align: center;
 }
@@ -648,7 +648,7 @@
 }
 
 .campaign-card-footer > span {
-    color: #8b7469;
+    color: #63524b;
 }
 
 .campaign-card-footer strong {
@@ -683,7 +683,7 @@
 }
 
 .empty-campaigns > i {
-    color: #a63117;
+    color: #782311;
 
     font-size: 2.6rem;
 }
@@ -712,7 +712,7 @@
         0
         1.4rem;
 
-    color: #80685d;
+    color: #5c4b43;
 
     font-family:
         "Cormorant Garamond",
@@ -903,7 +903,7 @@
 .campaign-form input:focus,
 .campaign-form textarea:focus,
 .campaign-form select:focus {
-    border-color: #b74219;
+    border-color: #843012;
 
     box-shadow:
         0 0 0 3px
@@ -937,7 +937,7 @@
 
     margin-top: 0.2rem;
 
-    color: #8d7469;
+    color: #63524a;
 
     font-family:
         "Cormorant Garamond",
@@ -1012,7 +1012,7 @@
 }
 
 .selected-player span {
-    color: #8c7267;
+    color: #645149;
 
     font-size: 0.82rem;
 }
@@ -1095,11 +1095,11 @@
 }
 
 .friend-choice small {
-    color: #90766b;
+    color: #63524a;
 }
 
 .friend-choice > i {
-    color: #a92d13;
+    color: #7a200e;
 }
 
 .add-player-button {

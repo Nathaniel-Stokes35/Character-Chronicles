@@ -194,7 +194,7 @@
 }
 
 .summary-card span:last-child {
-    color: #7b6558;
+    color: #59493f;
     font-size: 0.88rem;
 }
 
@@ -216,7 +216,7 @@
 
 .result-count {
     padding-bottom: 0.3rem;
-    color: #826c5d;
+    color: #5e4e43;
     font-size: 0.9rem;
     font-weight: 600;
 }
@@ -239,7 +239,7 @@
     margin: 0;
     display: flex;
     align-items: center;
-    color: #7c685a;
+    color: #594b41;
     background: #fffdfa;
     border: 1px solid #ddcdb8;
     border-radius: 5px;
@@ -275,7 +275,7 @@
 }
 
 .search-box input::placeholder {
-    color: #9b897c;
+    color: #62554b;
 }
 
 .select-control {
@@ -319,7 +319,7 @@
     padding: 0;
     display: grid;
     place-items: center;
-    color: #8e7667;
+    color: #655449;
     background: transparent;
     border: 0;
     border-radius: 4px;
@@ -516,7 +516,7 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
-    color: #877264;
+    color: #615248;
     background: transparent;
     border: 0;
     border-radius: 50%;
@@ -562,7 +562,7 @@
 }
 
 .campaign-line small {
-    color: #9b8a7d;
+    color: #62554b;
     font-size: 0.66rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -585,7 +585,7 @@
 }
 
 .card-footer > span {
-    color: #a08e81;
+    color: #63554b;
     font-size: 0.74rem;
 }
 
@@ -603,7 +603,7 @@
 }
 
 .card-footer button:hover {
-    color: #c13a0b;
+    color: #8b2a08;
 }
 
 .card-footer svg {
@@ -621,7 +621,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #8b7565;
+    color: #645449;
     background: rgba(255, 252, 246, 0.6);
     border: 1px dashed #cdb696;
     border-radius: 8px;
@@ -747,7 +747,7 @@
 
 .empty-state p {
     margin: 0;
-    color: #856e60;
+    color: #604f45;
 }
 
 .empty-state button {
@@ -807,7 +807,7 @@
     width: 40px;
     height: 40px;
     padding: 0;
-    color: #7f685b;
+    color: #5b4b42;
     background: transparent;
     border: 1px solid #dbc9b3;
     border-radius: 50%;
@@ -847,7 +847,7 @@
 
 .panel-intro p {
     margin: 0;
-    color: #74594a;
+    color: #544035;
     font-size: 0.9rem;
     line-height: 1.4;
 }
@@ -948,7 +948,7 @@
 
 .storage-note {
     margin: 0.9rem 0 0;
-    color: #9a887c;
+    color: #62544b;
     font-size: 0.76rem;
     text-align: right;
 }
@@ -1049,7 +1049,7 @@
 }
 
 .sheet-row > span {
-    color: #8d7668;
+    color: #64544a;
     font-size: 0.85rem;
 }
 
@@ -1086,7 +1086,7 @@
     display: flex;
     align-items: flex-start;
     gap: 0.85rem;
-    color: #705548;
+    color: #513d34;
     background: #f7eadb;
     border-radius: 6px;
 }

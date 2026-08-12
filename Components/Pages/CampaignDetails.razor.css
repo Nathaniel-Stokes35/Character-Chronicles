@@ -28,7 +28,7 @@
 
 .campaign-detail-loading i,
 .campaign-not-found i {
-    color: #a72c14;
+    color: #78200e;
     font-size: 2.7rem;
 }
 
@@ -361,7 +361,7 @@
         0
         0;
 
-    color: #836b60;
+    color: #5e4d45;
 
     font-family:
         "Cormorant Garamond",
@@ -383,7 +383,7 @@
 
     margin-bottom: 0.35rem;
 
-    color: #a04b26;
+    color: #73361b;
 
     font-family:
         "Cormorant Garamond",
@@ -401,7 +401,7 @@
 .overview-section p {
     margin: 0;
 
-    color: #71594f;
+    color: #514039;
 
     font-family:
         "Cormorant Garamond",
@@ -491,7 +491,7 @@
 }
 
 .fact-row span {
-    color: #8d756b;
+    color: #63524b;
 }
 
 .fact-row strong {
@@ -574,7 +574,7 @@
 .edit-form input:focus,
 .edit-form textarea:focus,
 .edit-form select:focus {
-    border-color: #b74319;
+    border-color: #843012;
 
     box-shadow:
         0 0 0 3px
@@ -741,7 +741,7 @@
 .add-player-panel-heading p {
     margin: 0;
 
-    color: #80685d;
+    color: #5c4b43;
 
     font-family:
         "Cormorant Garamond",
@@ -833,11 +833,11 @@
 }
 
 .friend-options small {
-    color: #8d756a;
+    color: #63524a;
 }
 
 .friend-options button > i {
-    color: #a82e14;
+    color: #79210e;
 }
 
 .no-available-friends {
@@ -863,7 +863,7 @@
 .no-available-friends i {
     margin-bottom: 0.25rem;
 
-    color: #a33117;
+    color: #752311;
 
     font-size: 1.6rem;
 }
@@ -884,7 +884,7 @@
 
     margin: 0;
 
-    color: #826a60;
+    color: #5e4c45;
 
     font-family:
         "Cormorant Garamond",
@@ -996,7 +996,7 @@
 
 .player-name span,
 .player-header > div span {
-    color: #947b70;
+    color: #63524a;
 
     font-size: 0.82rem;
 }
@@ -1134,7 +1134,7 @@
             #841d12
         );
 
-    border-color: #c15a40;
+    border-color: #7b3928;
 
     transform:
         translateY(-1px);
@@ -1233,7 +1233,7 @@
 }
 
 .linked-character div > span {
-    color: #8b7166;
+    color: #645149;
 
     font-family:
         "Cormorant Garamond",
@@ -1275,7 +1275,7 @@
 
     padding: 0.7rem;
 
-    color: #9a8277;
+    color: #64524a;
 
     font-family:
         "Cormorant Garamond",
@@ -1313,7 +1313,7 @@
 }
 
 .no-linked-characters > i {
-    color: #9e2a13;
+    color: #721e0e;
 
     font-size: 2rem;
 }
@@ -1340,7 +1340,7 @@
         0
         1rem;
 
-    color: #80675d;
+    color: #5c4a43;
 
     font-family:
         "Cormorant Garamond",

@@ -195,7 +195,7 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
-    color: #877264;
+    color: #615248;
     background: transparent;
     border: 0;
     border-radius: 50%;
@@ -241,7 +241,7 @@
 }
 
 .campaign-line small {
-    color: #9b8a7d;
+    color: #62554b;
     font-size: 0.66rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -264,7 +264,7 @@
 }
 
 .card-footer > span {
-    color: #a08e81;
+    color: #63554b;
     font-size: 0.74rem;
 }
 
@@ -282,7 +282,7 @@
 }
 
 .card-footer button:hover {
-    color: #c13a0b;
+    color: #8b2a08;
 }
 
 .card-footer svg {

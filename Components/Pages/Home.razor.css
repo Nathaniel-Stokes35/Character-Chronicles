@@ -408,7 +408,7 @@
 }
 
 .preview-heading small {
-    color: #b24732;
+    color: #7f3324;
 
     font-family:
         "Cormorant Garamond",
@@ -507,7 +507,7 @@
 }
 
 .character-portrait.add-character {
-    color: #b8331f;
+    color: #842516;
     background: #f7dfc3;
     border: 1px dashed #c75437;
 }
@@ -531,7 +531,7 @@
 
 .preview-character-card span,
 .preview-character-card small {
-    color: #8a5a4e;
+    color: #634138;
 
     font-family:
         "Cormorant Garamond",
@@ -625,7 +625,7 @@
 .cta-content > div:nth-child(2) > p {
     margin: 0 0 0.6rem;
 
-    color: #c52817;
+    color: #8e1d11;
 
     font-family:
         "Cormorant Garamond",
@@ -662,7 +662,7 @@
 
     display: block;
 
-    color: #76564d;
+    color: #553e37;
 
     font-family:
         "Cormorant Garamond",
@@ -793,7 +793,7 @@
 .path-label {
     margin: 0;
 
-    color: #d14123;
+    color: #8c2b17;
 
     font-family:
         "Cormorant Garamond",
@@ -823,7 +823,7 @@
 .path-content > p:not(.path-label) {
     margin: 0;
 
-    color: #76584e;
+    color: #553f38;
 
     font-family:
         "Cormorant Garamond",
@@ -861,7 +861,7 @@
 }
 
 .path-content li i {
-    color: #d12917;
+    color: #931d10;
     font-size: 0.78rem;
 }
 
@@ -1090,7 +1090,7 @@
 }
 
 .future-list span {
-    color: #7c5e54;
+    color: #59443c;
 
     font-family:
         "Cormorant Garamond",
