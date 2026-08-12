@@ -1,0 +1,248 @@
+@page "/faq"
+@rendermode InteractiveServer
+
+<PageTitle>Frequently Asked Questions | Character Chronicles</PageTitle>
+
+<main class="faq-page">
+    <section class="faq-hero">
+        <div class="hero-symbol" aria-hidden="true">?</div>
+
+        <div class="hero-shell">
+            <p class="eyebrow">The adventurer's guide</p>
+            <h1>How Can We Help?</h1>
+            <p class="hero-intro">
+                Find quick answers about characters, campaigns, accounts,
+                and everything else in your chronicle.
+            </p>
+
+            <label class="hero-search">
+                <span class="visually-hidden">Search frequently asked questions</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.7" cy="10.7" r="6.7" />
+                    <path d="m15.8 15.8 4.4 4.4" />
+                </svg>
+                <input type="search"
+                       placeholder="Search for an answer..."
+                       @bind="SearchText"
+                       @bind:event="oninput" />
+                @if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    <button type="button" aria-label="Clear search" @onclick="ClearSearch">×</button>
+                }
+            </label>
+        </div>
+    </section>
+
+    <section class="faq-content" aria-label="Frequently asked questions">
+        <aside class="category-panel">
+            <p>Browse by topic</p>
+            <div class="category-list" role="list">
+                @foreach (var category in Categories)
+                {
+                    <button type="button"
+                            class="@(SelectedCategory == category.Name ? "active" : null)"
+                            aria-pressed="@(SelectedCategory == category.Name)"
+                            @onclick="() => SelectCategory(category.Name)">
+                        <span class="category-icon" aria-hidden="true">@category.Icon</span>
+                        <span>
+                            <strong>@category.Name</strong>
+                            <small>@CategoryCount(category.Name) questions</small>
+                        </span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m9 5 7 7-7 7" />
+                        </svg>
+                    </button>
+                }
+            </div>
+
+            <div class="support-card">
+                <span aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 13v-1a8 8 0 0 1 16 0v1" />
+                        <path d="M6 12H4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v-7Zm12 0h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2v-7ZM18 19c0 1.1-.9 2-2 2h-3" />
+                    </svg>
+                </span>
+                <h2>Still need help?</h2>
+                <p>Our party is ready to help you get back to the adventure.</p>
+                <a href="/about">Meet the project team</a>
+            </div>
+        </aside>
+
+        <div class="questions-panel">
+            <div class="questions-heading">
+                <div>
+                    <p class="eyebrow">@HeadingEyebrow</p>
+                    <h2>@HeadingTitle</h2>
+                </div>
+                <span>@FilteredQuestions.Count @(FilteredQuestions.Count == 1 ? "answer" : "answers")</span>
+            </div>
+
+            @if (FilteredQuestions.Count > 0)
+            {
+                <div class="accordion">
+                    @foreach (var item in FilteredQuestions)
+                    {
+                        var isOpen = OpenQuestions.Contains(item.Id);
+
+                        <article class="faq-item @(isOpen ? "open" : null)" @key="item.Id">
+                            <h3>
+                                <button type="button"
+                                        aria-expanded="@isOpen"
+                                        aria-controls="answer-@item.Id"
+                                        @onclick="() => ToggleQuestion(item.Id)">
+                                    <span>@item.Question</span>
+                                    <i aria-hidden="true"></i>
+                                </button>
+                            </h3>
+
+                            @if (isOpen)
+                            {
+                                <div class="faq-answer" id="answer-@item.Id">
+                                    <p>@item.Answer</p>
+                                </div>
+                            }
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <span aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="10.5" cy="10.5" r="6.5" />
+                            <path d="m15.5 15.5 4 4M8.5 8.5l4 4m0-4-4 4" />
+                        </svg>
+                    </span>
+                    <h2>No answers found</h2>
+                    <p>Try a shorter search or browse all topics.</p>
+                    <button type="button" @onclick="ResetFilters">Show all questions</button>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="faq-cta">
+        <div>
+            <span class="cta-mark" aria-hidden="true">CC</span>
+            <div>
+                <p class="eyebrow">Ready for your next chapter?</p>
+                <h2>Turn your answers into adventure.</h2>
+            </div>
+        </div>
+        <a href="/characters">Explore your characters</a>
+    </section>
+</main>
+
+@code {
+    private string SearchText { get; set; } = string.Empty;
+    private string SelectedCategory { get; set; } = "All Questions";
+    private HashSet<int> OpenQuestions { get; } = [1];
+
+    private static readonly IReadOnlyList<FaqCategory> Categories =
+    [
+        new("All Questions", "✦"),
+        new("Getting Started", "⚑"),
+        new("Characters", "♜"),
+        new("Campaigns", "⌁"),
+        new("Account & Data", "♢")
+    ];
+
+    private static readonly IReadOnlyList<FaqItem> Questions =
+    [
+        new(1, "Getting Started", "What is Character Chronicles?",
+            "Character Chronicles is a Dungeons & Dragons 5th Edition companion for creating, organizing, and maintaining characters and campaigns in one place."),
+        new(2, "Getting Started", "Do I need an account to get started?",
+            "You can explore the public pages without an account. Create an account to save characters, join campaigns, keep notes, and access your information later."),
+        new(3, "Getting Started", "Is Character Chronicles free to use?",
+            "Yes. The current application and its character-management features are available without a subscription."),
+        new(4, "Characters", "How do I create a new character?",
+            "Open Characters from the main navigation and choose Create Character. Enter the hero's basic information, then save it to add the character to your library."),
+        new(15, "Characters", "Can I create multiple characters under one account?",
+            "Yes. Your account can own multiple characters, and each one appears in your personal character library so you can manage its sheet and adventure separately."),
+        new(5, "Characters", "Can I edit a character after creating it?",
+            "Yes. Open the character from your library to update its level, class details, ability scores, hit points, equipment, traits, and story information."),
+        new(6, "Characters", "How are ability scores generated?",
+            "The built-in roller uses the common 4d6 method: roll four six-sided dice, discard the lowest result, and add the remaining three. You can assign the resulting scores to your six abilities."),
+        new(7, "Characters", "Can one character belong to multiple campaigns?",
+            "Not at the same time. A character can be assigned to one campaign or remain unassigned, and you can move it to another campaign when its adventure changes."),
+        new(16, "Characters", "Can I assign multiple characters to different campaigns?",
+            "Yes. You can create several characters under your account and assign each character to a different campaign. Each individual character can belong to one campaign at a time."),
+        new(8, "Campaigns", "How do I create or join a campaign?",
+            "Open Campaigns and choose Create Campaign to start a new adventure. To join another campaign, first connect with its owner as a friend; the owner can then add you to the campaign."),
+        new(9, "Campaigns", "What can a campaign owner manage?",
+            "Campaign owners can maintain campaign details, members, associated characters, notes, and custom metrics as those tools are enabled."),
+        new(10, "Campaigns", "Can I leave a campaign without deleting my character?",
+            "Yes. Campaign membership and character ownership are separate, so leaving a campaign does not remove the character from your personal library."),
+        new(17, "Campaigns", "Can I assign notes to either characters or campaigns?",
+            "Notes can currently be assigned to a character or left unassigned as a general note. Direct campaign-note assignment is not yet supported by the current data model."),
+        new(11, "Account & Data", "Where is my information stored?",
+            "Account, character, campaign, and note information is stored in the application's PostgreSQL database and loaded when you sign in."),
+        new(12, "Account & Data", "Can other players edit my characters?",
+            "Your personal characters are tied to your account. Other players should not be able to edit them unless a future sharing feature explicitly grants that access."),
+        new(13, "Account & Data", "What should I do if I cannot sign in?",
+            "Confirm that you are using the email address associated with your account and retry your password. If the problem continues, contact support for help."),
+        new(14, "Account & Data", "How do I protect my account?",
+            "Use a unique password, avoid sharing sign-in details, and log out when using a shared device. Never place passwords or database credentials in character notes."),
+    ];
+
+    private List<FaqItem> FilteredQuestions
+    {
+        get
+        {
+            IEnumerable<FaqItem> results = Questions;
+
+            if (SelectedCategory != "All Questions")
+            {
+                results = results.Where(item => item.Category == SelectedCategory);
+            }
+
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                results = results.Where(item =>
+                    item.Question.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    item.Answer.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    item.Category.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return results.ToList();
+        }
+    }
+
+    private string HeadingEyebrow => string.IsNullOrWhiteSpace(SearchText)
+        ? "Knowledge archive"
+        : "Search results";
+
+    private string HeadingTitle => string.IsNullOrWhiteSpace(SearchText)
+        ? SelectedCategory
+        : $"Answers for “{SearchText.Trim()}”";
+
+    private static int CategoryCount(string category) => category == "All Questions"
+        ? Questions.Count
+        : Questions.Count(item => item.Category == category);
+
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category;
+        SearchText = string.Empty;
+    }
+
+    private void ToggleQuestion(int id)
+    {
+        if (!OpenQuestions.Add(id))
+        {
+            OpenQuestions.Remove(id);
+        }
+    }
+
+    private void ClearSearch() => SearchText = string.Empty;
+
+    private void ResetFilters()
+    {
+        SearchText = string.Empty;
+        SelectedCategory = "All Questions";
+    }
+
+    private sealed record FaqCategory(string Name, string Icon);
+    private sealed record FaqItem(int Id, string Category, string Question, string Answer);
+}
