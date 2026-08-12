@@ -1,0 +1,476 @@
+@page "/dev/characters"
+@rendermode InteractiveServer
+
+@using CharacterChronicles.Models
+
+<title>Development Characters | Character Chronicles</title>
+
+@*@if (!_isDevelopment)
+{
+    <div class="characters-loading">
+        Development character tools are unavailable.
+    </div>
+}
+else*@ @if (_isLoading)
+{
+    <div class="characters-loading">
+        Loading characters...
+    </div>
+}
+else
+{
+    <main class="characters-page">
+
+        <section class="characters-hero">
+            <div class="hero-inner">
+                <div>
+                    <p class="eyebrow">
+                        Development character archive
+                    </p>
+
+                    <h1>Characters</h1>
+
+                    <p class="hero-copy">
+                        Browse and test every character currently stored
+                        in the Character Chronicles database.
+                    </p>
+                </div>
+
+                <button class="create-button"
+                        type="button"
+                        @onclick="OpenCreatePanel">
+                    <span aria-hidden="true">+</span>
+                    Create Character
+                </button>
+            </div>
+        </section>
+
+        <section class="characters-workspace">
+
+            <div class="summary-row">
+
+                <article class="summary-card">
+                    <span class="summary-icon">
+                        ⚔
+                    </span>
+
+                    <div>
+                        <strong>@_characters.Count</strong>
+                        <span>Total characters</span>
+                    </div>
+                </article>
+
+                <article class="summary-card">
+                    <span class="summary-icon flame">
+                        ✦
+                    </span>
+
+                    <div>
+                        <strong>
+                            @_characters.Count(
+                                character =>
+                                    character.Status == "Active")
+                        </strong>
+
+                        <span>Active characters</span>
+                    </div>
+                </article>
+
+                <article class="summary-card">
+                    <span class="summary-icon crown">
+                        ♛
+                    </span>
+
+                    <div>
+                        <strong>@HighestLevel</strong>
+                        <span>Highest level</span>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="library-heading">
+                <div>
+                    <p class="section-kicker">
+                        Database roster
+                    </p>
+
+                    <h2>Character Library</h2>
+                </div>
+
+                <span class="result-count">
+                    @_characters.Count
+                    @(_characters.Count == 1
+                        ? "character"
+                        : "characters")
+                </span>
+            </div>
+
+            <div class="character-grid">
+
+                @foreach (var character in _characters)
+                {
+                    <CharacterCard
+                        Character="@character"
+                        OnView="ViewCharacter" />
+                }
+
+                <button class="new-character-card"
+                        type="button"
+                        @onclick="OpenCreatePanel">
+
+                    <span aria-hidden="true">+</span>
+
+                    <strong>
+                        Create Character
+                    </strong>
+
+                    <small>
+                        Add another character to Neon
+                    </small>
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+    </main>
+}
+
+@if (SelectedCharacter is not null)
+{
+    <CharacterSheetModal
+        Character="@SelectedCharacter"
+        OnSave="SaveCharacterAsync"
+        OnDelete="DeleteCharacterAsync"
+        OnClose="CloseCharacterSheet" />
+}
+
+@if (IsCreateOpen)
+{
+    <div class="panel-backdrop"
+         @onclick="CloseCreatePanel">
+
+        <section class="create-panel"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="create-character-title"
+                 @onclick:stopPropagation>
+
+            <div class="panel-header">
+                <div>
+                    <p class="section-kicker">
+                        Begin a new story
+                    </p>
+
+                    <h2 id="create-character-title">
+                        Create Character
+                    </h2>
+                </div>
+
+                <button type="button"
+                        aria-label="Close character creator"
+                        @onclick="CloseCreatePanel">
+                    ×
+                </button>
+            </div>
+
+            <div class="panel-intro">
+
+                <span aria-hidden="true">
+                    @NewInitials
+                </span>
+
+                <p>
+                    Create a development character and save it
+                    directly to the Neon database.
+                </p>
+
+            </div>
+
+            <div class="form-grid">
+
+                <label class="wide">
+                    <span>Character name</span>
+
+                    <input placeholder="e.g. Rowan Blackwood"
+                           @bind="NewName"
+                           @bind:event="oninput" />
+                </label>
+
+                <label>
+                    <span>Ancestry</span>
+
+                    <input placeholder="e.g. Human"
+                           @bind="NewAncestry" />
+                </label>
+
+                <label>
+                    <span>Class</span>
+
+                    <select @bind="NewClass">
+                        <option>Barbarian</option>
+                        <option>Bard</option>
+                        <option>Cleric</option>
+                        <option>Druid</option>
+                        <option>Fighter</option>
+                        <option>Monk</option>
+                        <option>Paladin</option>
+                        <option>Ranger</option>
+                        <option>Rogue</option>
+                        <option>Sorcerer</option>
+                        <option>Warlock</option>
+                        <option>Wizard</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Level</span>
+
+                    <input type="number"
+                           min="1"
+                           max="20"
+                           @bind="NewLevel" />
+                </label>
+
+                <div class="ability-section">
+
+                    <div class="ability-heading">
+                        <div>
+                            <span>Ability Scores</span>
+
+                            <small>
+                                Roll 4d6 and discard the lowest die
+                                for each ability score.
+                            </small>
+                        </div>
+
+                        <button type="button"
+                                class="roll-stats-button"
+                                @onclick="RollStats">
+                            🎲
+                            @(AbilityRolls.Count == 0
+                                ? "Roll Stats"
+                                : "Reroll Stats")
+                        </button>
+                    </div>
+
+                    @if (AbilityRolls.Count > 0)
+                    {
+                        <div class="rolled-stat-pool">
+
+                            @foreach (var roll in AbilityRolls)
+                            {
+                                <div class="rolled-stat">
+                                    <strong>
+                                        @roll.Value
+                                    </strong>
+
+                                    <small>
+                                        @string.Join(" · ", roll.Dice)
+                                    </small>
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="ability-assignment-grid">
+
+                            <label>
+                                <span>Strength</span>
+
+                                <select @bind="StrengthRollId">
+                                    <option value="">Choose score</option>
+
+                                    @foreach (var roll in AbilityRolls)
+                                    {
+                                        <option value="@roll.Id">
+                                            @roll.Value
+                                        </option>
+                                    }
+                                </select>
+                            </label>
+
+                            <label>
+                                <span>Dexterity</span>
+
+                                <select @bind="DexterityRollId">
+                                    <option value="">Choose score</option>
+
+                                    @foreach (var roll in AbilityRolls)
+                                    {
+                                        <option value="@roll.Id">
+                                            @roll.Value
+                                        </option>
+                                    }
+                                </select>
+                            </label>
+                            
+                            <label>
+                                <span>Constitution</span>
+
+                                <select @bind="ConstitutionRollId">
+                                    <option value="">Choose score</option>
+
+                                    @foreach (var roll in AbilityRolls)
+                                    {
+                                        <option value="@roll.Id">
+                                            @roll.Value
+                                        </option>
+                                    }
+                                </select>
+                            </label>
+
+                            <label>
+                                <span>Intelligence</span>
+
+                                <select @bind="IntelligenceRollId">
+                                    <option value="">Choose score</option>
+
+                                    @foreach (var roll in AbilityRolls)
+                                    {
+                                        <option value="@roll.Id">
+                                            @roll.Value
+                                        </option>
+                                    }
+                                </select>
+                            </label>
+
+                            <label>
+                                <span>Wisdom</span>
+
+                                <select @bind="WisdomRollId">
+                                    <option value="">Choose score</option>
+
+                                    @foreach (var roll in AbilityRolls)
+                                    {
+                                        <option value="@roll.Id">
+                                            @roll.Value
+                                        </option>
+                                    }
+                                </select>
+                            </label>
+
+                            <label>
+                                <span>Charisma</span>
+
+                                <select @bind="CharismaRollId">
+                                    <option value="">Choose score</option>
+
+                                    @foreach (var roll in AbilityRolls)
+                                    {
+                                        <option value="@roll.Id">
+                                            @roll.Value
+                                        </option>
+                                    }
+                                </select>
+                            </label>
+
+                        </div>
+                    }
+
+                </div>
+
+                <label>
+                    <span>Type</span>
+
+                    <select @bind="NewCharacterType">
+                        <option value="@CharacterType.PlayerCharacter">
+                            Player Character
+                        </option>
+
+                        <option value="@CharacterType.NonPlayerCharacter">
+                            NPC
+                        </option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>Status</span>
+
+                    <select @bind="NewStatus">
+                        <option>Active</option>
+                        <option>Resting</option>
+                        <option>Archived</option>
+                    </select>
+                </label>
+
+                <label class="wide">
+                    <span>Campaign</span>
+
+                    <select @bind="NewCampaignId">
+                        <option value="">
+                            No campaign
+                        </option>
+
+                        @foreach (var campaign in _campaigns)
+                        {
+                            <option value="@campaign.Id">
+                                @campaign.Name
+                            </option>
+                        }
+                    </select>
+                </label>
+
+                <label class="wide">
+                    <span>Personality Traits</span>
+
+                    <textarea rows="3"
+                              @bind="NewPersonalityTraits">
+                    </textarea>
+                </label>
+
+                <label class="wide">
+                    <span>Ideals</span>
+
+                    <textarea rows="3"
+                              @bind="NewIdeals">
+                    </textarea>
+                </label>
+
+                <label class="wide">
+                    <span>Bonds</span>
+
+                    <textarea rows="3"
+                              @bind="NewBonds">
+                    </textarea>
+                </label>
+
+                <label class="wide">
+                    <span>Flaws</span>
+
+                    <textarea rows="3"
+                              @bind="NewFlaws">
+                    </textarea>
+                </label>
+
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(CreateError))
+            {
+                <p class="form-error">
+                    @CreateError
+                </p>
+            }
+
+            <div class="panel-actions">
+
+                <button class="cancel-button"
+                        type="button"
+                        @onclick="CloseCreatePanel">
+                    Cancel
+                </button>
+
+                <button class="save-button"
+                        type="button"
+                        @onclick="CreateCharacterAsync">
+                    Add to Database
+                </button>
+
+            </div>
+
+        </section>
+    </div>
+}

@@ -1,0 +1,33 @@
+<div class="ability-box">
+    <strong>@Label</strong>
+
+    <span class="ability-score">
+        @Score
+    </span>
+
+    <span class="ability-modifier">
+        @ModifierText
+    </span>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "";
+
+    [Parameter]
+    public int Score { get; set; }
+
+    private string ModifierText
+    {
+        get
+        {
+            var modifier =
+                (int)Math.Floor(
+                    (Score - 10) / 2.0);
+
+            return modifier >= 0
+                ? $"+{modifier}"
+                : modifier.ToString();
+        }
+    }
+}

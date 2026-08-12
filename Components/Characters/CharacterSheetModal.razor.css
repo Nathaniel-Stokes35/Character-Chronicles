@@ -1,0 +1,330 @@
+.sheet-backdrop {
+    position: fixed;
+    z-index: 5000;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    padding: 2rem;
+
+    background: rgba(27, 8, 7, 0.72);
+    backdrop-filter: blur(4px);
+
+    overflow-y: auto;
+}
+
+.character-sheet {
+    width: min(1050px, 100%);
+    max-height: calc(100vh - 4rem);
+
+    padding: 1.5rem;
+
+    overflow-y: auto;
+
+    color: #351b15;
+    background: #fffaf1;
+
+    border: 1px solid #dfcfb8;
+    border-top: 4px solid #8b0d09;
+    border-radius: 10px;
+
+    box-shadow:
+        0 24px 70px rgba(25, 4, 3, 0.45);
+}
+
+/* ==========================================================
+   Header
+   ========================================================== */
+
+.sheet-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+
+    border-bottom: 2px solid #eadbc6;
+}
+
+.sheet-header > div {
+    flex: 1;
+}
+
+.sheet-header small {
+    display: block;
+
+    margin-bottom: 0.3rem;
+
+    color: #9b5d20;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.character-name {
+    width: 100%;
+
+    padding: 0;
+
+    color: #47120e;
+    background: transparent;
+
+    border: 0;
+    border-bottom: 1px solid transparent;
+
+    outline: 0;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+}
+
+.character-name:focus {
+    border-bottom-color: #b36b22;
+}
+
+.sheet-header > button {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: grid;
+    place-items: center;
+
+    color: #72584c;
+    background: transparent;
+
+    border: 1px solid #d8c6af;
+    border-radius: 50%;
+
+    font-size: 1.35rem;
+
+    cursor: pointer;
+}
+
+.sheet-header > button:hover {
+    color: #7e0c08;
+    background: #f6e9dc;
+}
+
+/* ==========================================================
+   Identity
+   ========================================================== */
+
+.identity-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 0.8rem;
+
+    margin-bottom: 1.5rem;
+}
+
+.identity-grid label,
+.roleplay-grid label {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.identity-grid span,
+.roleplay-grid span {
+    color: #76584a;
+
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.identity-grid input {
+    width: 100%;
+    min-width: 0;
+
+    height: 42px;
+
+    padding: 0 0.65rem;
+
+    color: #392019;
+    background: #fffdf9;
+
+    border: 1px solid #d9c8b1;
+    border-radius: 4px;
+
+    outline: none;
+}
+
+.identity-grid input:focus {
+    border-color: #b36b22;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(179, 107, 34, 0.11);
+}
+
+/* ==========================================================
+   Ability scores
+   ========================================================== */
+
+.ability-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, minmax(90px, 1fr));
+
+    gap: 0.75rem;
+
+    margin: 1.5rem 0;
+    padding: 1.2rem;
+
+    background: #f5eadb;
+
+    border: 1px solid #e2d1ba;
+    border-radius: 7px;
+}
+
+/* ==========================================================
+   Roleplay fields
+   ========================================================== */
+
+.roleplay-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.roleplay-grid label.wide {
+    grid-column: 1 / -1;
+}
+
+.roleplay-grid textarea {
+    width: 100%;
+    min-height: 105px;
+
+    padding: 0.7rem;
+
+    resize: vertical;
+
+    color: #3d241d;
+    background: #fffdf9;
+
+    border: 1px solid #d9c8b1;
+    border-radius: 5px;
+
+    outline: none;
+
+    line-height: 1.45;
+}
+
+.roleplay-grid textarea:focus {
+    border-color: #b36b22;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(179, 107, 34, 0.11);
+}
+
+/* ==========================================================
+   Actions
+   ========================================================== */
+
+.sheet-actions {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+
+    border-top: 1px solid #e4d4bf;
+}
+
+.sheet-actions button {
+    min-height: 44px;
+
+    padding: 0 1.15rem;
+
+    border-radius: 5px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.sheet-actions button:first-child {
+    color: #654a3e;
+    background: transparent;
+
+    border: 1px solid #ccb9a1;
+}
+
+.sheet-actions .save-sheet {
+    color: #fff8ec;
+    background: #850e09;
+
+    border: 1px solid #850e09;
+}
+
+.sheet-actions .save-sheet:hover {
+    background: #aa1b0d;
+}
+
+/* ==========================================================
+   Responsive
+   ========================================================== */
+
+@media (max-width: 850px) {
+    .identity-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .ability-grid {
+        grid-template-columns:
+            repeat(3, minmax(80px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .sheet-backdrop {
+        padding: 0;
+        place-items: stretch;
+    }
+
+    .character-sheet {
+        width: 100%;
+        min-height: 100vh;
+        max-height: none;
+
+        border: 0;
+        border-radius: 0;
+    }
+
+    .identity-grid,
+    .roleplay-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .roleplay-grid label.wide {
+        grid-column: auto;
+    }
+
+    .ability-grid {
+        grid-template-columns:
+            repeat(2, minmax(80px, 1fr));
+    }
+}

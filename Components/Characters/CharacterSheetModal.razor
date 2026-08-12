@@ -1,0 +1,251 @@
+@using CharacterChronicles.Models
+
+@if (Character is not null)
+{
+    <div class="sheet-backdrop"
+         @onclick="CloseAsync">
+
+        <section class="character-sheet"
+                 role="dialog"
+                 aria-modal="true"
+                 @onclick:stopPropagation>
+
+            <header class="sheet-header">
+                <div>
+                    <small>Dungeons & Dragons 5th Edition</small>
+
+                    <input class="character-name"
+                           @bind="EditableCharacter.Name" />
+                </div>
+
+                <button type="button"
+                        @onclick="CloseAsync">
+                    ×
+                </button>
+            </header>
+
+            <section class="identity-grid">
+
+                <label>
+                    <span>Class</span>
+                    <input @bind="EditableCharacter.ClassName" />
+                </label>
+
+                <label>
+                    <span>Level</span>
+                    <input type="number"
+                           min="1"
+                           max="20"
+                           @bind="EditableCharacter.Level" />
+                </label>
+
+                <label>
+                    <span>Background</span>
+                    <input @bind="EditableCharacter.Background" />
+                </label>
+
+                <label>
+                    <span>Ancestry</span>
+                    <input @bind="EditableCharacter.Ancestry" />
+                </label>
+
+                <label>
+                    <span>Alignment</span>
+                    <input @bind="EditableCharacter.Alignment" />
+                </label>
+
+                <label>
+                    <span>Armor Class</span>
+                    <input type="number"
+                           min="0"
+                           @bind="EditableCharacter.ArmorClass" />
+                </label>
+
+                <label>
+                    <span>Max HP</span>
+                    <input type="number"
+                           min="0"
+                           @bind="EditableCharacter.HitPointMaximum" />
+                </label>
+
+                <label>
+                    <span>Current HP</span>
+                    <input type="number"
+                           min="0"
+                           @bind="EditableCharacter.CurrentHitPoints" />
+                </label>
+
+            </section>
+
+            <section class="ability-grid">
+
+                <AbilityScoreBox
+                    Label="STR"
+                    Score="@EditableCharacter.Strength" />
+
+                <AbilityScoreBox
+                    Label="DEX"
+                    Score="@EditableCharacter.Dexterity" />
+
+                <AbilityScoreBox
+                    Label="CON"
+                    Score="@EditableCharacter.Constitution" />
+
+                <AbilityScoreBox
+                    Label="INT"
+                    Score="@EditableCharacter.Intelligence" />
+
+                <AbilityScoreBox
+                    Label="WIS"
+                    Score="@EditableCharacter.Wisdom" />
+
+                <AbilityScoreBox
+                    Label="CHA"
+                    Score="@EditableCharacter.Charisma" />
+
+            </section>
+
+            <section class="roleplay-grid">
+
+                <label>
+                    <span>Personality Traits</span>
+                    <textarea @bind="EditableCharacter.PersonalityTraits"></textarea>
+                </label>
+
+                <label>
+                    <span>Ideals</span>
+                    <textarea @bind="EditableCharacter.Ideals"></textarea>
+                </label>
+
+                <label>
+                    <span>Bonds</span>
+                    <textarea @bind="EditableCharacter.Bonds"></textarea>
+                </label>
+
+                <label>
+                    <span>Flaws</span>
+                    <textarea @bind="EditableCharacter.Flaws"></textarea>
+                </label>
+
+                <label class="wide">
+                    <span>Equipment</span>
+                    <textarea @bind="EditableCharacter.Equipment"></textarea>
+                </label>
+
+                <label class="wide">
+                    <span>Features & Traits</span>
+                    <textarea @bind="EditableCharacter.FeaturesAndTraits"></textarea>
+                </label>
+
+            </section>
+
+            <footer class="sheet-actions">
+
+                <button type="button"
+                        class="delete-sheet"
+                        @onclick="DeleteAsync">
+                    Delete Character
+                </button>
+
+                <div class="sheet-action-spacer"></div>
+
+                <button type="button"
+                        @onclick="CloseAsync">
+                    Cancel
+                </button>
+
+                <button type="button"
+                        class="save-sheet"
+                        @onclick="SaveAsync">
+                    Save Character
+                </button>
+
+            </footer>
+
+        </section>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Character? Character { get; set; }
+
+    [Parameter]
+    public EventCallback<Character> OnSave { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<Character> OnDelete { get; set; }
+
+    private Character EditableCharacter { get; set; } = new();
+
+    protected override void OnParametersSet()
+    {
+        if (Character is null)
+        {
+            return;
+        }
+
+        EditableCharacter = new Character
+        {
+            Id = Character.Id,
+            UserId = Character.UserId,
+            CampaignId = Character.CampaignId,
+            CharacterType = Character.CharacterType,
+
+            Name = Character.Name,
+            Ancestry = Character.Ancestry,
+            ClassName = Character.ClassName,
+            Level = Character.Level,
+
+            Strength = Character.Strength,
+            Dexterity = Character.Dexterity,
+            Constitution = Character.Constitution,
+            Intelligence = Character.Intelligence,
+            Wisdom = Character.Wisdom,
+            Charisma = Character.Charisma,
+
+            PersonalityTraits = Character.PersonalityTraits,
+            Ideals = Character.Ideals,
+            Bonds = Character.Bonds,
+            Flaws = Character.Flaws,
+
+            Background = Character.Background,
+            Alignment = Character.Alignment,
+
+            ArmorClass = Character.ArmorClass,
+            HitPointMaximum = Character.HitPointMaximum,
+            CurrentHitPoints = Character.CurrentHitPoints,
+
+            Equipment = Character.Equipment,
+            FeaturesAndTraits = Character.FeaturesAndTraits,
+
+            Status = Character.Status,
+            Theme = Character.Theme,
+
+            CreatedAt = Character.CreatedAt,
+            UpdatedAt = Character.UpdatedAt
+        };
+    }
+
+    private Task DeleteAsync()
+    {
+        return OnDelete.InvokeAsync(
+            EditableCharacter);
+    }
+    private async Task SaveAsync()
+    {
+        EditableCharacter.UpdatedAt =
+            DateTime.UtcNow;
+
+        await OnSave.InvokeAsync(
+            EditableCharacter);
+    }
+
+    private async Task CloseAsync()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

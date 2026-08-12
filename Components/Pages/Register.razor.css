@@ -582,3 +582,12 @@
         transition: none;
     }
 }
+.auth-error {
+    margin: 0 0 1rem;
+    padding: 0.8rem 1rem;
+    color: #7e130c;
+    background: #fff0ec;
+    border: 1px solid #e6a69c;
+    border-radius: 6px;
+    font-weight: 600;
+}

@@ -1,0 +1,1276 @@
+@using CharacterChronicles.Data
+@using CharacterChronicles.Models
+@using CharacterChronicles.Components.Characters
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+
+@namespace CharacterChronicles.Components.Pages
+
+@inject IDbContextFactory<CharacterChroniclesDbContext> DbFactory
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+
+<main class="characters-page">
+
+    <section class="characters-hero">
+
+        <div class="hero-inner">
+
+            <div>
+
+                <p class="eyebrow">
+                    The adventurer's archive
+                </p>
+
+                <h1>
+                    Your Characters
+                </h1>
+
+                <p class="hero-copy">
+                    Gather every hero, rival, and wandering
+                    soul in one place. Pick up their story
+                    whenever adventure calls.
+                </p>
+
+            </div>
+
+
+            <button
+                class="create-button"
+                type="button"
+                @onclick="OpenCreatePanel">
+
+                <span aria-hidden="true">
+                    +
+                </span>
+
+                Create Character
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section
+        class="characters-workspace"
+        aria-label="Character library">
+
+        <div class="summary-row">
+
+            <article class="summary-card">
+
+                <span
+                    class="summary-icon"
+                    aria-hidden="true">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M12 3 4.5 6.5v6.2c0 4.4 2.7 7.4 7.5 8.8 4.8-1.4 7.5-4.4 7.5-8.8V6.5L12 3Z" />
+
+                    </svg>
+
+                </span>
+
+
+                <div>
+
+                    <strong>
+                        @Roster.Count
+                    </strong>
+
+                    <span>
+                        Total heroes
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <article class="summary-card">
+
+                <span
+                    class="summary-icon flame"
+                    aria-hidden="true">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M13.8 2.8c.6 3-1.6 4.4-1.6 6.5 0 1.4 1 2.3 2.1 2.3 1.9 0 2.8-1.7 2.3-3.7 2.2 1.8 3.4 4.1 3.2 6.5-.3 4-3.6 6.8-7.8 6.8s-7.6-2.9-7.8-7c-.2-3.3 1.8-6.2 5-8.4-.2 2.8.8 4.4 2.3 4.4 1.2 0 1.7-1 1.5-2.1-.4-2.1-.1-3.8.8-5.3Z" />
+
+                    </svg>
+
+                </span>
+
+
+                <div>
+
+                    <strong>
+                        @Roster.Count(
+                            character =>
+                                character.Status ==
+                                "Active")
+                    </strong>
+
+                    <span>
+                        Active adventures
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <article class="summary-card">
+
+                <span
+                    class="summary-icon crown"
+                    aria-hidden="true">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="m4 8 4.2 3L12 5l3.8 6L20 8l-1.4 9H5.4L4 8Zm1.7 12h12.6" />
+
+                    </svg>
+
+                </span>
+
+
+                <div>
+
+                    <strong>
+                        @(Roster.Count == 0
+                            ? 0
+                            : Roster.Max(
+                                character =>
+                                    character.Level))
+                    </strong>
+
+                    <span>
+                        Highest level
+                    </span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div class="library-heading">
+
+            <div>
+
+                <p class="section-kicker">
+                    Character library
+                </p>
+
+                <h2>
+                    Choose your next adventure
+                </h2>
+
+            </div>
+
+
+            <span class="result-count">
+
+                @FilteredCharacters.Count
+                @(FilteredCharacters.Count == 1
+                    ? "character"
+                    : "characters")
+
+            </span>
+
+        </div>
+
+
+        <div class="toolbar">
+
+            <label class="search-box">
+
+                <span class="visually-hidden">
+                    Search characters
+                </span>
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <circle
+                        cx="10.8"
+                        cy="10.8"
+                        r="6.8" />
+
+                    <path
+                        d="m16 16 4.2 4.2" />
+
+                </svg>
+
+                <input
+                    type="search"
+                    placeholder="Search by hero, class, or campaign..."
+                    @bind="SearchText"
+                    @bind:event="oninput" />
+
+            </label>
+
+
+            <label class="select-control">
+
+                <span class="visually-hidden">
+                    Filter by status
+                </span>
+
+                <select @bind="StatusFilter">
+
+                    <option value="All">
+                        All statuses
+                    </option>
+
+                    <option value="Active">
+                        Active
+                    </option>
+
+                    <option value="Resting">
+                        Resting
+                    </option>
+
+                    <option value="Archived">
+                        Archived
+                    </option>
+
+                </select>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path
+                        d="m8 10 4 4 4-4" />
+
+                </svg>
+
+            </label>
+
+
+            <label class="select-control">
+
+                <span class="visually-hidden">
+                    Sort characters
+                </span>
+
+                <select @bind="SortOrder">
+
+                    <option value="RecentlyUpdated">
+                        Recently updated
+                    </option>
+
+                    <option value="Name">
+                        Name A–Z
+                    </option>
+
+                    <option value="LevelHigh">
+                        Highest level
+                    </option>
+
+                    <option value="LevelLow">
+                        Lowest level
+                    </option>
+
+                </select>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path
+                        d="m8 10 4 4 4-4" />
+
+                </svg>
+
+            </label>
+
+
+            <div
+                class="view-toggle"
+                aria-label="Character view">
+
+                <button
+                    type="button"
+                    class="@(!IsListView ? "active" : null)"
+                    aria-label="Grid view"
+                    aria-pressed="@(!IsListView)"
+                    @onclick="() => IsListView = false">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <rect
+                            x="4"
+                            y="4"
+                            width="6"
+                            height="6"
+                            rx="1" />
+
+                        <rect
+                            x="14"
+                            y="4"
+                            width="6"
+                            height="6"
+                            rx="1" />
+
+                        <rect
+                            x="4"
+                            y="14"
+                            width="6"
+                            height="6"
+                            rx="1" />
+
+                        <rect
+                            x="14"
+                            y="14"
+                            width="6"
+                            height="6"
+                            rx="1" />
+
+                    </svg>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="@(IsListView ? "active" : null)"
+                    aria-label="List view"
+                    aria-pressed="@IsListView"
+                    @onclick="() => IsListView = true">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <path
+                            d="M9 6h11M9 12h11M9 18h11" />
+
+                        <circle
+                            cx="5"
+                            cy="6"
+                            r="1" />
+
+                        <circle
+                            cx="5"
+                            cy="12"
+                            r="1" />
+
+                        <circle
+                            cx="5"
+                            cy="18"
+                            r="1" />
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        @if (FilteredCharacters.Count > 0)
+        {
+            <div
+                class="character-grid @(IsListView ? "list-view" : null)">
+
+                @foreach (
+                    var character
+                    in FilteredCharacters)
+                {
+                    <CharacterCard
+                        Character="@character"
+                        OnView="ViewCharacter" />
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <span aria-hidden="true">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M12 3 4.5 6.5v6.2c0 4.4 2.7 7.4 7.5 8.8 4.8-1.4 7.5-4.4 7.5-8.8V6.5L12 3Z" />
+
+                        <path
+                            d="m9 9 6 6m0-6-6 6" />
+
+                    </svg>
+
+                </span>
+
+                <h3>
+                    No heroes found
+                </h3>
+
+                <p>
+                    Try another search or clear
+                    the status filter.
+                </p>
+
+                <button
+                    type="button"
+                    @onclick="ClearFilters">
+
+                    Clear filters
+
+                </button>
+
+            </div>
+        }
+
+    </section>
+
+</main>
+
+
+@if (SelectedCharacter is not null)
+{
+    <CharacterSheetModal
+        Character="@SelectedCharacter"
+        OnSave="SaveCharacterAsync"
+        OnDelete="DeleteCharacterAsync"
+        OnClose="CloseCharacterSheet" />
+}
+
+
+@if (IsCreateOpen)
+{
+    <div
+        class="panel-backdrop"
+        @onclick="CloseCreatePanel">
+
+        <section
+            class="create-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="create-character-title"
+            @onclick:stopPropagation>
+
+            <div class="panel-header">
+
+                <div>
+
+                    <p class="section-kicker">
+                        Begin a new story
+                    </p>
+
+                    <h2 id="create-character-title">
+                        Create Character
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    aria-label="Close character creator"
+                    @onclick="CloseCreatePanel">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <label class="wide">
+
+                    <span>
+                        Character name
+                    </span>
+
+                    <input
+                        placeholder="e.g. Rowan Blackwood"
+                        @bind="NewName"
+                        @bind:event="oninput" />
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Ancestry
+                    </span>
+
+                    <input
+                        placeholder="e.g. Human"
+                        @bind="NewAncestry" />
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Class
+                    </span>
+
+                    <select @bind="NewClass">
+
+                        <option>Barbarian</option>
+                        <option>Bard</option>
+                        <option>Cleric</option>
+                        <option>Druid</option>
+                        <option>Fighter</option>
+                        <option>Monk</option>
+                        <option>Paladin</option>
+                        <option>Ranger</option>
+                        <option>Rogue</option>
+                        <option>Sorcerer</option>
+                        <option>Warlock</option>
+                        <option>Wizard</option>
+
+                    </select>
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Level
+                    </span>
+
+                    <input
+                        type="number"
+                        min="1"
+                        max="20"
+                        @bind="NewLevel" />
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Status
+                    </span>
+
+                    <select @bind="NewStatus">
+
+                        <option>Active</option>
+                        <option>Resting</option>
+                        <option>Archived</option>
+
+                    </select>
+
+                </label>
+
+
+                @if (AvailableCampaigns.Count > 0)
+                {
+                    <label class="wide">
+
+                        <span>
+                            Campaign
+                        </span>
+
+                        <select @bind="NewCampaignId">
+
+                            <option value="">
+                                No Campaign
+                            </option>
+
+                            @foreach (
+                                var campaign
+                                in AvailableCampaigns)
+                            {
+                                <option value="@campaign.Id">
+
+                                    @campaign.Name
+
+                                    @if (campaign.UserId ==
+                                        CurrentUserId)
+                                    {
+                                        <text>
+                                            — DM
+                                        </text>
+                                    }
+
+                                </option>
+                            }
+
+                        </select>
+
+                    </label>
+                }
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(
+                    CreateError))
+            {
+                <p class="form-error">
+                    @CreateError
+                </p>
+            }
+
+
+            <div class="panel-actions">
+
+                <button
+                    class="cancel-button"
+                    type="button"
+                    @onclick="CloseCreatePanel">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    class="save-button"
+                    type="button"
+                    @onclick="CreateCharacterAsync">
+
+                    Create Character
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+}
+
+
+@code {
+
+    private List<Character> Roster =
+        [];
+
+    private List<Campaign> AvailableCampaigns =
+        [];
+
+
+    private Character? SelectedCharacter { get; set; }
+
+    private string? CurrentUserId { get; set; }
+
+
+    private string SearchText { get; set; } =
+        string.Empty;
+
+    private string StatusFilter { get; set; } =
+        "All";
+
+    private string SortOrder { get; set; } =
+        "RecentlyUpdated";
+
+
+    private bool IsListView { get; set; }
+
+    private bool IsCreateOpen { get; set; }
+
+
+    private string NewName { get; set; } =
+        string.Empty;
+
+    private string NewAncestry { get; set; } =
+        string.Empty;
+
+    private string NewClass { get; set; } =
+        "Fighter";
+
+    private int NewLevel { get; set; } =
+        1;
+
+    private string NewStatus { get; set; } =
+        "Active";
+
+    private int? NewCampaignId { get; set; }
+
+    private string CreateError { get; set; } =
+        string.Empty;
+
+
+    protected override async Task
+        OnInitializedAsync()
+    {
+        var authenticationState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+
+        CurrentUserId =
+            authenticationState.User
+                .FindFirstValue(
+                    ClaimTypes.NameIdentifier);
+
+
+        if (string.IsNullOrWhiteSpace(
+                CurrentUserId))
+        {
+            Navigation.NavigateTo(
+                "/login?returnUrl=%2Fcharacters",
+                forceLoad: true);
+
+            return;
+        }
+
+
+        await LoadCharactersAsync();
+
+        await LoadAvailableCampaignsAsync();
+    }
+
+
+    private async Task LoadCharactersAsync()
+    {
+        if (string.IsNullOrWhiteSpace(
+                CurrentUserId))
+        {
+            Roster =
+                [];
+
+            return;
+        }
+
+
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+
+        Roster =
+            await context.Characters
+                .AsNoTracking()
+                .Where(
+                    character =>
+                        character.UserId ==
+                            CurrentUserId &&
+                        character.CharacterType ==
+                            CharacterType.PlayerCharacter)
+                .Include(
+                    character =>
+                        character.Campaign)
+                .OrderByDescending(
+                    character =>
+                        character.UpdatedAt)
+                .ToListAsync();
+    }
+
+
+    private async Task
+        LoadAvailableCampaignsAsync()
+    {
+        if (string.IsNullOrWhiteSpace(
+                CurrentUserId))
+        {
+            AvailableCampaigns =
+                [];
+
+            return;
+        }
+
+
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+
+        var joinedIds =
+            await context.CampaignMembers
+                .AsNoTracking()
+                .Where(
+                    member =>
+                        member.UserId ==
+                        CurrentUserId)
+                .Select(
+                    member =>
+                        member.CampaignId)
+                .ToListAsync();
+
+
+        AvailableCampaigns =
+            await context.Campaigns
+                .AsNoTracking()
+                .Where(
+                    campaign =>
+                        campaign.UserId ==
+                            CurrentUserId ||
+                        joinedIds.Contains(
+                            campaign.Id))
+                .OrderBy(
+                    campaign =>
+                        campaign.Name)
+                .ToListAsync();
+    }
+
+
+    private void OpenCreatePanel()
+    {
+        CreateError =
+            string.Empty;
+
+        NewCampaignId =
+            null;
+
+        IsCreateOpen =
+            true;
+    }
+
+
+    private void CloseCreatePanel()
+    {
+        IsCreateOpen =
+            false;
+
+        CreateError =
+            string.Empty;
+    }
+
+
+    private async Task CreateCharacterAsync()
+    {
+        if (string.IsNullOrWhiteSpace(
+                CurrentUserId))
+        {
+            Navigation.NavigateTo(
+                "/login?returnUrl=%2Fcharacters",
+                forceLoad: true);
+
+            return;
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+                NewName))
+        {
+            CreateError =
+                "Give the character a name before saving.";
+
+            return;
+        }
+
+
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+
+        // Do not trust the campaign ID received from
+        // the UI. Confirm that the current user owns
+        // or belongs to the selected campaign.
+        if (NewCampaignId.HasValue)
+        {
+            var campaignAllowed =
+                await context.Campaigns
+                    .AnyAsync(
+                        campaign =>
+                            campaign.Id ==
+                                NewCampaignId.Value &&
+                            (
+                                campaign.UserId ==
+                                    CurrentUserId ||
+                                campaign.Members.Any(
+                                    member =>
+                                        member.UserId ==
+                                            CurrentUserId)
+                            ));
+
+
+            if (!campaignAllowed)
+            {
+                CreateError =
+                    "You do not have access to that campaign.";
+
+                return;
+            }
+        }
+
+
+        var character =
+            new Character
+            {
+                UserId =
+                    CurrentUserId,
+
+                CampaignId =
+                    NewCampaignId,
+
+                CharacterType =
+                    CharacterType.PlayerCharacter,
+
+                Name =
+                    NewName.Trim(),
+
+                Ancestry =
+                    string.IsNullOrWhiteSpace(
+                        NewAncestry)
+                        ? "Unknown"
+                        : NewAncestry.Trim(),
+
+                ClassName =
+                    NewClass,
+
+                Level =
+                    Math.Clamp(
+                        NewLevel,
+                        1,
+                        20),
+
+                Status =
+                    NewStatus,
+
+                Theme =
+                    GetThemeForClass(
+                        NewClass),
+
+                CreatedAt =
+                    DateTime.UtcNow,
+
+                UpdatedAt =
+                    DateTime.UtcNow
+            };
+
+
+        context.Characters.Add(
+            character);
+
+        await context.SaveChangesAsync();
+
+
+        NewName =
+            string.Empty;
+
+        NewAncestry =
+            string.Empty;
+
+        NewClass =
+            "Fighter";
+
+        NewLevel =
+            1;
+
+        NewStatus =
+            "Active";
+
+        NewCampaignId =
+            null;
+
+        IsCreateOpen =
+            false;
+
+        CreateError =
+            string.Empty;
+
+
+        await LoadCharactersAsync();
+
+        await LoadAvailableCampaignsAsync();
+    }
+
+
+    private async Task SaveCharacterAsync(
+        Character updated)
+    {
+        if (string.IsNullOrWhiteSpace(
+                CurrentUserId))
+        {
+            return;
+        }
+
+
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+
+        var character =
+            await context.Characters
+                .FirstOrDefaultAsync(
+                    character =>
+                        character.Id ==
+                            updated.Id &&
+                        character.UserId ==
+                            CurrentUserId);
+
+
+        if (character is null)
+        {
+            return;
+        }
+
+
+        character.Name =
+            updated.Name;
+
+        character.Ancestry =
+            updated.Ancestry;
+
+        character.ClassName =
+            updated.ClassName;
+
+        character.Level =
+            updated.Level;
+
+        character.Strength =
+            updated.Strength;
+
+        character.Dexterity =
+            updated.Dexterity;
+
+        character.Constitution =
+            updated.Constitution;
+
+        character.Intelligence =
+            updated.Intelligence;
+
+        character.Wisdom =
+            updated.Wisdom;
+
+        character.Charisma =
+            updated.Charisma;
+
+        character.PersonalityTraits =
+            updated.PersonalityTraits;
+
+        character.Ideals =
+            updated.Ideals;
+
+        character.Bonds =
+            updated.Bonds;
+
+        character.Flaws =
+            updated.Flaws;
+
+        character.Background =
+            updated.Background;
+
+        character.Alignment =
+            updated.Alignment;
+
+        character.ArmorClass =
+            updated.ArmorClass;
+
+        character.HitPointMaximum =
+            updated.HitPointMaximum;
+
+        character.CurrentHitPoints =
+            updated.CurrentHitPoints;
+
+        character.Equipment =
+            updated.Equipment;
+
+        character.FeaturesAndTraits =
+            updated.FeaturesAndTraits;
+
+        character.Status =
+            updated.Status;
+
+        character.Theme =
+            updated.Theme;
+
+        character.UpdatedAt =
+            DateTime.UtcNow;
+
+
+        await context.SaveChangesAsync();
+
+
+        SelectedCharacter =
+            null;
+
+
+        await LoadCharactersAsync();
+    }
+
+
+    private async Task DeleteCharacterAsync(
+        Character character)
+    {
+        if (string.IsNullOrWhiteSpace(
+                CurrentUserId))
+        {
+            return;
+        }
+
+
+        await using var context =
+            await DbFactory.CreateDbContextAsync();
+
+
+        var existing =
+            await context.Characters
+                .FirstOrDefaultAsync(
+                    item =>
+                        item.Id ==
+                            character.Id &&
+                        item.UserId ==
+                            CurrentUserId);
+
+
+        if (existing is null)
+        {
+            return;
+        }
+
+
+        context.Characters.Remove(
+            existing);
+
+
+        await context.SaveChangesAsync();
+
+
+        SelectedCharacter =
+            null;
+
+
+        await LoadCharactersAsync();
+    }
+
+
+    private void CloseCharacterSheet()
+    {
+        SelectedCharacter =
+            null;
+    }
+
+
+    private void ClearFilters()
+    {
+        SearchText =
+            string.Empty;
+
+        StatusFilter =
+            "All";
+
+        SortOrder =
+            "RecentlyUpdated";
+    }
+
+
+    private void ViewCharacter(
+        Character character)
+    {
+        SelectedCharacter =
+            character;
+    }
+
+
+    private static string GetThemeForClass(
+        string className) =>
+        className switch
+        {
+            "Wizard"
+                or "Sorcerer"
+                or "Bard"
+                => "arcane",
+
+            "Warlock"
+                or "Rogue"
+                => "shadow",
+
+            "Paladin"
+                or "Cleric"
+                or "Monk"
+                => "celestial",
+
+            "Ranger"
+                or "Druid"
+                => "forest",
+
+            "Barbarian"
+                or "Fighter"
+                => "ember",
+
+            _ =>
+                "forest"
+        };
+
+
+    private List<Character> FilteredCharacters
+    {
+        get
+        {
+            IEnumerable<Character> results =
+                Roster;
+
+
+            if (!string.IsNullOrWhiteSpace(
+                    SearchText))
+            {
+                results =
+                    results.Where(
+                        character =>
+                            character.Name.Contains(
+                                SearchText,
+                                StringComparison.OrdinalIgnoreCase) ||
+
+                            character.ClassName.Contains(
+                                SearchText,
+                                StringComparison.OrdinalIgnoreCase) ||
+
+                            character.Ancestry.Contains(
+                                SearchText,
+                                StringComparison.OrdinalIgnoreCase) ||
+
+                            (
+                                character.Campaign?.Name.Contains(
+                                    SearchText,
+                                    StringComparison.OrdinalIgnoreCase)
+                                ?? false
+                            ));
+            }
+
+
+            if (StatusFilter != "All")
+            {
+                results =
+                    results.Where(
+                        character =>
+                            character.Status ==
+                            StatusFilter);
+            }
+
+
+            results =
+                SortOrder switch
+                {
+                    "Name" =>
+                        results.OrderBy(
+                            character =>
+                                character.Name),
+
+                    "LevelHigh" =>
+                        results.OrderByDescending(
+                            character =>
+                                character.Level),
+
+                    "LevelLow" =>
+                        results.OrderBy(
+                            character =>
+                                character.Level),
+
+                    _ =>
+                        results.OrderByDescending(
+                            character =>
+                                character.UpdatedAt)
+                };
+
+
+            return results.ToList();
+        }
+    }
+}

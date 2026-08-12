@@ -1,0 +1,212 @@
+@page "/notes"
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+@using System.Security.Claims
+@using CharacterChronicles.Data
+@using CharacterChronicles.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<CharacterChroniclesDbContext> DbFactory
+
+<PageTitle>My Notes</PageTitle>
+
+<h1>Character Notes</h1>
+
+@if (!isInitialized)
+{
+    <p><em>Loading...</em></p>
+}
+else if (currentUserId is null)
+{
+    <div class="alert alert-danger">You must be logged in to view notes.</div>
+}
+else
+{
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">New Note</h3>
+
+            <EditForm Model="newNote" OnValidSubmit="CreateNoteAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <InputText class="form-control" @bind-Value="newNote.Title" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Content</label>
+                    <InputTextArea class="form-control" rows="4" @bind-Value="newNote.Content" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Character (optional)</label>
+                    <InputSelect class="form-select" @bind-Value="selectedCharacterId">
+                        <option value="">-- Unassigned --</option>
+                        @foreach (var character in userCharacters)
+                        {
+                            <option value="@character.Id">@character.Name</option>
+                        }
+                    </InputSelect>
+                </div>
+
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger">@errorMessage</div>
+                }
+
+                <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                    @(isSaving ? "Saving..." : "Add Note")
+                </button>
+            </EditForm>
+        </div>
+    </div>
+
+    <h3>Your Notes</h3>
+
+    @if (notes.Count == 0)
+    {
+        <p class="text-muted">You haven't written any notes yet.</p>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+            @foreach (var note in notes)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@note.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                @(note.Character?.Name ?? "Unassigned")
+                            </h6>
+                            <p class="card-text" style="white-space: pre-wrap;">@note.Content</p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    Created @note.CreatedAt.ToLocalTime().ToString("g")
+                                </small>
+                            </p>
+                            <button class="btn btn-sm btn-outline-danger"
+                                    @onclick="() => DeleteNoteAsync(note.Id)">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+@code {
+    private CharacterChroniclesDbContext _context = default!;
+
+    private List<Note> notes = new();
+    private List<Character> userCharacters = new();
+    private Note newNote = new();
+    private int? selectedCharacterId;
+    private string? currentUserId;
+
+    private bool isInitialized;
+    private bool isSaving;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+       // TEMPORARY: Hardcode a fake user ID for testing.
+    currentUserId = "test-user-123"; 
+    newNote.UserId = currentUserId;
+    
+    // TODO: Restore this once authentication is implemented.
+    // var authState = await AuthProvider.GetAuthenticationStateAsync();
+    // currentUserId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(currentUserId))
+        {
+            isInitialized = true;
+            return;
+        }
+
+        _context = DbFactory.CreateDbContext();
+
+        await LoadDataAsync();
+        isInitialized = true;
+    }
+
+    private async Task LoadDataAsync()
+    {
+        notes = await _context.Notes
+            .Include(n => n.Character)
+            .Where(n => n.UserId == currentUserId)
+            .OrderByDescending(n => n.CreatedAt)
+            .ToListAsync();
+
+        userCharacters = await _context.Characters
+            .Where(c => c.UserId == currentUserId)
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+    }
+
+    private async Task CreateNoteAsync()
+    {
+        if (string.IsNullOrEmpty(currentUserId))
+        {
+            return;
+        }
+
+        isSaving = true;
+        errorMessage = null;
+
+        try
+        {
+            var note = new Note
+            {
+                UserId = currentUserId,
+                Title = newNote.Title,
+                Content = newNote.Content,
+                CharacterId = selectedCharacterId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.Notes.Add(note);
+            await _context.SaveChangesAsync();
+
+            newNote = new Note { UserId = currentUserId };
+            selectedCharacterId = null;
+
+            await LoadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to save note: {ex.Message}";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task DeleteNoteAsync(int noteId)
+    {
+        // Re-check UserId ownership server-side before deleting.
+        var note = await _context.Notes
+            .FirstOrDefaultAsync(n => n.Id == noteId && n.UserId == currentUserId);
+
+        if (note is not null)
+        {
+            _context.Notes.Remove(note);
+            await _context.SaveChangesAsync();
+            await LoadDataAsync();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_context is not null)
+        {
+            await _context.DisposeAsync();
+        }
+    }
+}

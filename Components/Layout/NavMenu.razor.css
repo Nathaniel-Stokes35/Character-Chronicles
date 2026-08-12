@@ -24,11 +24,16 @@
 .navigation-inner {
     position: relative;
 
-    width: min(1240px, calc(100% - 2rem));
+    width: min(
+        1240px,
+        calc(100% - 2rem)
+    );
+
     min-height: 76px;
     margin: 0 auto;
 
     display: grid;
+
     grid-template-columns:
         auto
         minmax(0, 1fr)
@@ -54,6 +59,7 @@
 .brand-symbol {
     width: 44px;
     height: 50px;
+
     flex: 0 0 44px;
 
     display: grid;
@@ -68,7 +74,9 @@
 
     fill: none;
     stroke: currentColor;
+
     stroke-width: 1.8;
+
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -88,7 +96,9 @@
 
     font-size: 1.35rem;
     font-weight: 700;
+
     line-height: 0.95;
+
     white-space: nowrap;
 }
 
@@ -102,17 +112,31 @@
 
     font-size: 0.58rem;
     font-weight: 700;
+
     letter-spacing: 0.16em;
+
     text-transform: uppercase;
+
     white-space: nowrap;
 }
+
+
+/* =========================================================
+   MAIN LINKS
+   ========================================================= */
 
 .navigation-links {
     justify-self: center;
 
     display: flex;
     align-items: stretch;
-    gap: clamp(1.3rem, 3vw, 3rem);
+
+    gap:
+        clamp(
+            1.3rem,
+            3vw,
+            3rem
+        );
 }
 
 .navigation-links ::deep a {
@@ -133,11 +157,13 @@
 
     font-size: 1rem;
     font-weight: 700;
+
     text-decoration: none;
 }
 
 .navigation-links ::deep a::after {
     position: absolute;
+
     right: 0;
     bottom: -3px;
     left: 0;
@@ -151,7 +177,8 @@
     transform: scaleX(0);
     transform-origin: center;
 
-    transition: transform 0.2s ease;
+    transition:
+        transform 0.2s ease;
 }
 
 .navigation-links ::deep a:hover,
@@ -164,21 +191,280 @@
     transform: scaleX(1);
 }
 
+
+/* =========================================================
+   ACCOUNT AREA
+   ========================================================= */
+
 .account-links {
     justify-self: end;
 
     display: flex;
     align-items: center;
+
     gap: 0.7rem;
 }
 
 .account-links ::deep a {
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   LOG IN
+   ========================================================= */
+
+.account-links ::deep .login-link {
     min-height: 42px;
     padding: 0 1.05rem;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    color: #fff5eb;
+    background: transparent;
+
+    border:
+        1px solid
+        rgba(255, 245, 235, 0.5);
+
+    border-radius: 5px;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.account-links ::deep .login-link:hover {
+    color: #ffffff;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+
+    border-color: #ffffff;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
+
+.account-links ::deep .register-link {
+    min-height: 42px;
+    padding: 0 1.05rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #410a04;
+
+    background: #ffa600;
+
+    border:
+        1px solid
+        #ffa600;
+
+    border-radius: 5px;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.account-links ::deep .register-link:hover {
+    color: #410a04;
+
+    background: #ffc13d;
+
+    border-color: #ffc13d;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   USER PROFILE PILL
+   ========================================================= */
+
+.user-pill {
+    min-height: 46px;
+
+    padding:
+        0.3rem
+        1rem
+        0.3rem
+        0.35rem;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.7rem;
+
+    color: #fff8ee;
+
+    background:
+        linear-gradient(
+            90deg,
+            #571611 0%,
+            #6e1b11 100%
+        );
+
+    border:
+        1px solid
+        rgba(255, 166, 0, 0.72);
+
+    border-radius: 999px;
+
+    box-shadow:
+        inset 0 0 0 1px
+        rgba(
+            255,
+            255,
+            255,
+            0.025
+        );
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.account-links ::deep .user-pill {
+    color: #fff8ee;
+}
+
+.account-links ::deep .user-pill:hover {
+    color: #ffffff;
+
+    border-color: #ffc13d;
+
+    background:
+        linear-gradient(
+            90deg,
+            #651a13,
+            #7d2013
+        );
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 5px 14px
+        rgba(0, 0, 0, 0.2);
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex:
+        0
+        0
+        36px;
+
+    display: grid;
+    place-items: center;
+
+    color: #410a04;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffc74e,
+            #ffa81a
+        );
+
+    border:
+        2px solid
+        rgba(
+            255,
+            224,
+            157,
+            0.82
+        );
+
+    border-radius: 50%;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.25);
+}
+
+.user-name {
+    max-width: 160px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.logout-form {
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    min-height: 42px;
+
+    padding:
+        0
+        1.05rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff5eb;
+
+    background: transparent;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            245,
+            235,
+            0.5
+        );
 
     border-radius: 5px;
 
@@ -189,7 +475,8 @@
 
     font-size: 0.95rem;
     font-weight: 700;
-    text-decoration: none;
+
+    cursor: pointer;
 
     transition:
         transform 0.2s ease,
@@ -197,40 +484,36 @@
         border-color 0.2s ease;
 }
 
-.account-links ::deep .login-link {
-    color: #fff5eb;
-    background: transparent;
-    border: 1px solid rgba(255, 245, 235, 0.5);
-}
-
-.account-links ::deep .login-link:hover {
+.logout-button:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.08);
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+
     border-color: #ffffff;
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 }
 
-.account-links ::deep .register-link {
-    color: #410a04;
-    background: #ffa600;
-    border: 1px solid #ffa600;
-}
 
-.account-links ::deep .register-link:hover {
-    color: #410a04;
-    background: #ffc13d;
-    border-color: #ffc13d;
-
-    transform: translateY(-1px);
-}
+/* =========================================================
+   MOBILE NAVIGATION
+   ========================================================= */
 
 .mobile-navigation-toggle,
 .mobile-navigation-button {
     display: none;
 }
 
+
 @media (max-width: 1000px) {
+
     .navigation-inner {
         gap: 1.1rem;
     }
@@ -239,8 +522,20 @@
         gap: 1.3rem;
     }
 
-    .account-links ::deep a {
-        padding: 0 0.75rem;
+    .account-links ::deep .login-link,
+    .account-links ::deep .register-link,
+    .logout-button {
+        padding:
+            0
+            0.75rem;
+    }
+
+    .user-name {
+        max-width: 110px;
+    }
+
+    .user-pill {
+        padding-right: 0.7rem;
     }
 
     .brand-text strong {
@@ -248,9 +543,16 @@
     }
 }
 
+
 @media (max-width: 840px) {
+
     .navigation-inner {
-        width: min(100% - 1.25rem, 1240px);
+        width:
+            min(
+                100% - 1.25rem,
+                1240px
+            );
+
         min-height: 68px;
 
         display: flex;
@@ -263,6 +565,7 @@
     .brand-symbol {
         width: 38px;
         height: 44px;
+
         flex-basis: 38px;
     }
 
@@ -282,6 +585,7 @@
         height: 1px;
 
         opacity: 0;
+
         pointer-events: none;
     }
 
@@ -306,6 +610,7 @@
         display: block;
 
         background: #fff4e8;
+
         border-radius: 5px;
 
         transition:
@@ -316,6 +621,7 @@
     .mobile-navigation-toggle:checked
         + .mobile-navigation-button
         span:nth-child(1) {
+
         transform:
             translateY(7px)
             rotate(45deg);
@@ -324,20 +630,24 @@
     .mobile-navigation-toggle:checked
         + .mobile-navigation-button
         span:nth-child(2) {
+
         opacity: 0;
     }
 
     .mobile-navigation-toggle:checked
         + .mobile-navigation-button
         span:nth-child(3) {
+
         transform:
             translateY(-7px)
             rotate(-45deg);
     }
 
+
     .navigation-links,
     .account-links {
         position: absolute;
+
         right: -0.625rem;
         left: -0.625rem;
 
@@ -346,22 +656,35 @@
         background: #170e14;
     }
 
+
     .navigation-links {
         top: 100%;
-        padding: 0.7rem 1rem;
+
+        padding:
+            0.7rem
+            1rem;
 
         flex-direction: column;
         align-items: stretch;
+
         gap: 0;
 
         border-top:
             1px solid
-            rgba(255, 255, 255, 0.08);
+            rgba(
+                255,
+                255,
+                255,
+                0.08
+            );
     }
 
     .navigation-links ::deep a {
         min-height: 45px;
-        padding: 0 0.7rem;
+
+        padding:
+            0
+            0.7rem;
 
         font-size: 1rem;
     }
@@ -370,39 +693,83 @@
         display: none;
     }
 
+
     .account-links {
-        top: calc(100% + 194px);
-        padding: 0 1rem 1rem;
+        top:
+            calc(
+                100% + 194px
+            );
+
+        padding:
+            0
+            1rem
+            1rem;
 
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
 
         gap: 0.7rem;
 
-        border-bottom: 3px solid #ffa600;
+        border-bottom:
+            3px solid
+            #ffa600;
 
         box-shadow:
             0 16px 28px
             rgba(0, 0, 0, 0.35);
     }
 
-    .account-links ::deep a {
+    .account-links ::deep .login-link,
+    .account-links ::deep .register-link {
+        width: 100%;
+
+        min-height: 45px;
+    }
+
+    .user-pill {
+        width: 100%;
+        min-width: 0;
+
+        min-height: 45px;
+
+        justify-content: flex-start;
+
+        border-radius: 5px;
+    }
+
+    .user-name {
+        max-width: none;
+    }
+
+    .logout-form {
+        width: 100%;
+    }
+
+    .logout-button {
         width: 100%;
         min-height: 45px;
     }
 
+
     .mobile-navigation-toggle:checked
         ~ .navigation-links {
+
         display: flex;
     }
 
     .mobile-navigation-toggle:checked
         ~ .account-links {
+
         display: grid;
     }
 }
 
+
 @media (max-width: 450px) {
+
     .brand-text strong {
         font-size: 0.98rem;
     }

@@ -1,0 +1,618 @@
+@page "/account"
+
+@rendermode @(new Microsoft.AspNetCore.Components.Web.InteractiveServerRenderMode(prerender: false))
+
+@using CharacterChronicles.Data
+@using CharacterChronicles.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDbContextFactory<CharacterChroniclesDbContext> DbFactory
+@inject NavigationManager Navigation
+
+<PageTitle>
+    My Account | Character Chronicles
+</PageTitle>
+
+
+@if (_loading)
+{
+    <main class="account-loading">
+
+        <i class="fa-solid fa-dice-d20"></i>
+
+        <p>
+            Opening your chronicle...
+        </p>
+
+    </main>
+}
+else if (_user is not null)
+{
+    <main class="account-page">
+
+        <section class="account-heading">
+
+            <div>
+
+                <p class="account-eyebrow">
+                    Adventurer Profile
+                </p>
+
+                <h1>
+                    My Account
+                </h1>
+
+                <p>
+                    Manage your identity, friend code,
+                    and companions.
+                </p>
+
+            </div>
+
+
+            <div class="account-identity">
+
+                <span class="account-avatar">
+                    @Initials(_user.DisplayName)
+                </span>
+
+                <div>
+
+                    <strong>
+                        @_user.DisplayName
+                    </strong>
+
+                    <span>
+                        @_user.Email
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        @if (!string.IsNullOrWhiteSpace(
+                Success))
+        {
+            <div class="account-message success-message">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                @Success
+
+            </div>
+        }
+
+
+        @if (!string.IsNullOrWhiteSpace(
+                Error))
+        {
+            <div class="account-message error-message">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                @Error
+
+            </div>
+        }
+
+
+        <div class="account-layout">
+
+            <section class="account-card profile-card">
+
+                <div class="card-heading">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Account Details
+                        </h2>
+
+                        <p>
+                            Update the information attached
+                            to your account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="post"
+                    action="/account/profile"
+                    class="account-form">
+
+                    <AntiforgeryToken />
+
+
+                    <label for="account-display-name">
+                        Display Name
+                    </label>
+
+                    <input
+                        id="account-display-name"
+                        name="displayName"
+                        type="text"
+                        maxlength="80"
+                        autocomplete="name"
+                        required
+                        value="@_user.DisplayName" />
+
+
+                    <label for="account-email">
+                        Email Address
+                    </label>
+
+                    <input
+                        id="account-email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        required
+                        value="@_user.Email" />
+
+
+                    <label for="account-password">
+                        New Password
+                    </label>
+
+                    <input
+                        id="account-password"
+                        name="newPassword"
+                        type="password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        placeholder="Leave blank to keep current password" />
+
+
+                    <p class="field-help">
+                        Only enter a password if you want
+                        to replace your current one.
+                    </p>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <section class="account-card friend-code-card">
+
+                <div class="card-heading">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Friend Connections
+                        </h2>
+
+                        <p>
+                            Share your code or enter another
+                            player's code to connect.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="friend-code-display">
+
+                    <span>
+                        Your Friend Code
+                    </span>
+
+                    <strong>
+                        @_user.FriendCode
+                    </strong>
+
+                    <p>
+                        Give this code to another player
+                        so they can add you.
+                    </p>
+
+                </div>
+
+
+                <div class="friend-divider">
+
+                    <span>
+                        Add a Friend
+                    </span>
+
+                </div>
+
+
+                @if (!string.IsNullOrWhiteSpace(
+                        FriendSuccess))
+                {
+                    <div class="inline-message success-message">
+                        @FriendSuccess
+                    </div>
+                }
+
+
+                @if (!string.IsNullOrWhiteSpace(
+                        FriendError))
+                {
+                    <div class="inline-message error-message">
+                        @FriendError
+                    </div>
+                }
+
+
+                <form
+                    method="post"
+                    action="/account/friends/add"
+                    class="friend-form">
+
+                    <AntiforgeryToken />
+
+
+                    <label for="friend-code">
+                        Enter Friend Code
+                    </label>
+
+
+                    <div class="friend-input-row">
+
+                        <input
+                            id="friend-code"
+                            name="friendCode"
+                            type="text"
+                            maxlength="12"
+                            autocomplete="off"
+                            spellcheck="false"
+                            required
+                            placeholder="ENTER CODE" />
+
+
+                        <button
+                            type="submit"
+                            class="primary-button">
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            Add Friend
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <section class="account-card friends-card">
+
+                <div class="card-heading friends-heading">
+
+                    <div class="card-heading-main">
+
+                        <div class="card-icon">
+                            <i class="fa-solid fa-user-group"></i>
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Friends
+                            </h2>
+
+                            <p>
+                                Players connected to your account.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="friend-count">
+                        @_friends.Count
+                    </span>
+
+                </div>
+
+
+                @if (_friends.Count == 0)
+                {
+                    <div class="empty-friends">
+
+                        <i class="fa-solid fa-user-group"></i>
+
+                        <strong>
+                            No companions yet
+                        </strong>
+
+                        <p>
+                            Enter a friend's code above to
+                            begin building your party.
+                        </p>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="friend-list">
+
+                        @foreach (
+                            var friend
+                            in _friends)
+                        {
+                            <article class="friend-row">
+
+                                <span class="friend-avatar">
+
+                                    @Initials(
+                                        friend.DisplayName)
+
+                                </span>
+
+
+                                <div class="friend-info">
+
+                                    <strong>
+                                        @friend.DisplayName
+                                    </strong>
+
+                                    <span>
+
+                                        Friend since
+
+                                        @FriendSince(
+                                            friend.Id)
+
+                                    </span>
+
+                                </div>
+
+
+                                <span class="friend-badge">
+                                    Friend
+                                </span>
+
+                            </article>
+                        }
+
+                    </div>
+                }
+
+            </section>
+
+        </div>
+
+    </main>
+}
+
+
+@code {
+
+    private User? _user;
+
+    private List<User> _friends =
+        [];
+
+    private Dictionary<string, DateTime>
+        _friendDates =
+            [];
+
+    private bool _loading =
+        true;
+
+
+    [SupplyParameterFromQuery(
+        Name = "success")]
+    public string? Success { get; set; }
+
+
+    [SupplyParameterFromQuery(
+        Name = "error")]
+    public string? Error { get; set; }
+
+
+    [SupplyParameterFromQuery(
+        Name = "friendSuccess")]
+    public string? FriendSuccess { get; set; }
+
+
+    [SupplyParameterFromQuery(
+        Name = "friendError")]
+    public string? FriendError { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+
+        var userId =
+            authenticationState.User
+                .FindFirstValue(
+                    ClaimTypes.NameIdentifier);
+
+
+        if (string.IsNullOrWhiteSpace(
+                userId))
+        {
+            Navigation.NavigateTo(
+                "/login?returnUrl=%2Faccount",
+                forceLoad: true);
+
+            return;
+        }
+
+
+        await using var db =
+            await DbFactory.CreateDbContextAsync();
+
+
+        _user =
+            await db.Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(
+                    user =>
+                        user.Id ==
+                        userId);
+
+
+        if (_user is null)
+        {
+            Navigation.NavigateTo(
+                "/login",
+                forceLoad: true);
+
+            return;
+        }
+
+
+        var friendshipRows =
+            await db.Friendships
+                .AsNoTracking()
+                .Where(
+                    friendship =>
+                        friendship.UserId ==
+                        userId)
+                .Select(
+                    friendship =>
+                        new
+                        {
+                            friendship.FriendUserId,
+                            friendship.CreatedAt
+                        })
+                .ToListAsync();
+
+
+        if (friendshipRows.Count > 0)
+        {
+            var friendIds =
+                friendshipRows
+                    .Select(
+                        friendship =>
+                            friendship.FriendUserId)
+                    .ToList();
+
+
+            _friendDates =
+                friendshipRows
+                    .ToDictionary(
+                        friendship =>
+                            friendship.FriendUserId,
+                        friendship =>
+                            friendship.CreatedAt);
+
+
+            _friends =
+                await db.Users
+                    .AsNoTracking()
+                    .Where(
+                        user =>
+                            friendIds.Contains(
+                                user.Id))
+                    .OrderBy(
+                        user =>
+                            user.DisplayName)
+                    .Select(
+                        user =>
+                            new User
+                            {
+                                Id =
+                                    user.Id,
+
+                                DisplayName =
+                                    user.DisplayName,
+
+                                Email =
+                                    user.Email,
+
+                                NormalizedEmail =
+                                    string.Empty,
+
+                                PasswordHash =
+                                    string.Empty,
+
+                                FriendCode =
+                                    user.FriendCode,
+
+                                CreatedAt =
+                                    user.CreatedAt
+                            })
+                    .ToListAsync();
+        }
+
+
+        _loading =
+            false;
+    }
+
+
+    private string FriendSince(
+        string friendId)
+    {
+        return
+            _friendDates.TryGetValue(
+                friendId,
+                out var date)
+                ? date.ToLocalTime()
+                    .ToString(
+                        "dd MMM yyyy")
+                : string.Empty;
+    }
+
+
+    private static string Initials(
+        string displayName)
+    {
+        var parts =
+            displayName.Split(
+                ' ',
+                StringSplitOptions
+                    .RemoveEmptyEntries);
+
+
+        return parts.Length switch
+        {
+            0 =>
+                "?",
+
+            1 =>
+                parts[0][
+                    ..Math.Min(
+                        2,
+                        parts[0].Length)]
+                    .ToUpperInvariant(),
+
+            _ =>
+                $"{parts[0][0]}{parts[^1][0]}"
+                    .ToUpperInvariant()
+        };
+    }
+}
