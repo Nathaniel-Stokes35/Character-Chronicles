@@ -1,43 +1,74 @@
-﻿<header class="top-navigation">
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
+<header class="top-navigation">
+
     <div class="navigation-inner">
 
-        <NavLink class="site-brand"
-                 href="/"
-                 Match="NavLinkMatch.All"
-                 aria-label="Character Chronicles home">
+        <NavLink
+            class="site-brand"
+            href="/"
+            Match="NavLinkMatch.All"
+            aria-label="Character Chronicles home">
 
-            <span class="brand-symbol"
-                  aria-hidden="true">
+            <span
+                class="brand-symbol"
+                aria-hidden="true">
+
                 <svg viewBox="0 0 48 48">
-                    <path d="M24 3 7 11v14c0 10 6 17 17 20 11-3 17-10 17-20V11L24 3Z" />
-                    <path d="M31 14c-8 2-13 8-15 18" />
-                    <path d="M16 32c5-4 10-5 16-4" />
+                    <path
+                        d="M24 3 7 11v14c0 10 6 17 17 20 11-3 17-10 17-20V11L24 3Z" />
+
+                    <path
+                        d="M31 14c-8 2-13 8-15 18" />
+
+                    <path
+                        d="M16 32c5-4 10-5 16-4" />
                 </svg>
+
             </span>
+
 
             <span class="brand-text">
-                <strong>Character Chronicles</strong>
-                <small>Every hero has a story</small>
+
+                <strong>
+                    Character Chronicles
+                </strong>
+
+                <small>
+                    Every hero has a story
+                </small>
+
             </span>
+
         </NavLink>
 
-        <input id="mobile-navigation-toggle"
-               class="mobile-navigation-toggle"
-               type="checkbox"
-               aria-label="Open navigation menu" />
 
-        <label class="mobile-navigation-button"
-               for="mobile-navigation-toggle">
+        <input
+            id="mobile-navigation-toggle"
+            class="mobile-navigation-toggle"
+            type="checkbox"
+            aria-label="Open navigation menu" />
+
+
+        <label
+            class="mobile-navigation-button"
+            for="mobile-navigation-toggle">
+
             <span></span>
             <span></span>
             <span></span>
+
         </label>
 
-        <nav class="navigation-links"
-             aria-label="Main navigation">
 
-            <NavLink href="/"
-                     Match="NavLinkMatch.All">
+        <nav
+            class="navigation-links"
+            aria-label="Main navigation">
+
+            <NavLink
+                href="/"
+                Match="NavLinkMatch.All">
                 Home
             </NavLink>
 
@@ -52,19 +83,130 @@
             <NavLink href="/about">
                 About
             </NavLink>
+
         </nav>
 
-        <div class="account-links">
-            <NavLink class="login-link"
-                     href="/login">
-                Log In
-            </NavLink>
 
-            <NavLink class="register-link"
-                     href="/register">
-                Create Account
-            </NavLink>
+        <div class="account-links">
+
+            <AuthorizeView>
+
+                <Authorized Context="authContext">
+
+                    <a
+                        class="user-pill"
+                        href="/account"
+                        title="Open account">
+
+                        <span
+                            class="user-avatar"
+                            aria-hidden="true">
+
+                            @Initials(
+                                DisplayName(
+                                    authContext.User))
+
+                        </span>
+
+                        <span class="user-name">
+
+                            @DisplayName(
+                                authContext.User)
+
+                        </span>
+
+                    </a>
+
+
+                    <form
+                        method="post"
+                        action="/account/logout"
+                        class="logout-form">
+
+                        <AntiforgeryToken />
+
+                        <button
+                            type="submit"
+                            class="logout-button">
+
+                            Log Out
+
+                        </button>
+
+                    </form>
+
+                </Authorized>
+
+
+                <NotAuthorized>
+
+                    <NavLink
+                        class="login-link"
+                        href="/login">
+
+                        Log In
+
+                    </NavLink>
+
+
+                    <NavLink
+                        class="register-link"
+                        href="/register">
+
+                        Create Account
+
+                    </NavLink>
+
+                </NotAuthorized>
+
+            </AuthorizeView>
+
         </div>
 
     </div>
+
 </header>
+
+
+@code {
+
+    private static string DisplayName(
+        ClaimsPrincipal user)
+    {
+        return
+            user.FindFirst(
+                "display_name")
+                ?.Value
+            ?? user.Identity?.Name
+            ?? "Adventurer";
+    }
+
+
+    private static string Initials(
+        string displayName)
+    {
+        var parts =
+            displayName.Split(
+                ' ',
+                StringSplitOptions
+                    .RemoveEmptyEntries);
+
+
+        return parts.Length switch
+        {
+            0 =>
+                "?",
+
+            1 =>
+                parts[0][
+                    ..Math.Min(
+                        2,
+                        parts[0].Length)]
+                    .ToUpperInvariant(),
+
+            _ =>
+                $"{parts[0][0]}{parts[^1][0]}"
+                    .ToUpperInvariant()
+        };
+    }
+}

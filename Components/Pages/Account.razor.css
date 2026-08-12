@@ -1,0 +1,994 @@
+.account-page {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.account-loading {
+    min-height: 60vh;
+
+    display: grid;
+    place-items: center;
+    align-content: center;
+
+    gap: 1rem;
+
+    color: #6b2117;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.account-loading i {
+    color: #b62610;
+    font-size: 2.4rem;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.account-heading {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 2rem;
+
+    border-bottom:
+        1px solid
+        rgba(114, 55, 35, 0.17);
+}
+
+.account-eyebrow {
+    margin: 0 0 0.4rem;
+
+    color: #a64416;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.account-heading h1 {
+    margin: 0;
+
+    color: #5e0d08;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            2.8rem,
+            6vw,
+            4.7rem
+        );
+
+    line-height: 1;
+}
+
+.account-heading
+    > div:first-child
+    > p:last-child {
+
+    margin: 0.8rem 0 0;
+
+    color: #755d53;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.08rem;
+}
+
+
+/* =========================================================
+   USER IDENTITY
+   ========================================================= */
+
+.account-identity {
+    padding:
+        0.55rem
+        1.15rem
+        0.55rem
+        0.55rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.85rem;
+
+    flex-shrink: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #53100d,
+            #721b12
+        );
+
+    border:
+        1px solid
+        rgba(255, 166, 0, 0.66);
+
+    border-radius: 999px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(80, 18, 7, 0.16);
+}
+
+.account-avatar,
+.friend-avatar {
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    color: #4c1007;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffc444,
+            #ffa818
+        );
+
+    border:
+        2px solid
+        rgba(255, 225, 157, 0.78);
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 800;
+}
+
+.account-avatar {
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+}
+
+.account-identity > div {
+    display: grid;
+}
+
+.account-identity strong {
+    color: #fff8ed;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.05rem;
+}
+
+.account-identity span:last-child {
+    color: #d9ae86;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.86rem;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.account-message,
+.inline-message {
+    border-radius: 7px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+.account-message {
+    margin-bottom: 1.5rem;
+
+    padding:
+        0.9rem
+        1.1rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.65rem;
+}
+
+.inline-message {
+    margin-bottom: 1rem;
+
+    padding:
+        0.75rem
+        0.9rem;
+}
+
+.success-message {
+    color: #285425;
+
+    background: #edf7e9;
+
+    border:
+        1px solid
+        #bdd8b4;
+}
+
+.error-message {
+    color: #77170f;
+
+    background: #fff0ec;
+
+    border:
+        1px solid
+        #e9bbb2;
+}
+
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
+
+.account-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(320px, 0.85fr);
+
+    gap: 1.35rem;
+
+    align-items: start;
+}
+
+.account-card {
+    padding: 1.7rem;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.82),
+            rgba(255, 250, 241, 0.67)
+        );
+
+    border:
+        1px solid
+        rgba(143, 86, 54, 0.24);
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 10px 28px
+        rgba(74, 22, 8, 0.06);
+}
+
+
+/* =========================================================
+   CARD HEADINGS
+   ========================================================= */
+
+.card-heading,
+.card-heading-main {
+    display: flex;
+    align-items: center;
+
+    gap: 0.95rem;
+}
+
+.card-heading {
+    margin-bottom: 1.5rem;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: grid;
+    place-items: center;
+
+    color: #fff6e8;
+
+    background:
+        linear-gradient(
+            145deg,
+            #74130c,
+            #b72c10
+        );
+
+    border:
+        1px solid
+        rgba(228, 145, 30, 0.7);
+
+    border-radius: 8px;
+}
+
+.card-heading h2 {
+    margin: 0;
+
+    color: #581711;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.card-heading p {
+    margin:
+        0.15rem
+        0
+        0;
+
+    color: #7c6257;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   ACCOUNT FORM
+   ========================================================= */
+
+.account-form {
+    display: grid;
+
+    gap: 0.65rem;
+}
+
+.account-form label,
+.friend-form label {
+    color: #55271f;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.account-form label:not(:first-child) {
+    margin-top: 0.65rem;
+}
+
+.account-form input,
+.friend-input-row input {
+    width: 100%;
+    min-height: 48px;
+
+    padding:
+        0
+        0.9rem;
+
+    color: #44251f;
+
+    background: #fffefa;
+
+    border:
+        1px solid
+        #d9c2ad;
+
+    border-radius: 6px;
+
+    outline: none;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1rem;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.account-form input:focus,
+.friend-input-row input:focus {
+    border-color: #b94318;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(185, 67, 24, 0.1);
+}
+
+.field-help {
+    margin:
+        -0.1rem
+        0
+        0.65rem;
+
+    color: #967b70;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.86rem;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.primary-button {
+    min-height: 46px;
+
+    padding:
+        0
+        1.2rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    color: #401006;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffbd2f,
+            #ee970d
+        );
+
+    border:
+        1px solid
+        #d58105;
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 5px 14px
+        rgba(126, 58, 5, 0.14);
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease;
+}
+
+.primary-button:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(126, 58, 5, 0.2);
+}
+
+
+/* =========================================================
+   FRIEND CONNECTION CARD
+   ========================================================= */
+
+.friend-code-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-code-display {
+    padding:
+        1.65rem
+        1.5rem;
+
+    display: grid;
+    place-items: center;
+
+    gap: 0.45rem;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #221015,
+            #53110e
+        );
+
+    border:
+        1px solid
+        rgba(255, 169, 18, 0.5);
+
+    border-radius: 9px;
+
+    box-shadow:
+        inset 0 0 30px
+        rgba(0, 0, 0, 0.12);
+}
+
+.friend-code-display > span {
+    color: #d6a878;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.73rem;
+    font-weight: 700;
+
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+}
+
+.friend-code-display > strong {
+    color: #ffb52b;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            1.7rem,
+            4vw,
+            2.4rem
+        );
+
+    letter-spacing: 0.18em;
+}
+
+.friend-code-display > p {
+    margin:
+        0.25rem
+        0
+        0;
+
+    color: #d8b89a;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   FRIEND DIVIDER
+   ========================================================= */
+
+.friend-divider {
+    position: relative;
+
+    margin:
+        1.5rem
+        0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend-divider::before {
+    position: absolute;
+
+    right: 0;
+    left: 0;
+
+    height: 1px;
+
+    content: "";
+
+    background:
+        rgba(121, 72, 46, 0.18);
+}
+
+.friend-divider span {
+    position: relative;
+    z-index: 1;
+
+    padding:
+        0
+        0.8rem;
+
+    color: #8a4a33;
+
+    background: #fffaf2;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ADD FRIEND FORM
+   ========================================================= */
+
+.friend-form {
+    display: grid;
+
+    gap: 0.55rem;
+}
+
+.friend-input-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+    gap: 0.7rem;
+}
+
+.friend-input-row input {
+    text-transform: uppercase;
+
+    letter-spacing: 0.12em;
+}
+
+.friend-input-row input::placeholder {
+    color: #aaa3a0;
+
+    letter-spacing: 0.12em;
+}
+
+.friend-input-row .primary-button {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   FRIEND LIST
+   ========================================================= */
+
+.friends-card {
+    grid-column: 1 / -1;
+}
+
+.friends-heading {
+    justify-content: space-between;
+}
+
+.friend-count {
+    min-width: 34px;
+    height: 34px;
+
+    padding:
+        0
+        0.55rem;
+
+    display: grid;
+    place-items: center;
+
+    color: #fff7e9;
+
+    background: #78180e;
+
+    border:
+        1px solid
+        rgba(255, 166, 0, 0.45);
+
+    border-radius: 999px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+.friend-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 0.8rem;
+}
+
+.friend-row {
+    padding:
+        0.9rem
+        1rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.85rem;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.58
+        );
+
+    border:
+        1px solid
+        rgba(139, 84, 55, 0.18);
+
+    border-radius: 8px;
+
+    transition:
+        border-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.friend-row:hover {
+    border-color:
+        rgba(145, 62, 30, 0.28);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 6px 14px
+        rgba(78, 25, 8, 0.05);
+}
+
+.friend-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    font-size: 0.78rem;
+}
+
+.friend-info {
+    min-width: 0;
+
+    display: grid;
+
+    flex: 1;
+}
+
+.friend-info strong {
+    overflow: hidden;
+
+    color: #56231a;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.friend-info span {
+    color: #92786c;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.82rem;
+}
+
+.friend-badge {
+    padding:
+        0.25rem
+        0.6rem;
+
+    color: #81500b;
+
+    background: #fff4cf;
+
+    border:
+        1px solid
+        #ebd393;
+
+    border-radius: 999px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   EMPTY FRIENDS
+   ========================================================= */
+
+.empty-friends {
+    padding:
+        2.8rem
+        1rem;
+
+    display: grid;
+    place-items: center;
+
+    gap: 0.55rem;
+
+    text-align: center;
+
+    color: #80675c;
+
+    border:
+        1px dashed
+        rgba(130, 78, 51, 0.28);
+
+    border-radius: 8px;
+}
+
+.empty-friends > i {
+    margin-bottom: 0.3rem;
+
+    color: #a63b1e;
+
+    font-size: 2rem;
+}
+
+.empty-friends strong {
+    color: #5d2b22;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.15rem;
+}
+
+.empty-friends p {
+    margin: 0;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .account-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .account-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .friends-card {
+        grid-column: auto;
+    }
+
+    .friend-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .account-page {
+        width:
+            min(
+                100% - 1rem,
+                1180px
+            );
+
+        padding-top: 2.5rem;
+    }
+
+    .account-identity {
+        width: 100%;
+
+        border-radius: 9px;
+    }
+
+    .account-card {
+        padding: 1.25rem;
+    }
+
+    .friend-code-display {
+        padding:
+            1.4rem
+            1rem;
+    }
+
+    .friend-code-display > strong {
+        letter-spacing: 0.12em;
+    }
+
+    .friend-input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .friend-input-row .primary-button {
+        width: 100%;
+    }
+
+    .friend-badge {
+        display: none;
+    }
+}

@@ -1,0 +1,1482 @@
+.campaign-detail-page {
+    min-height: calc(100vh - 76px);
+
+    color: #5e342b;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fffaf3,
+            #f5e8d9
+        );
+}
+
+.campaign-detail-loading,
+.campaign-not-found {
+    min-height: 65vh;
+
+    display: grid;
+    place-items: center;
+    align-content: center;
+
+    gap: 1rem;
+
+    text-align: center;
+
+    color: #653020;
+}
+
+.campaign-detail-loading i,
+.campaign-not-found i {
+    color: #a72c14;
+    font-size: 2.7rem;
+}
+
+.campaign-not-found h1 {
+    margin: 0;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+}
+
+.campaign-not-found p {
+    margin: 0;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.campaign-not-found a {
+    color: #8a210f;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.detail-hero {
+    padding:
+        2.3rem
+        1.5rem
+        3rem;
+
+    color: #fff8ee;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(255, 166, 0, 0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            105deg,
+            #170d14,
+            #351016 58%,
+            #5b100b
+        );
+
+    border-bottom:
+        3px solid
+        #ffa600;
+}
+
+.detail-hero-inner {
+    width:
+        min(
+            1180px,
+            100%
+        );
+
+    margin:
+        0
+        auto;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.45rem;
+
+    margin-bottom: 1.6rem;
+
+    color: #d9b89b;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #ffffff;
+}
+
+.hero-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 2rem;
+}
+
+.detail-eyebrow {
+    margin:
+        0
+        0
+        0.5rem;
+
+    color: #e49848;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+}
+
+.detail-hero h1 {
+    margin: 0;
+
+    color: #fff8ed;
+
+    font-family:
+        "UnifrakturCook",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            3.2rem,
+            6vw,
+            5.6rem
+        );
+
+    line-height: 0.9;
+}
+
+.hero-meta {
+    margin-top: 1.1rem;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    color: #d8bda9;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.hero-meta span {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.4rem;
+}
+
+.hero-meta i {
+    color: #f5a521;
+}
+
+.dm-badge {
+    padding:
+        0.5rem
+        0.9rem;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.5rem;
+
+    color: #431007;
+
+    background: #ffb327;
+
+    border-radius: 999px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 800;
+}
+
+.dm-badge.player {
+    color: #fff;
+
+    background: #704869;
+}
+
+
+/* =========================================================
+   WORKSPACE
+   ========================================================= */
+
+.detail-workspace {
+    width:
+        min(
+            1180px,
+            calc(100% - 2rem)
+        );
+
+    margin:
+        0
+        auto;
+
+    padding:
+        2rem
+        0
+        6rem;
+}
+
+.detail-message {
+    margin-bottom: 1.3rem;
+
+    padding:
+        0.85rem
+        1rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.55rem;
+
+    color: #633219;
+
+    background: #fff1cd;
+
+    border:
+        1px solid
+        #e8ca7f;
+
+    border-radius: 7px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+.detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(280px, 0.5fr);
+
+    gap: 1.2rem;
+}
+
+.detail-card {
+    padding: 1.6rem;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    border:
+        1px solid
+        rgba(145, 87, 54, 0.24);
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 10px 28px
+        rgba(71, 23, 9, 0.055);
+}
+
+.card-heading {
+    margin-bottom: 1.5rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.9rem;
+}
+
+.heading-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: grid;
+    place-items: center;
+
+    color: #fff7e9;
+
+    background:
+        linear-gradient(
+            145deg,
+            #74130c,
+            #b92c10
+        );
+
+    border:
+        1px solid
+        rgba(226, 145, 28, 0.7);
+
+    border-radius: 8px;
+}
+
+.card-heading h2 {
+    margin: 0;
+
+    color: #59170f;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.45rem;
+}
+
+.card-heading p {
+    margin:
+        0.1rem
+        0
+        0;
+
+    color: #836b60;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+
+.overview-section {
+    margin-bottom: 1.6rem;
+}
+
+.overview-label {
+    display: block;
+
+    margin-bottom: 0.35rem;
+
+    color: #a04b26;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+}
+
+.overview-section p {
+    margin: 0;
+
+    color: #71594f;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.05rem;
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+}
+
+.overview-columns {
+    margin-bottom: 1.6rem;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 1rem;
+}
+
+.overview-columns > div {
+    padding: 1rem;
+
+    background: #fffaf3;
+
+    border:
+        1px solid
+        rgba(139, 84, 55, 0.16);
+
+    border-radius: 7px;
+}
+
+.overview-columns strong {
+    color: #59251b;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.dm-notes {
+    padding: 1rem;
+
+    background: #fff5dc;
+
+    border:
+        1px solid
+        #ead59e;
+
+    border-radius: 7px;
+}
+
+
+/* =========================================================
+   FACTS
+   ========================================================= */
+
+.fact-row {
+    padding:
+        0.85rem
+        0;
+
+    display: flex;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    border-bottom:
+        1px solid
+        rgba(119, 69, 48, 0.12);
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.fact-row:last-child {
+    border-bottom: 0;
+}
+
+.fact-row span {
+    color: #8d756b;
+}
+
+.fact-row strong {
+    color: #572219;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   EDIT FORM
+   ========================================================= */
+
+.edit-form {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 1rem;
+}
+
+.edit-form label {
+    display: grid;
+
+    gap: 0.4rem;
+}
+
+.edit-form .wide {
+    grid-column: 1 / -1;
+}
+
+.edit-form label > span {
+    color: #57241b;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+.edit-form input,
+.edit-form textarea,
+.edit-form select {
+    width: 100%;
+
+    padding:
+        0.75rem
+        0.85rem;
+
+    color: #4c3027;
+
+    background: #fffefa;
+
+    border:
+        1px solid
+        #d9c2ad;
+
+    border-radius: 6px;
+
+    outline: none;
+
+    font: inherit;
+}
+
+.edit-form input,
+.edit-form select {
+    min-height: 46px;
+}
+
+.edit-form textarea {
+    resize: vertical;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus,
+.edit-form select:focus {
+    border-color: #b74319;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(183, 67, 25, 0.1);
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 0.7rem;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.primary-button {
+    min-height: 44px;
+
+    padding:
+        0
+        1.05rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    color: #401006;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffbd30,
+            #ee970d
+        );
+
+    border:
+        1px solid
+        #d58105;
+
+    border-radius: 6px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.primary-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px
+        rgba(107, 51, 5, 0.2);
+}
+
+.cancel-button {
+    min-height: 44px;
+
+    padding:
+        0
+        1rem;
+
+    color: #6e3b2d;
+
+    background: transparent;
+
+    border:
+        1px solid
+        #cbb09a;
+
+    border-radius: 6px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.edit-button {
+    margin-top: 0.5rem;
+}
+
+
+/* =========================================================
+   PLAYERS
+   ========================================================= */
+
+.players-card {
+    margin-top: 1.2rem;
+}
+
+.players-header {
+    margin-bottom: 1rem;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+.players-header .card-heading {
+    margin-bottom: 0;
+}
+
+.add-player-panel {
+    margin-bottom: 1.3rem;
+
+    padding: 1rem;
+
+    background: #f8ebdc;
+
+    border:
+        1px solid
+        #dcc3aa;
+
+    border-radius: 8px;
+}
+
+.add-player-panel-heading {
+    margin-bottom: 1rem;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+.add-player-panel-heading > div {
+    display: grid;
+
+    gap: 0.2rem;
+}
+
+.add-player-panel-heading strong {
+    color: #5d2117;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.1rem;
+}
+
+.add-player-panel-heading p {
+    margin: 0;
+
+    color: #80685d;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.close-player-picker {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: grid;
+    place-items: center;
+
+    color: #762718;
+
+    background: transparent;
+
+    border:
+        1px solid
+        #d5b9a3;
+
+    border-radius: 50%;
+
+    font-size: 1.25rem;
+
+    cursor: pointer;
+}
+
+.close-player-picker:hover {
+    color: #ffffff;
+
+    background: #7b1a0e;
+
+    border-color: #7b1a0e;
+}
+
+.friend-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 0.6rem;
+}
+
+.friend-options button {
+    padding: 0.7rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.7rem;
+
+    color: inherit;
+
+    background: #fffdf8;
+
+    border:
+        1px solid
+        #dfc7b2;
+
+    border-radius: 7px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.friend-options button:hover {
+    border-color: #bd7855;
+
+    background: #fffaf2;
+}
+
+.friend-options button > span:nth-child(2) {
+    display: grid;
+
+    flex: 1;
+}
+
+.friend-options strong {
+    color: #5c2319;
+}
+
+.friend-options small {
+    color: #8d756a;
+}
+
+.friend-options button > i {
+    color: #a82e14;
+}
+
+.no-available-friends {
+    padding: 1.5rem;
+
+    display: grid;
+    place-items: center;
+
+    gap: 0.4rem;
+
+    text-align: center;
+
+    background:
+        rgba(255, 255, 255, 0.5);
+
+    border:
+        1px dashed
+        rgba(125, 72, 46, 0.28);
+
+    border-radius: 7px;
+}
+
+.no-available-friends i {
+    margin-bottom: 0.25rem;
+
+    color: #a33117;
+
+    font-size: 1.6rem;
+}
+
+.no-available-friends strong {
+    color: #5d2419;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 1.05rem;
+}
+
+.no-available-friends p {
+    max-width: 450px;
+
+    margin: 0;
+
+    color: #826a60;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.no-available-friends a {
+    margin-top: 0.4rem;
+
+    color: #912610;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+.player-groups {
+    display: grid;
+
+    gap: 1rem;
+}
+
+.player-group {
+    padding: 1rem;
+
+    background:
+        rgba(255, 251, 244, 0.78);
+
+    border:
+        1px solid
+        rgba(137, 79, 51, 0.2);
+
+    border-radius: 8px;
+}
+
+.player-header {
+    display: flex;
+    align-items: center;
+
+    gap: 0.75rem;
+
+    padding-bottom: 0.8rem;
+
+    border-bottom:
+        1px solid
+        rgba(121, 70, 48, 0.13);
+}
+
+.player-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: grid;
+    place-items: center;
+
+    color: #491006;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffc448,
+            #f3a414
+        );
+
+    border-radius: 50%;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 800;
+}
+
+.player-avatar.dm {
+    color: #fff9ed;
+
+    background:
+        linear-gradient(
+            145deg,
+            #67110b,
+            #a92910
+        );
+}
+
+.player-name {
+    min-width: 0;
+
+    display: grid;
+
+    flex: 1;
+}
+
+.player-name strong,
+.player-header > div strong {
+    color: #582118;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.player-name span,
+.player-header > div span {
+    color: #947b70;
+
+    font-size: 0.82rem;
+}
+
+.owner-badge {
+    width: fit-content;
+
+    padding:
+        0.28rem
+        0.65rem;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.35rem;
+
+    flex: 0 0 auto;
+
+    color: #74420c;
+
+    background: #fff0c4;
+
+    border:
+        1px solid
+        #e6ce8a;
+
+    border-radius: 999px;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   REMOVE PLAYER BUTTON
+   ========================================================= */
+
+.remove-player-button {
+    width: fit-content;
+    min-width: 0;
+
+    height: auto;
+    min-height: 36px;
+
+    padding:
+        0.42rem
+        0.85rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.4rem;
+
+    flex:
+        0
+        0
+        auto;
+
+    color: #fff8ee;
+
+    background:
+        linear-gradient(
+            180deg,
+            #922819,
+            #72180f
+        );
+
+    border:
+        1px solid
+        #aa4935;
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 3px 8px
+        rgba(92, 25, 14, 0.18);
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.88rem;
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.remove-player-button i {
+    flex:
+        0
+        0
+        auto;
+
+    font-size: 0.8rem;
+}
+
+.remove-player-button span {
+    display: inline-block;
+
+    width: auto;
+
+    color: inherit;
+
+    font-size: inherit;
+
+    line-height: 1;
+}
+
+.remove-player-button:hover {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            180deg,
+            #aa321f,
+            #841d12
+        );
+
+    border-color: #c15a40;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 5px 12px
+        rgba(92, 25, 14, 0.25);
+}
+
+.remove-player-button:active {
+    transform:
+        translateY(0);
+
+    box-shadow:
+        0 2px 5px
+        rgba(92, 25, 14, 0.2);
+}
+
+.remove-player-button:focus-visible {
+    outline:
+        3px solid
+        rgba(181, 55, 31, 0.22);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   CHARACTERS
+   ========================================================= */
+
+.player-character-list {
+    padding-top: 0.7rem;
+
+    display: grid;
+
+    gap: 0.55rem;
+}
+
+.linked-character {
+    padding: 0.7rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.7rem;
+
+    background:
+        rgba(255, 255, 255, 0.68);
+
+    border:
+        1px solid
+        rgba(130, 76, 50, 0.14);
+
+    border-radius: 7px;
+}
+
+.character-avatar {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: grid;
+    place-items: center;
+
+    color: #fff8ee;
+
+    background: #79180e;
+
+    border-radius: 50%;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 800;
+}
+
+.linked-character > div {
+    min-width: 0;
+
+    display: grid;
+
+    flex: 1;
+}
+
+.linked-character strong {
+    color: #562218;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.linked-character div > span {
+    color: #8b7166;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: 0.84rem;
+}
+
+.character-status {
+    width: fit-content;
+
+    padding:
+        0.23rem
+        0.55rem;
+
+    flex:
+        0
+        0
+        auto;
+
+    color: #6f470d;
+
+    background: #fff0c7;
+
+    border:
+        1px solid
+        #ecd59d;
+
+    border-radius: 999px;
+
+    font-size: 0.73rem;
+
+    white-space: nowrap;
+}
+
+.no-character {
+    margin: 0;
+
+    padding: 0.7rem;
+
+    color: #9a8277;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-style: italic;
+}
+
+.joined-character-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 0.7rem;
+}
+
+.no-linked-characters {
+    padding: 2.5rem;
+
+    display: grid;
+    place-items: center;
+
+    text-align: center;
+
+    border:
+        1px dashed
+        #d3b59e;
+
+    border-radius: 8px;
+}
+
+.no-linked-characters > i {
+    color: #9e2a13;
+
+    font-size: 2rem;
+}
+
+.no-linked-characters h3 {
+    margin:
+        0.8rem
+        0
+        0.3rem;
+
+    color: #5d2419;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.no-linked-characters p {
+    max-width: 480px;
+
+    margin:
+        0
+        0
+        1rem;
+
+    color: #80675d;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+}
+
+.no-linked-characters a {
+    color: #8f220f;
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-title-row,
+    .players-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .friend-options,
+    .joined-character-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .players-header .primary-button {
+        align-self: flex-start;
+    }
+}
+
+
+@media (max-width: 620px) {
+
+    .detail-workspace {
+        width:
+            min(
+                100% - 1rem,
+                1180px
+            );
+    }
+
+    .detail-hero {
+        padding:
+            2rem
+            1rem;
+    }
+
+    .overview-columns,
+    .edit-form {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-form .wide {
+        grid-column: auto;
+    }
+
+    .detail-card {
+        padding: 1.2rem;
+    }
+
+    .edit-actions {
+        display: grid;
+
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+    .player-header {
+        align-items: flex-start;
+    }
+
+    .remove-player-button {
+        width: fit-content;
+        min-width: 0;
+        height: auto;
+
+        padding:
+            0.4rem
+            0.7rem;
+
+        border-radius: 6px;
+    }
+
+    .remove-player-button span {
+        display: inline-block;
+    }
+
+    .character-status {
+        display: none;
+    }
+}
+
+
+@media (max-width: 430px) {
+
+    .player-header {
+        flex-wrap: wrap;
+    }
+
+    .player-name {
+        flex:
+            1
+            1
+            calc(100% - 60px);
+    }
+
+    .remove-player-button {
+        margin-left: 54px;
+    }
+
+    .owner-badge {
+        margin-left: 54px;
+    }
+
+    .edit-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-actions button {
+        width: 100%;
+    }
+}

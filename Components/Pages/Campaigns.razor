@@ -1,78 +1,1471 @@
 @page "/campaigns"
 
-<PageTitle>Campaigns | Character Chronicles</PageTitle>
+@rendermode @(new Microsoft.AspNetCore.Components.Web.InteractiveServerRenderMode(prerender: false))
 
-<section class="holder-page campaigns-page">
-    <div class="holder-symbol"
-         aria-hidden="true">
-        20
-    </div>
+@using CharacterChronicles.Data
+@using CharacterChronicles.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
 
-    <div class="holder-shell">
-        <p class="holder-eyebrow">
-            The Campaign Archive
+@inject IDbContextFactory<CharacterChroniclesDbContext> DbFactory
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<PageTitle>
+    Campaigns | Character Chronicles
+</PageTitle>
+
+
+@if (_loading)
+{
+    <main class="campaign-loading">
+
+        <i class="fa-solid fa-dice-d20"></i>
+
+        <p>
+            Opening the campaign archive...
         </p>
 
-        <h1>
-            Your Next Great Campaign
-            <br />
-            <span>Is Being Prepared</span>
-        </h1>
+    </main>
+}
+else
+{
+    <main class="campaigns-page">
 
-        <p class="holder-intro">
-            The campaign manager is still being forged. Soon you will
-            be able to organise adventures, connect heroes, and keep
-            every chapter of your party's story in one place.
-        </p>
+        <section class="campaign-hero">
 
-        <div class="holder-card-grid">
-            <article class="holder-card">
-                <i class="fa-solid fa-book-open"
-                   aria-hidden="true"></i>
+            <div class="campaign-hero-inner">
 
-                <h2>Create Campaigns</h2>
+                <div>
 
-                <p>
-                    Set up a new adventure with its own title,
-                    setting, notes, and current status.
+                    <p class="eyebrow">
+                        The Campaign Archive
+                    </p>
+
+                    <h1>
+                        Campaigns
+                    </h1>
+
+                    <p class="hero-copy">
+                        Gather your party, organise your worlds,
+                        and keep every adventure in one place.
+                    </p>
+
+                </div>
+
+
+                @if (_activeTab == "mine")
+                {
+                    <button
+                        type="button"
+                        class="create-campaign-button"
+                        @onclick="OpenCreatePanelAsync">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create Campaign
+
+                    </button>
+                }
+
+            </div>
+
+        </section>
+
+
+        <section class="campaign-workspace">
+
+            <div class="campaign-tabs">
+
+                <button
+                    type="button"
+                    class="@(_activeTab == "mine" ? "active" : null)"
+                    @onclick='() => _activeTab = "mine"'>
+
+                    <i class="fa-solid fa-crown"></i>
+
+                    My Campaigns
+
+                    <span>
+                        @_myCampaigns.Count
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="@(_activeTab == "joined" ? "active" : null)"
+                    @onclick='() => _activeTab = "joined"'>
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Joined Campaigns
+
+                    <span>
+                        @_joinedCampaigns.Count
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            @if (_activeTab == "mine")
+            {
+                <div class="campaign-section-heading">
+
+                    <div>
+
+                        <p class="section-kicker">
+                            Dungeon Master
+                        </p>
+
+                        <h2>
+                            Campaigns You Created
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="secondary-create-button"
+                        @onclick="OpenCreatePanelAsync">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        New Campaign
+
+                    </button>
+
+                </div>
+
+
+                @if (_myCampaigns.Count == 0)
+                {
+                    <div class="empty-campaigns">
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                        <h3>
+                            Your first adventure awaits
+                        </h3>
+
+                        <p>
+                            Create a campaign and invite friends
+                            from your Character Chronicles account.
+                        </p>
+
+                        <button
+                            type="button"
+                            @onclick="OpenCreatePanelAsync">
+
+                            Create Campaign
+
+                        </button>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="campaign-grid">
+
+                        @foreach (
+                            var campaign
+                            in _myCampaigns)
+                        {
+                            <a
+                                class="campaign-card"
+                                href="@($"/campaigns/{campaign.Id}")">
+
+                                <div class="campaign-card-top">
+
+                                    <span class="campaign-status">
+                                        @campaign.Status
+                                    </span>
+
+                                    <span class="campaign-role">
+                                        DM
+                                    </span>
+
+                                </div>
+
+
+                                <div class="campaign-icon">
+
+                                    <i class="fa-solid fa-dungeon"></i>
+
+                                </div>
+
+
+                                <h3>
+                                    @campaign.Name
+                                </h3>
+
+
+                                <p class="campaign-setting">
+
+                                    @(string.IsNullOrWhiteSpace(
+                                        campaign.Setting)
+                                        ? "Setting not specified"
+                                        : campaign.Setting)
+
+                                </p>
+
+
+                                <p class="campaign-description">
+
+                                    @(string.IsNullOrWhiteSpace(
+                                        campaign.Description)
+                                        ? "No campaign description has been written yet."
+                                        : campaign.Description)
+
+                                </p>
+
+
+                                <div class="campaign-meta">
+
+                                    <span>
+
+                                        <i class="fa-solid fa-users"></i>
+
+                                        @MemberCount(
+                                            campaign.Id)
+                                        players
+
+                                    </span>
+
+                                    <span>
+
+                                        <i class="fa-solid fa-user-shield"></i>
+
+                                        @CharacterCount(
+                                            campaign.Id)
+                                        characters
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="campaign-card-footer">
+
+                                    <span>
+                                        @campaign.GameSystem
+                                    </span>
+
+                                    <strong>
+
+                                        Open Campaign
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </strong>
+
+                                </div>
+
+                            </a>
+                        }
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="campaign-section-heading">
+
+                    <div>
+
+                        <p class="section-kicker">
+                            Your Adventures
+                        </p>
+
+                        <h2>
+                            Campaigns You've Joined
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                @if (_joinedCampaigns.Count == 0)
+                {
+                    <div class="empty-campaigns">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <h3>
+                            No joined campaigns yet
+                        </h3>
+
+                        <p>
+                            When one of your friends adds you
+                            to their campaign, it will appear here.
+                        </p>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="campaign-grid">
+
+                        @foreach (
+                            var campaign
+                            in _joinedCampaigns)
+                        {
+                            <a
+                                class="campaign-card"
+                                href="@($"/campaigns/{campaign.Id}")">
+
+                                <div class="campaign-card-top">
+
+                                    <span class="campaign-status">
+                                        @campaign.Status
+                                    </span>
+
+                                    <span class="campaign-role player">
+                                        Player
+                                    </span>
+
+                                </div>
+
+
+                                <div class="campaign-icon player-icon">
+
+                                    <i class="fa-solid fa-scroll"></i>
+
+                                </div>
+
+
+                                <h3>
+                                    @campaign.Name
+                                </h3>
+
+
+                                <p class="campaign-setting">
+
+                                    @(string.IsNullOrWhiteSpace(
+                                        campaign.Setting)
+                                        ? "Setting not specified"
+                                        : campaign.Setting)
+
+                                </p>
+
+
+                                <p class="campaign-description">
+
+                                    @(string.IsNullOrWhiteSpace(
+                                        campaign.Description)
+                                        ? "No campaign description has been written yet."
+                                        : campaign.Description)
+
+                                </p>
+
+
+                                <div class="campaign-meta">
+
+                                    <span>
+
+                                        <i class="fa-solid fa-user"></i>
+
+                                        DM:
+                                        @OwnerName(
+                                            campaign.UserId)
+
+                                    </span>
+
+                                    <span>
+
+                                        <i class="fa-solid fa-user-shield"></i>
+
+                                        @MyCharacterCount(
+                                            campaign.Id)
+
+                                        my characters
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="campaign-card-footer">
+
+                                    <span>
+                                        @campaign.GameSystem
+                                    </span>
+
+                                    <strong>
+
+                                        View Campaign
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </strong>
+
+                                </div>
+
+                            </a>
+                        }
+
+                    </div>
+                }
+            }
+
+        </section>
+
+    </main>
+}
+
+
+@if (_createOpen)
+{
+    <div
+        class="campaign-modal-backdrop"
+        @onclick="CloseCreatePanel">
+
+        <section
+            class="campaign-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="new-campaign-title"
+            @onclick:stopPropagation>
+
+            <div class="modal-header">
+
+                <div>
+
+                    <p class="section-kicker">
+                        Begin a New Chronicle
+                    </p>
+
+                    <h2 id="new-campaign-title">
+                        Create Campaign
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="close-button"
+                    aria-label="Close campaign creator"
+                    @onclick="CloseCreatePanel">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="campaign-form">
+
+                <label class="wide">
+
+                    <span>
+                        Campaign Name *
+                    </span>
+
+                    <input
+                        placeholder="e.g. Curse of Strahd"
+                        @bind="_newName"
+                        @bind:event="oninput" />
+
+                </label>
+
+
+                <label class="wide">
+
+                    <span>
+                        Description
+                    </span>
+
+                    <textarea
+                        rows="4"
+                        placeholder="What is this campaign about?"
+                        @bind="_newDescription">
+                    </textarea>
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Setting / World
+                    </span>
+
+                    <input
+                        placeholder="e.g. Barovia"
+                        @bind="_newSetting" />
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Game System
+                    </span>
+
+                    <input
+                        placeholder="D&D 5e"
+                        @bind="_newGameSystem" />
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Session Schedule
+                    </span>
+
+                    <input
+                        placeholder="e.g. Fridays at 7 PM"
+                        @bind="_newSchedule" />
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        Status
+                    </span>
+
+                    <select @bind="_newStatus">
+
+                        <option>
+                            Active
+                        </option>
+
+                        <option>
+                            Planning
+                        </option>
+
+                        <option>
+                            On Hold
+                        </option>
+
+                        <option>
+                            Completed
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+                <label class="wide">
+
+                    <span>
+                        DM Notes
+                    </span>
+
+                    <textarea
+                        rows="4"
+                        placeholder="Private notes for your campaign..."
+                        @bind="_newDmNotes">
+                    </textarea>
+
+                </label>
+
+
+                <div class="wide player-builder">
+
+                    <div class="player-builder-heading">
+
+                        <div>
+
+                            <span class="field-title">
+                                Players
+                            </span>
+
+                            <small>
+                                Select friends to add when
+                                the campaign is created.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (_selectedFriendIds.Count > 0)
+                    {
+                        <div class="selected-player-list">
+
+                            @foreach (
+                                var friend
+                                in SelectedFriends)
+                            {
+                                <div class="selected-player">
+
+                                    <span class="player-avatar">
+
+                                        @Initials(
+                                            friend.DisplayName)
+
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            @friend.DisplayName
+                                        </strong>
+
+                                        <span>
+                                            @friend.Email
+                                        </span>
+
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        aria-label="Remove player"
+                                        @onclick="() => RemoveSelectedFriend(friend.Id)">
+
+                                        ×
+
+                                    </button>
+
+                                </div>
+                            }
+
+                        </div>
+                    }
+
+
+                    @if (_friendPickerOpen)
+                    {
+                        <div class="friend-picker">
+
+                            @if (_friendsLoading)
+                            {
+                                <p>
+                                    Loading friends...
+                                </p>
+                            }
+                            else if (AvailableFriends.Count == 0)
+                            {
+                                <p>
+                                    No more friends are available
+                                    to add.
+                                </p>
+                            }
+                            else
+                            {
+                                @foreach (
+                                    var friend
+                                    in AvailableFriends)
+                                {
+                                    <button
+                                        type="button"
+                                        class="friend-choice"
+                                        @onclick="() => SelectFriend(friend.Id)">
+
+                                        <span class="player-avatar">
+
+                                            @Initials(
+                                                friend.DisplayName)
+
+                                        </span>
+
+                                        <span>
+
+                                            <strong>
+                                                @friend.DisplayName
+                                            </strong>
+
+                                            <small>
+                                                Add to campaign
+                                            </small>
+
+                                        </span>
+
+                                        <i class="fa-solid fa-plus"></i>
+
+                                    </button>
+                                }
+                            }
+
+                        </div>
+                    }
+
+
+                    <button
+                        type="button"
+                        class="add-player-button"
+                        @onclick="ToggleFriendPickerAsync">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        Add Player
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(
+                    _createError))
+            {
+                <p class="form-error">
+                    @_createError
                 </p>
-            </article>
+            }
 
-            <article class="holder-card">
-                <i class="fa-solid fa-users"
-                   aria-hidden="true"></i>
 
-                <h2>Gather Your Party</h2>
+            <div class="modal-actions">
 
-                <p>
-                    Assign saved characters to campaigns and keep
-                    the whole adventuring group together.
-                </p>
-            </article>
+                <button
+                    type="button"
+                    class="cancel-button"
+                    @onclick="CloseCreatePanel">
 
-            <article class="holder-card">
-                <i class="fa-solid fa-scroll"
-                   aria-hidden="true"></i>
+                    Cancel
 
-                <h2>Record the Journey</h2>
+                </button>
 
-                <p>
-                    Return to old adventures and review the important
-                    events from every campaign.
-                </p>
-            </article>
-        </div>
 
-        <div class="holder-actions">
-            <a class="holder-primary"
-               href="/characters">
-                View Characters
-            </a>
+                <button
+                    type="button"
+                    class="save-button"
+                    disabled="@_savingCampaign"
+                    @onclick="CreateCampaignAsync">
 
-            <a class="holder-secondary"
-               href="/">
-                Return Home
-            </a>
-        </div>
+                    @if (_savingCampaign)
+                    {
+                        <span>
+                            Creating...
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                            Create Campaign
+                        </span>
+                    }
+
+                </button>
+
+            </div>
+
+        </section>
+
     </div>
-</section>
+}
+
+
+@code {
+
+    private string? _currentUserId;
+
+    private bool _loading =
+        true;
+
+    private bool _createOpen;
+
+    private bool _friendPickerOpen;
+
+    private bool _friendsLoaded;
+
+    private bool _friendsLoading;
+
+    private bool _savingCampaign;
+
+    private string _activeTab =
+        "mine";
+
+    private string _createError =
+        string.Empty;
+
+
+    private List<Campaign> _myCampaigns =
+        [];
+
+    private List<Campaign> _joinedCampaigns =
+        [];
+
+    private List<User> _friends =
+        [];
+
+
+    private Dictionary<int, int>
+        _memberCounts =
+            [];
+
+    private Dictionary<int, int>
+        _characterCounts =
+            [];
+
+    private Dictionary<int, int>
+        _myCharacterCounts =
+            [];
+
+    private Dictionary<string, string>
+        _ownerNames =
+            [];
+
+
+    private HashSet<string>
+        _selectedFriendIds =
+            [];
+
+
+    private string _newName =
+        string.Empty;
+
+    private string _newDescription =
+        string.Empty;
+
+    private string _newSetting =
+        string.Empty;
+
+    private string _newGameSystem =
+        "D&D 5e";
+
+    private string _newSchedule =
+        string.Empty;
+
+    private string _newStatus =
+        "Active";
+
+    private string _newDmNotes =
+        string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+
+        _currentUserId =
+            authenticationState.User
+                .FindFirstValue(
+                    ClaimTypes.NameIdentifier);
+
+
+        if (string.IsNullOrWhiteSpace(
+                _currentUserId))
+        {
+            Navigation.NavigateTo(
+                "/login?returnUrl=%2Fcampaigns",
+                forceLoad: true);
+
+            return;
+        }
+
+
+        await LoadDataAsync();
+
+        _loading =
+            false;
+    }
+
+
+    private async Task LoadDataAsync()
+    {
+        if (string.IsNullOrWhiteSpace(
+                _currentUserId))
+        {
+            return;
+        }
+
+
+        await using var db =
+            await DbFactory.CreateDbContextAsync();
+
+
+        _myCampaigns =
+            await db.Campaigns
+                .AsNoTracking()
+                .Where(
+                    campaign =>
+                        campaign.UserId ==
+                        _currentUserId)
+                .OrderByDescending(
+                    campaign =>
+                        campaign.UpdatedAt)
+                .ToListAsync();
+
+
+        var joinedCampaignIds =
+            await db.CampaignMembers
+                .AsNoTracking()
+                .Where(
+                    member =>
+                        member.UserId ==
+                        _currentUserId)
+                .Select(
+                    member =>
+                        member.CampaignId)
+                .ToListAsync();
+
+
+        _joinedCampaigns =
+            joinedCampaignIds.Count == 0
+                ? []
+                : await db.Campaigns
+                    .AsNoTracking()
+                    .Where(
+                        campaign =>
+                            joinedCampaignIds.Contains(
+                                campaign.Id) &&
+                            campaign.UserId !=
+                                _currentUserId)
+                    .OrderByDescending(
+                        campaign =>
+                            campaign.UpdatedAt)
+                    .ToListAsync();
+
+
+        var visibleIds =
+            _myCampaigns
+                .Select(
+                    campaign =>
+                        campaign.Id)
+                .Concat(
+                    _joinedCampaigns
+                        .Select(
+                            campaign =>
+                                campaign.Id))
+                .Distinct()
+                .ToList();
+
+
+        if (visibleIds.Count > 0)
+        {
+            _memberCounts =
+                await db.CampaignMembers
+                    .AsNoTracking()
+                    .Where(
+                        member =>
+                            visibleIds.Contains(
+                                member.CampaignId))
+                    .GroupBy(
+                        member =>
+                            member.CampaignId)
+                    .Select(
+                        group =>
+                            new
+                            {
+                                CampaignId =
+                                    group.Key,
+
+                                Count =
+                                    group.Count()
+                            })
+                    .ToDictionaryAsync(
+                        row =>
+                            row.CampaignId,
+                        row =>
+                            row.Count);
+
+
+            _characterCounts =
+                await db.Characters
+                    .AsNoTracking()
+                    .Where(
+                        character =>
+                            character.CampaignId
+                                .HasValue &&
+                            visibleIds.Contains(
+                                character.CampaignId
+                                    .Value))
+                    .GroupBy(
+                        character =>
+                            character.CampaignId!.Value)
+                    .Select(
+                        group =>
+                            new
+                            {
+                                CampaignId =
+                                    group.Key,
+
+                                Count =
+                                    group.Count()
+                            })
+                    .ToDictionaryAsync(
+                        row =>
+                            row.CampaignId,
+                        row =>
+                            row.Count);
+
+
+            _myCharacterCounts =
+                await db.Characters
+                    .AsNoTracking()
+                    .Where(
+                        character =>
+                            character.UserId ==
+                                _currentUserId &&
+                            character.CampaignId
+                                .HasValue &&
+                            visibleIds.Contains(
+                                character.CampaignId
+                                    .Value))
+                    .GroupBy(
+                        character =>
+                            character.CampaignId!.Value)
+                    .Select(
+                        group =>
+                            new
+                            {
+                                CampaignId =
+                                    group.Key,
+
+                                Count =
+                                    group.Count()
+                            })
+                    .ToDictionaryAsync(
+                        row =>
+                            row.CampaignId,
+                        row =>
+                            row.Count);
+        }
+        else
+        {
+            _memberCounts =
+                [];
+
+            _characterCounts =
+                [];
+
+            _myCharacterCounts =
+                [];
+        }
+
+
+        var ownerIds =
+            _joinedCampaigns
+                .Select(
+                    campaign =>
+                        campaign.UserId)
+                .Distinct()
+                .ToList();
+
+
+        _ownerNames =
+            ownerIds.Count == 0
+                ? []
+                : await db.Users
+                    .AsNoTracking()
+                    .Where(
+                        user =>
+                            ownerIds.Contains(
+                                user.Id))
+                    .Select(
+                        user =>
+                            new
+                            {
+                                user.Id,
+                                user.DisplayName
+                            })
+                    .ToDictionaryAsync(
+                        user =>
+                            user.Id,
+                        user =>
+                            user.DisplayName);
+    }
+
+
+    private async Task LoadFriendsAsync()
+    {
+        if (_friendsLoaded ||
+            string.IsNullOrWhiteSpace(
+                _currentUserId))
+        {
+            return;
+        }
+
+
+        _friendsLoading =
+            true;
+
+
+        try
+        {
+            await using var db =
+                await DbFactory.CreateDbContextAsync();
+
+
+            var friendIds =
+                await db.Friendships
+                    .AsNoTracking()
+                    .Where(
+                        friendship =>
+                            friendship.UserId ==
+                            _currentUserId)
+                    .Select(
+                        friendship =>
+                            friendship.FriendUserId)
+                    .ToListAsync();
+
+
+            _friends =
+                friendIds.Count == 0
+                    ? []
+                    : await db.Users
+                        .AsNoTracking()
+                        .Where(
+                            user =>
+                                friendIds.Contains(
+                                    user.Id))
+                        .OrderBy(
+                            user =>
+                                user.DisplayName)
+                        .ToListAsync();
+
+
+            _friendsLoaded =
+                true;
+        }
+        finally
+        {
+            _friendsLoading =
+                false;
+        }
+    }
+
+
+    private async Task OpenCreatePanelAsync()
+    {
+        _createError =
+            string.Empty;
+
+        _friendPickerOpen =
+            false;
+
+        _selectedFriendIds.Clear();
+
+        _createOpen =
+            true;
+
+        await Task.CompletedTask;
+    }
+
+
+    private void CloseCreatePanel()
+    {
+        _createOpen =
+            false;
+
+        _friendPickerOpen =
+            false;
+
+        _createError =
+            string.Empty;
+    }
+
+
+    private async Task ToggleFriendPickerAsync()
+    {
+        if (!_friendPickerOpen)
+        {
+            await LoadFriendsAsync();
+        }
+
+        _friendPickerOpen =
+            !_friendPickerOpen;
+    }
+
+
+    private void SelectFriend(
+        string userId)
+    {
+        _selectedFriendIds.Add(
+            userId);
+
+        _friendPickerOpen =
+            false;
+    }
+
+
+    private void RemoveSelectedFriend(
+        string userId)
+    {
+        _selectedFriendIds.Remove(
+            userId);
+    }
+
+
+    private async Task CreateCampaignAsync()
+    {
+        if (_savingCampaign ||
+            string.IsNullOrWhiteSpace(
+                _currentUserId))
+        {
+            return;
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+                _newName))
+        {
+            _createError =
+                "Campaign name is required.";
+
+            return;
+        }
+
+
+        _savingCampaign =
+            true;
+
+
+        try
+        {
+            await using var db =
+                await DbFactory.CreateDbContextAsync();
+
+
+            var campaign =
+                new Campaign
+                {
+                    UserId =
+                        _currentUserId,
+
+                    Name =
+                        _newName.Trim(),
+
+                    Description =
+                        _newDescription.Trim(),
+
+                    Setting =
+                        _newSetting.Trim(),
+
+                    GameSystem =
+                        string.IsNullOrWhiteSpace(
+                            _newGameSystem)
+                            ? "D&D 5e"
+                            : _newGameSystem.Trim(),
+
+                    SessionSchedule =
+                        _newSchedule.Trim(),
+
+                    Status =
+                        _newStatus,
+
+                    DmNotes =
+                        _newDmNotes.Trim(),
+
+                    IsActive =
+                        _newStatus !=
+                        "Completed",
+
+                    CreatedAt =
+                        DateTime.UtcNow,
+
+                    UpdatedAt =
+                        DateTime.UtcNow
+                };
+
+
+            db.Campaigns.Add(
+                campaign);
+
+
+            await db.SaveChangesAsync();
+
+
+            if (_selectedFriendIds.Count > 0)
+            {
+                var validFriendIds =
+                    await db.Friendships
+                        .AsNoTracking()
+                        .Where(
+                            friendship =>
+                                friendship.UserId ==
+                                    _currentUserId &&
+                                _selectedFriendIds
+                                    .Contains(
+                                        friendship
+                                            .FriendUserId))
+                        .Select(
+                            friendship =>
+                                friendship
+                                    .FriendUserId)
+                        .ToListAsync();
+
+
+                var joinedAt =
+                    DateTime.UtcNow;
+
+
+                foreach (
+                    var friendId
+                    in validFriendIds)
+                {
+                    db.CampaignMembers.Add(
+                        new CampaignMember
+                        {
+                            CampaignId =
+                                campaign.Id,
+
+                            UserId =
+                                friendId,
+
+                            JoinedAt =
+                                joinedAt
+                        });
+                }
+
+
+                await db.SaveChangesAsync();
+            }
+
+
+            ResetCreateForm();
+
+
+            _createOpen =
+                false;
+
+
+            Navigation.NavigateTo(
+                $"/campaigns/{campaign.Id}");
+        }
+        finally
+        {
+            _savingCampaign =
+                false;
+        }
+    }
+
+
+    private void ResetCreateForm()
+    {
+        _newName =
+            string.Empty;
+
+        _newDescription =
+            string.Empty;
+
+        _newSetting =
+            string.Empty;
+
+        _newGameSystem =
+            "D&D 5e";
+
+        _newSchedule =
+            string.Empty;
+
+        _newStatus =
+            "Active";
+
+        _newDmNotes =
+            string.Empty;
+
+        _createError =
+            string.Empty;
+
+        _friendPickerOpen =
+            false;
+
+        _selectedFriendIds.Clear();
+    }
+
+
+    private int MemberCount(
+        int campaignId)
+    {
+        return
+            (_memberCounts.TryGetValue(
+                campaignId,
+                out var count)
+                ? count
+                : 0) + 1;
+    }
+
+
+    private int CharacterCount(
+        int campaignId)
+    {
+        return
+            _characterCounts.TryGetValue(
+                campaignId,
+                out var count)
+                ? count
+                : 0;
+    }
+
+
+    private int MyCharacterCount(
+        int campaignId)
+    {
+        return
+            _myCharacterCounts.TryGetValue(
+                campaignId,
+                out var count)
+                ? count
+                : 0;
+    }
+
+
+    private string OwnerName(
+        string ownerId)
+    {
+        return
+            _ownerNames.TryGetValue(
+                ownerId,
+                out var name)
+                ? name
+                : "Dungeon Master";
+    }
+
+
+    private List<User> SelectedFriends =>
+        _friends
+            .Where(
+                friend =>
+                    _selectedFriendIds.Contains(
+                        friend.Id))
+            .ToList();
+
+
+    private List<User> AvailableFriends =>
+        _friends
+            .Where(
+                friend =>
+                    !_selectedFriendIds.Contains(
+                        friend.Id))
+            .ToList();
+
+
+    private static string Initials(
+        string displayName)
+    {
+        var parts =
+            displayName.Split(
+                ' ',
+                StringSplitOptions
+                    .RemoveEmptyEntries);
+
+
+        return parts.Length switch
+        {
+            0 =>
+                "?",
+
+            1 =>
+                parts[0][
+                    ..Math.Min(
+                        2,
+                        parts[0].Length)]
+                    .ToUpperInvariant(),
+
+            _ =>
+                $"{parts[0][0]}{parts[^1][0]}"
+                    .ToUpperInvariant()
+        };
+    }
+}

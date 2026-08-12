@@ -1,117 +1,262 @@
 @page "/register"
 
-<PageTitle>Create Account | Character Chronicles</PageTitle>
+<PageTitle>
+    Create Account | Character Chronicles
+</PageTitle>
+
 
 <section class="auth-page register-page">
-    <div class="auth-decoration"
-         aria-hidden="true">
+
+    <div
+        class="auth-decoration"
+        aria-hidden="true">
+
         20
+
     </div>
 
+
     <div class="auth-card">
+
         <div class="auth-artwork">
-            <div class="auth-rings"
-                 aria-hidden="true">
+
+            <div
+                class="auth-rings"
+                aria-hidden="true">
             </div>
 
-            <i class="fa-solid fa-feather-pointed"
-               aria-hidden="true"></i>
+
+            <i
+                class="fa-solid fa-feather-pointed"
+                aria-hidden="true">
+            </i>
+
 
             <p>
                 Begin a new chronicle
             </p>
+
 
             <h1>
                 Create Your
                 <br />
                 Account
             </h1>
+
         </div>
 
+
         <div class="auth-content">
+
             <p class="auth-eyebrow">
                 Join the Adventure
             </p>
 
-            <h2>Sign Up</h2>
+
+            <h2>
+                Sign Up
+            </h2>
+
 
             <p class="auth-intro">
-                Create a place for every hero, campaign, and
-                chapter still to come.
+                Create your account to save characters,
+                manage your profile, and connect with
+                friends through Character Chronicles.
             </p>
 
-            <form class="auth-form">
+
+            @if (!string.IsNullOrWhiteSpace(
+                    Error))
+            {
+                <p
+                    class="auth-error"
+                    role="alert">
+
+                    @Error
+
+                </p>
+            }
+
+
+            <form
+                class="auth-form"
+                method="post"
+                action="/account/register">
+
+                <AntiforgeryToken />
+
+
+                <input
+                    type="hidden"
+                    name="returnUrl"
+                    value="@ResolvedReturnUrl" />
+
+
                 <label for="register-name">
                     Display name
                 </label>
 
-                <div class="auth-field">
-                    <i class="fa-solid fa-user"
-                       aria-hidden="true"></i>
 
-                    <input id="register-name"
-                           name="displayName"
-                           type="text"
-                           autocomplete="name"
-                           placeholder="Your adventurer name" />
+                <div class="auth-field">
+
+                    <i
+                        class="fa-solid fa-user"
+                        aria-hidden="true">
+                    </i>
+
+
+                    <input
+                        id="register-name"
+                        name="displayName"
+                        type="text"
+                        autocomplete="name"
+                        maxlength="80"
+                        required
+                        placeholder="Your adventurer name" />
+
                 </div>
+
 
                 <label for="register-email">
                     Email address
                 </label>
 
-                <div class="auth-field">
-                    <i class="fa-solid fa-envelope"
-                       aria-hidden="true"></i>
 
-                    <input id="register-email"
-                           name="email"
-                           type="email"
-                           autocomplete="email"
-                           placeholder="adventurer@example.com" />
+                <div class="auth-field">
+
+                    <i
+                        class="fa-solid fa-envelope"
+                        aria-hidden="true">
+                    </i>
+
+
+                    <input
+                        id="register-email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        maxlength="320"
+                        required
+                        placeholder="adventurer@example.com" />
+
                 </div>
+
 
                 <label for="register-password">
                     Password
                 </label>
 
-                <div class="auth-field">
-                    <i class="fa-solid fa-lock"
-                       aria-hidden="true"></i>
 
-                    <input id="register-password"
-                           name="password"
-                           type="password"
-                           autocomplete="new-password"
-                           placeholder="Create a password" />
+                <div class="auth-field">
+
+                    <i
+                        class="fa-solid fa-lock"
+                        aria-hidden="true">
+                    </i>
+
+
+                    <input
+                        id="register-password"
+                        name="password"
+                        type="password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                        placeholder="At least 8 characters" />
+
                 </div>
 
+
+                <p class="auth-help">
+                    Your account will also receive a
+                    unique friend code after registration.
+                </p>
+
+
                 <label class="auth-check">
-                    <input type="checkbox"
-                           name="terms" />
+
+                    <input
+                        type="checkbox"
+                        name="terms"
+                        required />
 
                     <span>
-                        I agree to the terms of the archive
+                        I agree to the terms of
+                        the archive
                     </span>
+
                 </label>
 
+
                 <button type="submit">
+
                     Create My Account
+
                 </button>
+
             </form>
 
+
             <p class="auth-switch">
+
                 Already have an account?
 
-                <a href="/login">
+                <a href="@LoginLink">
                     Log in
                 </a>
+
             </p>
 
-            <p class="auth-note">
-                This is currently a visual placeholder.
-                Account creation can be connected later.
-            </p>
         </div>
+
     </div>
+
 </section>
+
+
+@code {
+
+    [SupplyParameterFromQuery(
+        Name = "error")]
+    public string? Error { get; set; }
+
+
+    [SupplyParameterFromQuery(
+        Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+
+    private string ResolvedReturnUrl
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(
+                    ReturnUrl))
+            {
+                return "/account";
+            }
+
+
+            if (!ReturnUrl.StartsWith('/') ||
+                ReturnUrl.StartsWith("//"))
+            {
+                return "/account";
+            }
+
+
+            return ReturnUrl;
+        }
+    }
+
+
+    private string LoginLink
+    {
+        get
+        {
+            return
+                $"/login?returnUrl=" +
+                Uri.EscapeDataString(
+                    ResolvedReturnUrl);
+        }
+    }
+}

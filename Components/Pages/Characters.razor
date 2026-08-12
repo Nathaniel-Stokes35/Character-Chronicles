@@ -1,180 +1,69 @@
 @page "/characters"
-@rendermode InteractiveServer
+
+@rendermode @(new Microsoft.AspNetCore.Components.Web.InteractiveServerRenderMode(prerender: false))
+
 @namespace CharacterChronicles.Components.Pages
-@using CharacterChronicles.Data
-@using CharacterChronicles.Models
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
 
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<title>Characters | Character Chronicles</title>
+<PageTitle>
+    Characters | Character Chronicles
+</PageTitle>
+
 
 @if (_isLoading)
 {
     <div class="characters-loading">
-        Loading your chronicles...
+
+        <i class="fa-solid fa-dice-d20"></i>
+
+        <span>
+            Loading your chronicles...
+        </span>
+
     </div>
-}
-else if (_dmCampaigns.Count == 0)
-{
-    <PersonalCharacterLibrary />
 }
 else
 {
-    <main class="characters-page">
-
-        <section class="characters-hero">
-            <div class="hero-inner">
-                <div>
-                    <p class="eyebrow">
-                        The adventurer's archive
-                    </p>
-
-                    <h1>Your Chronicles</h1>
-
-                    <p class="hero-copy">
-                        Choose a campaign to manage its characters,
-                        or continue with your personal heroes.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="characters-workspace">
-
-            <div class="library-heading">
-                <div>
-                    <p class="section-kicker">
-                        Your campaigns
-                    </p>
-
-                    <h2>
-                        Choose your next adventure
-                    </h2>
-                </div>
-            </div>
-
-            <div class="campaign-grid">
-
-                <button type="button"
-                        class="campaign-card personal-card"
-                        @onclick="OpenPersonalCharacters">
-
-                    <span class="campaign-card-icon">
-                        ⚔
-                    </span>
-
-                    <div>
-                        <span class="section-kicker">
-                            Personal library
-                        </span>
-
-                        <h3>
-                            Personal Player Characters
-                        </h3>
-
-                        <p>
-                            Characters you own outside your
-                            Dungeon Master campaigns.
-                        </p>
-                    </div>
-
-                </button>
-
-                @foreach (var campaign in _dmCampaigns)
-                {
-                    <button type="button"
-                            class="campaign-card"
-                            @onclick="() => OpenCampaign(campaign.Id)">
-
-                        <span class="section-kicker">
-                            Dungeon Master
-                        </span>
-
-                        <h3>
-                            @campaign.Name
-                        </h3>
-
-                        <p>
-                            @campaign.Description
-                        </p>
-
-                        <div class="campaign-card-footer">
-                            <span>
-                                @campaign.Characters.Count
-                                @(campaign.Characters.Count == 1
-                                    ? "character"
-                                    : "characters")
-                            </span>
-
-                            <span>
-                                Open campaign →
-                            </span>
-                        </div>
-
-                    </button>
-                }
-
-            </div>
-
-        </section>
-
-    </main>
+    <PersonalCharacterLibrary />
 }
 
+
 @code {
-    private bool _isLoading = true;
 
-    private List<Campaign> _dmCampaigns = [];
+    private bool _isLoading =
+        true;
 
-    @*protected override async Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
         var authenticationState =
             await AuthenticationStateProvider
                 .GetAuthenticationStateAsync();
 
-        var user =
-            authenticationState.User;
 
         var userId =
-            user.FindFirstValue(
-                ClaimTypes.NameIdentifier);
+            authenticationState.User
+                .FindFirstValue(
+                    ClaimTypes.NameIdentifier);
 
-        if (string.IsNullOrWhiteSpace(userId))
+
+        if (string.IsNullOrWhiteSpace(
+                userId))
         {
             Navigation.NavigateTo(
-                "/Account/Login",
+                "/login?returnUrl=%2Fcharacters",
                 forceLoad: true);
 
             return;
         }
 
-        await using var context =
-            await DbFactory.CreateDbContextAsync();
 
-        _dmCampaigns =
-            await context.Campaigns
-                .AsNoTracking()
-                .Where(campaign =>
-                    campaign.UserId == userId)
-                .Include(campaign =>
-                    campaign.Characters)
-                .OrderByDescending(campaign =>
-                    campaign.UpdatedAt)
-                .ToListAsync();
-
-        _isLoading = false;
-    }*@
-
-    private void OpenPersonalCharacters()
-    {
-        Navigation.NavigateTo(
-            "/characters/personal");
-    }
-
-    private void OpenCampaign(
-        int campaignId)
-    {
-        Navigation.NavigateTo(
-            $"/campaigns/{campaignId}/characters");
+        _isLoading =
+            false;
     }
 }
