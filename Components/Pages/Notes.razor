@@ -1,4 +1,5 @@
 @page "/notes"
+@attribute [Authorize]
 @rendermode InteractiveServer
 @implements IAsyncDisposable
 @using System.Security.Claims
@@ -7,6 +8,8 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<CharacterChroniclesDbContext> DbFactory
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthProvider
 
 <PageTitle>My Notes</PageTitle>
 
@@ -114,13 +117,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-       // TEMPORARY: Hardcode a fake user ID for testing.
-    currentUserId = "test-user-123"; 
-    newNote.UserId = currentUserId;
-    
-    // TODO: Restore this once authentication is implemented.
-    // var authState = await AuthProvider.GetAuthenticationStateAsync();
-    // currentUserId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        currentUserId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (string.IsNullOrEmpty(currentUserId))
         {
@@ -130,6 +128,7 @@ else
 
         _context = DbFactory.CreateDbContext();
 
+        newNote.UserId = currentUserId;
         await LoadDataAsync();
         isInitialized = true;
     }
