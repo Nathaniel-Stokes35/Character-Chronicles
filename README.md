@@ -1,3 +1,7 @@
+# Documentation of the project
+
+There is also a FAQ section on the page that works as an user guide.
+
 # D&D Character Chronicles
 
 D&D Character Chronicles is a web application for creating, organizing, and managing Dungeons & Dragons 5th Edition characters.
