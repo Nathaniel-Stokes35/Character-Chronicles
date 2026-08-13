@@ -500,6 +500,10 @@ else
     private AuthenticationStateProvider AuthenticationStateProvider
         { get; set; } = default!;
 
+    [Inject]
+    private NavigationManager NavigationManager
+        { get; set; } = default!;
+
     private string _currentUserId = string.Empty;
     private bool _isDevelopment;
     private bool _isLoading = true;
@@ -550,18 +554,20 @@ else
         _isDevelopment =
             Environment.IsDevelopment();
 
-        var authState =
+        var authenticationState =
             await AuthenticationStateProvider
                 .GetAuthenticationStateAsync();
 
-        _currentUserId =
-            authState.User.FindFirstValue(
-                ClaimTypes.NameIdentifier)
-            ?? string.Empty;
+        var userId =
+            authenticationState.User.FindFirstValue(
+                ClaimTypes.NameIdentifier);
 
-        if (string.IsNullOrWhiteSpace(_currentUserId))
+        if (string.IsNullOrWhiteSpace(userId))
         {
-            _isLoading = false;
+            NavigationManager.NavigateTo(
+                "/login",
+                forceLoad: true);
+
             return;
         }
 
