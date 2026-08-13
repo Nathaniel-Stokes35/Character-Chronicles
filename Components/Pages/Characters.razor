@@ -289,7 +289,8 @@ else
 
                                     @foreach (var roll in AbilityRolls)
                                     {
-                                        <option value="@roll.Id">
+                                        <option value="@roll.Id"
+                                            disabled="@IsRollUsed(roll.Id, StrengthRollId)">
                                             @roll.Value
                                         </option>
                                     }
@@ -304,7 +305,8 @@ else
 
                                     @foreach (var roll in AbilityRolls)
                                     {
-                                        <option value="@roll.Id">
+                                        <option value="@roll.Id"
+                                            disabled="@IsRollUsed(roll.Id, DexterityRollId)">
                                             @roll.Value
                                         </option>
                                     }
@@ -319,7 +321,8 @@ else
 
                                     @foreach (var roll in AbilityRolls)
                                     {
-                                        <option value="@roll.Id">
+                                        <option value="@roll.Id"
+                                            disabled="@IsRollUsed(roll.Id, ConstitutionRollId)">
                                             @roll.Value
                                         </option>
                                     }
@@ -334,7 +337,8 @@ else
 
                                     @foreach (var roll in AbilityRolls)
                                     {
-                                        <option value="@roll.Id">
+                                        <option value="@roll.Id"
+                                            disabled="@IsRollUsed(roll.Id, IntelligenceRollId)">
                                             @roll.Value
                                         </option>
                                     }
@@ -349,7 +353,8 @@ else
 
                                     @foreach (var roll in AbilityRolls)
                                     {
-                                        <option value="@roll.Id">
+                                        <option value="@roll.Id"
+                                            disabled="@IsRollUsed(roll.Id, WisdomRollId)">
                                             @roll.Value
                                         </option>
                                     }
@@ -364,7 +369,8 @@ else
 
                                     @foreach (var roll in AbilityRolls)
                                     {
-                                        <option value="@roll.Id">
+                                        <option value="@roll.Id"
+                                            disabled="@IsRollUsed(roll.Id, CharismaRollId)">
                                             @roll.Value
                                         </option>
                                     }
@@ -858,6 +864,28 @@ else
 
         await LoadCharactersAsync();
     }
+
+    private bool IsRollUsed(
+        int rollId,
+        int? currentAssignment)
+    {
+        if (currentAssignment == rollId)
+        {
+            return false;
+        }
+
+        return new int?[]
+        {
+            StrengthRollId,
+            DexterityRollId,
+            ConstitutionRollId,
+            IntelligenceRollId,
+            WisdomRollId,
+            CharismaRollId
+        }
+        .Any(id => id == rollId);
+    }
+
 
     private static string?
         CleanOptionalText(
