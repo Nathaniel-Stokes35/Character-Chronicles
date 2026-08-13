@@ -3,7 +3,10 @@
 
 @namespace CharacterChronicles.Components.Pages
 @using CharacterChronicles.Models
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+
 @using CharacterChronicles.Data
 
 <title>Development Characters | Character Chronicles</title>
@@ -493,7 +496,11 @@ else
     [Inject]
     private IWebHostEnvironment
         Environment { get; set; } = default!;
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider
+        { get; set; } = default!;
 
+    private string _currentUserId = string.Empty;
     private bool _isDevelopment;
     private bool _isLoading = true;
 
@@ -537,6 +544,32 @@ else
     private string? NewFlaws;
 
     private string CreateError = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isDevelopment =
+            Environment.IsDevelopment();
+
+        var authState =
+            await AuthenticationStateProvider
+                .GetAuthenticationStateAsync();
+
+        _currentUserId =
+            authState.User.FindFirstValue(
+                ClaimTypes.NameIdentifier)
+            ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(_currentUserId))
+        {
+            _isLoading = false;
+            return;
+        }
+
+        await LoadCampaignsAsync();
+        await LoadCharactersAsync();
+
+        _isLoading = false;
+    }
 
     private static AbilityRoll RollAbilityScore(
         int id)
@@ -633,17 +666,6 @@ else
             : modifier.ToString();
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        _isDevelopment =
-            Environment.IsDevelopment();
-
-        await LoadCampaignsAsync();
-        await LoadCharactersAsync();
-
-        _isLoading = false;
-    }
-
     private async Task LoadCharactersAsync()
     {
         await using var context =
@@ -652,6 +674,8 @@ else
         _characters =
             await context.Characters
                 .AsNoTracking()
+                .Where(character =>
+                    character.UserId == _currentUserId)
                 .Include(character =>
                     character.Campaign)
                 .Include(character =>
@@ -708,7 +732,9 @@ else
         var character =
             await context.Characters
                 .FirstOrDefaultAsync(
-                    x => x.Id == updated.Id);
+                    x =>
+                        x.Id == updated.Id &&
+                        x.UserId == _currentUserId);
 
         if (character is null)
         {
@@ -761,7 +787,9 @@ else
         var existing =
             await context.Characters
                 .FirstOrDefaultAsync(
-                    x => x.Id == character.Id);
+                    x =>
+                        x.Id == character.Id &&
+                        x.UserId == _currentUserId);
 
         if (existing is null)
         {
@@ -798,7 +826,7 @@ else
         var character =
         new Character
         {
-            UserId = "development-user",
+            UserId = _currentUserId,
 
             CampaignId = NewCampaignId,
             CharacterType = NewCharacterType,
