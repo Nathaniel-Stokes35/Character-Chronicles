@@ -571,6 +571,8 @@ else
             return;
         }
 
+        _currentUserId = userId;
+
         await LoadCampaignsAsync();
         await LoadCharactersAsync();
 
